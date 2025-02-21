@@ -16,7 +16,7 @@ class Image():
         function to select and upload an image 
         '''
         options = QFileDialog.Options()
-        file_path, _ = QFileDialog.getOpenFileName(self, "Select Image", "", "Image Files (*.jpg *.jpeg *.png *.bmp *.gif)", options=options)
+        file_path, _ = QFileDialog.getOpenFileName(None, "Select Image", "", "Image Files (*.jpg *.jpeg *.png *.bmp *.gif *.tif)", options=options)
         if file_path:
             self.input_image = cv2.imread(file_path, cv2.IMREAD_COLOR)
             self.output_image = self.input_image.copy() # a copy of the selected image is made so we can modify it without affecting the original image
