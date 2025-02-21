@@ -174,3 +174,4 @@ cython_debug/
 .pypirc
 
 cv_image_studio
+classes.txt
