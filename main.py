@@ -1,5 +1,6 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow , QPushButton , QFrame , QLabel , QVBoxLayout , QCheckBox , QComboBox
+import numpy as np
+from PyQt5.QtWidgets import QApplication, QMainWindow , QPushButton , QFrame , QLabel , QVBoxLayout , QCheckBox , QComboBox , QLineEdit
 from PyQt5.uic import loadUi
 from PyQt5.QtGui import QIcon
 from helper_functions.compile_qrc import compile_qrc
@@ -47,7 +48,17 @@ class MainWindow(QMainWindow):
         self.apply_noise_checkbox.stateChanged.connect(self.toggle_noise_checkboxes)
         self.uniform_noise_checkbox.stateChanged.connect(self.apply_uniform_noise)
         self.salt_noise_checkbox.stateChanged.connect(self.apply_salt_and_pepper_noise)
+        self.gaussian_noise_checkbox.stateChanged.connect(self.apply_gaussian_noise)
         
+        # Adding Gaussian mean and sigma
+        self.gaussian_mean_text = self.findChild(QLineEdit , "meanInput")
+        self.gaussian_mean_text.textChanged.connect(self.set_gaussian_mean)
+        
+        self.gaussian_mean = 0
+        self.gaussian_std = np.sqrt(0.1)
+        
+        self.gaussian_std_text = self.findChild(QLineEdit , "stdInput")
+        self.gaussian_std_text.textChanged.connect(self.set_gaussian_std)
         
         # Initializing Browse Input Images
         self.browse_image_input_1_button = self.findChild(QPushButton , "pushButton_2") 
@@ -71,6 +82,10 @@ class MainWindow(QMainWindow):
         #Initializing reset button
         self.reset_button = self.findChild(QPushButton , "reset")
         self.reset_button.clicked.connect(self.reset_output_to_input_state)
+        
+        # Initialize rgb to grey button
+        self.rgb2grey_button = self.findChild(QPushButton , "toGreyScale")
+        self.rgb2grey_button.clicked.connect(self.to_grey_scale)
         
         # Initializing Controller
         self.controller = Controller(self.input_image_1 , self.input_image_2 , self.output_image , self.output_image_label)
@@ -112,17 +127,36 @@ class MainWindow(QMainWindow):
     
     def apply_uniform_noise(self):
         if(self.uniform_noise_checkbox.isChecked()):
-            self.controller.apply_uniform_noise()
+            self.controller.apply_noise('uniform')
             
     def apply_salt_and_pepper_noise(self):
         if(self.salt_noise_checkbox.isChecked()):
-            self.controller.apply_salt_and_pepper_noise()
+            self.controller.apply_noise('salt_pepper')
+    
+    def apply_gaussian_noise(self):
+        if(self.gaussian_noise_checkbox.isChecked()):
+            self.controller.apply_noise('gaussian', self.gaussian_mean , self.gaussian_std)
+    
+    def set_gaussian_mean(self , text):
+        if (text == "" or text == " "):
+            return
+        self.gaussian_mean = float(text)
+        self.apply_gaussian_noise()
+    
+    def set_gaussian_std(self , text):
+        if (text == "" or text == " "):
+            return
+        self.gaussian_std = float(text)
+        self.apply_gaussian_noise()
     
     def reset_output_to_input_state(self):
         self.controller.reset_output_image_to_normal()
         self.uniform_noise_checkbox.setChecked(False)        
         self.salt_noise_checkbox.setChecked(False)        
         self.gaussian_noise_checkbox.setChecked(False)        
+    
+    def to_grey_scale(self):
+        self.controller.rgb2grey()
             
 if __name__ == '__main__':
     app = QApplication(sys.argv)

@@ -42,7 +42,7 @@ class Image():
         else:
             self.image_type = 'grey'
     
-    def apply_noise(self, noise_type):
+    def apply_noise(self, noise_type , mean = 0 , sigma = np.sqrt(0.1)):
         if noise_type == 'uniform':
             self.output_image = self.output_image / 255.0
             x, y, dimensions = self.output_image.shape
@@ -66,9 +66,9 @@ class Image():
         elif noise_type == 'gaussian':
             self.output_image = self.output_image / 255.0
             x, y, dimensions = self.output_image.shape
-            mean = 0
-            variance = 0.1
-            sigma = np.sqrt(variance) # standard deviation
+            # mean = 0
+            # variance = 0.1
+            # sigma = np.sqrt(variance) # standard deviation
             noise = np.random.normal(loc = mean,
                                  scale = sigma, # standard deviation
                                  size = (x, y))
@@ -83,7 +83,7 @@ class Image():
         # note: salt & pepper type is found only in grayscale images, that's why we convert the image to grayscale first before adding the noise
         elif noise_type == 'salt_pepper':
             self.output_image = self.convert_rgb_to_gray(self.output_image)
-
+            
             # Getting the dimensions of the image 
             row, col = self.output_image.shape 
             
