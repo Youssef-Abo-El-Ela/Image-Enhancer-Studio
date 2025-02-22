@@ -158,3 +158,47 @@ class Image():
         time_domain_image = cv2.normalize(time_domain_image, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8UC1)
         return time_domain_image
     
+    def apply_filter(self, filter_type, sigma = 1):
+        ''' 
+        apply low or high pass filter to image in the spatial domain
+        we choose 3x3 kernel for each filter type
+        '''
+        if filter_type == 'Average':
+            kernel = np.ones((3,3),np.float32)/9
+            
+        elif filter_type == 'Gaussian':
+            x, y = np.meshgrid(np.arange(-1,2), np.arange(-1,2))  
+            kernel = np.exp(-(x**2 + y**2)/(2*sigma**2))/(2*np.pi*sigma**2) 
+            kernel = kernel / np.sum(kernel)    # normalization for the kernel
+            
+        elif filter_type == 'Median':
+            padded_image = np.round(np.pad(self.output_image, pad_width = 1, mode='constant', constant_values=0))   # pad the image with frame of zeros
+            for i in range(self.output_image.shape[0]):
+                for j in range(self.output_image.shape[1]):
+                    self.output_image[i,j] = np.median(padded_image[i:i + 3, j:j + 3])
+            return
+        
+        elif filter_type == 'Sobel':
+            pass
+        
+        elif filter_type == 'Roberts':
+            pass
+        
+        elif filter_type == 'Prewitt':
+            pass
+        
+        elif filter_type == 'Canny':
+            pass
+            
+        self.convolve(self.output_image, kernel)
+        
+    def convolve(self, image, kernel):
+        '''
+        implement convolution operation on the image 
+        '''
+        padded_image = np.round(np.pad(image, pad_width = 1, mode='constant', constant_values=0)) # pad the image with frame of zeros
+        for i in range(image.shape[0]):
+            for j in range(image.shape[1]):
+                image[i,j] = np.sum(padded_image[i:i + 3, j:j + 3] * kernel)
+                
+        self.output_image = image
