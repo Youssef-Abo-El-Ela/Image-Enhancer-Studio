@@ -1529,6 +1529,12 @@ font-size:18px;</string>
               </item>
               <item>
                <widget class="QFrame" name="input01Frame">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <property name="minimumSize">
                  <size>
                   <width>250</width>
@@ -1537,8 +1543,8 @@ font-size:18px;</string>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>16777215</width>
-                  <height>300</height>
+                  <width>450</width>
+                  <height>200</height>
                  </size>
                 </property>
                 <property name="styleSheet">
@@ -1790,6 +1796,12 @@ font-size:18px;</string>
               </item>
               <item>
                <widget class="QFrame" name="input02Frame">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <property name="minimumSize">
                  <size>
                   <width>250</width>
@@ -1798,8 +1810,8 @@ font-size:18px;</string>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>16777215</width>
-                  <height>300</height>
+                  <width>450</width>
+                  <height>200</height>
                  </size>
                 </property>
                 <property name="styleSheet">
@@ -2076,6 +2088,12 @@ QComboBox QAbstractItemView {
               </item>
               <item>
                <widget class="QFrame" name="outputFrame">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <property name="minimumSize">
                  <size>
                   <width>250</width>
@@ -2084,8 +2102,8 @@ QComboBox QAbstractItemView {
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>16777215</width>
-                  <height>300</height>
+                  <width>450</width>
+                  <height>200</height>
                  </size>
                 </property>
                 <property name="styleSheet">
