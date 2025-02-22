@@ -141,7 +141,7 @@ class Image():
         # Shift the zero-frequency component of the Fourier Transform to the center of the array because the cv2.dft() function returns the Fourier Transform with the zero-frequency component at the top-left corner of the array
         shifted_frequency_domain_image = np.fft.fftshift(frequency_domain_image)
         
-        # calculate the magnitude of the Fourier Transform to visualize the frequency content of an image by looking at the magnitude of the Fourier Transform rather than the complex values
+        # calculate the magnitude and then take log and multiply by 20 to convert to dB
         magnitude_of_frequency_domain_image = 20*np.log(cv2.magnitude(shifted_frequency_domain_image[:,:,0],shifted_frequency_domain_image[:,:,1]))
         
         # scale the magnitude of the Fourier Transform using the cv2.normalize() function for improving the contrast of the resulting image
@@ -191,6 +191,35 @@ class Image():
             pass
             
         self.convolve(self.output_image, kernel)
+    
+    def frequency_domain_low_pass_filter(shifted_fft_image):
+        '''
+        low pass filter blurrs the image
+        '''
+        rows, columns, dimensions = shifted_fft_image.shape
+        print(shifted_fft_image.shape)
+        center_row = rows // 2
+        center_column = columns // 2
+
+        lpf_mask = np.zeros((rows, columns, 2), np.uint8)
+        lpf_mask[center_row - 70: center_row + 70, center_column - 70: center_column + 70] = 1
+
+        filtered_fft_image = shifted_fft_image * lpf_mask
+        return filtered_fft_image
+
+    def frequency_domain_high_pass_filter(shifted_fft_image):
+        '''
+        high pass filter acts like an edge detector
+        '''
+        rows, columns, dimensions = shifted_fft_image.shape
+        center_row = rows // 2
+        center_column = columns // 2
+
+        lpf_mask = np.ones((rows, columns, 2), np.uint8)
+        lpf_mask[center_row - 70: center_row + 70, center_column - 70: center_column + 70] = 0
+
+        filtered_fft_image = shifted_fft_image * lpf_mask
+        return filtered_fft_image
         
     def convolve(self, image, kernel):
         '''
