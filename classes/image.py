@@ -83,35 +83,36 @@ class Image():
         # note: salt & pepper type is found only in grayscale images, that's why we convert the image to grayscale first before adding the noise
         elif noise_type == 'salt_pepper':
             self.output_image = self.convert_rgb_to_gray(self.output_image)
-            
+            channels = 1 if len(self.output_image) == 2 else self.output_image.shape[2]
+
             # Getting the dimensions of the image 
-            row, col = self.output_image.shape 
+            row, col ,dimensions = self.output_image.shape 
             
             # randomly pick number of pixels (between 300 and 10000 pixls) in the image to be colored white 
             number_of_pixels = random.randint(300, 10000) 
-
-            # add the salt and pepper noise at random positions in the image
-            for i in range(number_of_pixels): 
-                
-                # a random y coordinate 
-                y_coord=random.randint(0, row - 1) 
-                
-                # a random x coordinate 
-                x_coord=random.randint(0, col - 1) 
-                
-                # color that pixel to white 
-                self.output_image[y_coord][x_coord] = 255
-                
-            # same as above but for black pixels
-            number_of_pixels = random.randint(300 , 10000) 
-            for i in range(number_of_pixels): 
-                
-                y_coord=random.randint(0, row - 1) 
-                
-                x_coord=random.randint(0, col - 1) 
-                
-                # color that pixel to black
-                self.output_image[y_coord][x_coord] = 0
+            for c in range(channels):
+                # add the salt and pepper noise at random positions in the image
+                for i in range(number_of_pixels): 
+                    
+                    # a random y coordinate 
+                    y_coord=random.randint(0, row - 1) 
+                    
+                    # a random x coordinate 
+                    x_coord=random.randint(0, col - 1) 
+                    
+                    # color that pixel to white 
+                    self.output_image[y_coord][x_coord][c] = 255
+                    
+                # same as above but for black pixels
+                number_of_pixels = random.randint(300 , 10000) 
+                for i in range(number_of_pixels): 
+                    
+                    y_coord=random.randint(0, row - 1) 
+                    
+                    x_coord=random.randint(0, col - 1) 
+                    
+                    # color that pixel to black
+                    self.output_image[y_coord][x_coord][c] = 0
     
     def convert_rgb_to_gray(self, image):
         r,g,b = cv2.split(image)
@@ -180,7 +181,7 @@ class Image():
             kernel = kernel / np.sum(kernel)    # normalization for the kernel
             
         elif filter_type == 'Median':
-            padded_image = np.pad(self.output_image, pad_width = 1, mode='constant', constant_values=0)  # pad the image with frame of zeros
+            padded_image = np.pad(self.output_image, pad_width=((1, 1), (1, 1), (0, 0)), mode='constant', constant_values=0)  # pad the image with frame of zeros
             for i in range(self.output_image.shape[0]):
                 for j in range(self.output_image.shape[1]):
                     self.output_image[i,j] = np.median(padded_image[i:i + 3, j:j + 3])

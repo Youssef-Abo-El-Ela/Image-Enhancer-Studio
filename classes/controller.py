@@ -46,11 +46,11 @@ class Controller():
             self.input_image_2.output_image = self.input_image_2.convert_rgb_to_gray(self.input_image_2.input_image)
         self.set_output_image_source()
     
-    def apply_time_domain_low_pass(self , filter_type):
+    def apply_time_domain_low_pass(self , filter_type , sigma = 1):
         if(self.input_image_1.input_image is not None):
-            self.input_image_1.apply_filter(filter_type)
+            self.input_image_1.apply_filter(filter_type , sigma)
         if(self.input_image_2.input_image is not None ):
-            self.input_image_2.apply_filter(filter_type)
+            self.input_image_2.apply_filter(filter_type , sigma)
         self.set_output_image_source()
 
     

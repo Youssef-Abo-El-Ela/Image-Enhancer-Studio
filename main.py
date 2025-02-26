@@ -91,6 +91,11 @@ class MainWindow(QMainWindow):
         self.low_pass_time_domain_filters_combobox = self.findChild(QComboBox , "lowPassCombobox")
         self.low_pass_time_domain_filters_combobox.currentIndexChanged.connect(self.apply_low_pass_filter_time_domain)
         
+        # Initialize gaussian filter sigma input
+        self.gaussian_filter_sigma = 1
+        self.gaussian_filter_sigma_input = self.findChild(QLineEdit,"lowPassGaussianInput")
+        self.gaussian_filter_sigma_input.textChanged.connect(self.set_gaussian_filter_sigma)
+        
         # Initializing Controller
         self.controller = Controller(self.input_image_1 , self.input_image_2 , self.output_image , self.output_image_label)
         
@@ -142,13 +147,13 @@ class MainWindow(QMainWindow):
             self.controller.apply_noise('gaussian', self.gaussian_mean , self.gaussian_std)
     
     def set_gaussian_mean(self , text):
-        if (text == "" or text == " "):
+        if (text == "" or text == " " or '-' in text ):
             return
         self.gaussian_mean = float(text)
         self.apply_gaussian_noise()
     
     def set_gaussian_std(self , text):
-        if (text == "" or text == " "):
+        if (text == "" or text == " " or '-' in text):
             return
         self.gaussian_std = float(text)
         self.apply_gaussian_noise()
@@ -162,6 +167,11 @@ class MainWindow(QMainWindow):
     def to_grey_scale(self):
         self.controller.rgb2grey()
     
+    def set_gaussian_filter_sigma(self , text):
+        if (text == "" or text == " " or '-' in text):
+            return
+        self.gaussian_filter_sigma = float(text)
+        
     def apply_low_pass_filter_time_domain(self ,index):
         if(index == 0):
             return
@@ -171,7 +181,7 @@ class MainWindow(QMainWindow):
             filter_type = "Gaussian"
         elif (index == 3):
             filter_type = "Median"    
-        self.controller.apply_time_domain_low_pass(filter_type)
+        self.controller.apply_time_domain_low_pass(filter_type ,self.gaussian_filter_sigma)
             
 if __name__ == '__main__':
     app = QApplication(sys.argv)
