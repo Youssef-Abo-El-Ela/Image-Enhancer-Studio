@@ -87,6 +87,10 @@ class MainWindow(QMainWindow):
         self.rgb2grey_button = self.findChild(QPushButton , "toGreyScale")
         self.rgb2grey_button.clicked.connect(self.to_grey_scale)
         
+        # Initializing the low pass time domain filter combobox
+        self.low_pass_time_domain_filters_combobox = self.findChild(QComboBox , "lowPassCombobox")
+        self.low_pass_time_domain_filters_combobox.currentIndexChanged.connect(self.apply_low_pass_filter_time_domain)
+        
         # Initializing Controller
         self.controller = Controller(self.input_image_1 , self.input_image_2 , self.output_image , self.output_image_label)
         
@@ -157,6 +161,17 @@ class MainWindow(QMainWindow):
     
     def to_grey_scale(self):
         self.controller.rgb2grey()
+    
+    def apply_low_pass_filter_time_domain(self ,index):
+        if(index == 0):
+            return
+        if (index == 1):
+            filter_type = "Average"
+        elif (index == 2):
+            filter_type = "Gaussian"
+        elif (index == 3):
+            filter_type = "Median"    
+        self.controller.apply_time_domain_low_pass(filter_type)
             
 if __name__ == '__main__':
     app = QApplication(sys.argv)

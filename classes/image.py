@@ -21,7 +21,7 @@ class Image():
             self.input_image = cv2.imread(file_path, cv2.IMREAD_COLOR)
             self.output_image = self.input_image.copy() # a copy of the selected image is made so we can modify it without affecting the original image
             self.update_image_type(self.input_image) # update the selected image type
-    
+            
     def update_image_type(self, image):
         '''
         function that detects whether image is grey or color (rgb) and updates the image_type attribute
@@ -172,7 +172,7 @@ class Image():
             kernel = kernel / np.sum(kernel)    # normalization for the kernel
             
         elif filter_type == 'Median':
-            padded_image = np.round(np.pad(self.output_image, pad_width = 1, mode='constant', constant_values=0))   # pad the image with frame of zeros
+            padded_image = np.pad(self.output_image, pad_width = 1, mode='constant', constant_values=0)  # pad the image with frame of zeros
             for i in range(self.output_image.shape[0]):
                 for j in range(self.output_image.shape[1]):
                     self.output_image[i,j] = np.median(padded_image[i:i + 3, j:j + 3])
@@ -225,9 +225,17 @@ class Image():
         '''
         implement convolution operation on the image 
         '''
-        padded_image = np.round(np.pad(image, pad_width = 1, mode='constant', constant_values=0)) # pad the image with frame of zeros
-        for i in range(image.shape[0]):
-            for j in range(image.shape[1]):
-                image[i,j] = np.sum(padded_image[i:i + 3, j:j + 3] * kernel)
-                
-        self.output_image = image
+        image = image.astype(np.float32)
+        channels = 1 if len(image.shape) == 2 else image.shape[2]
+        padded_image = np.pad(image, pad_width=((1, 1), (1, 1), (0, 0)), mode='constant', constant_values=0) # pad the image with frame of zeros
+        
+        output_image = np.zeros_like(image, dtype=np.float32)
+        
+        for c in range(channels):
+            for i in range(image.shape[0]):
+                for j in range(image.shape[1]):
+                    region = padded_image[i:i+3, j:j+3, c]
+                    output_image[i, j, c] = np.sum(region * kernel)
+                    
+        output_image = np.clip(output_image, 0, 255).astype(np.uint8)
+        self.output_image = output_image

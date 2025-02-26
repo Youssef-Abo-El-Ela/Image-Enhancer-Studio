@@ -2,7 +2,7 @@ from classes.ImageEnum import ImageSource
 import cv2
 import numpy as np
 from PyQt5.QtGui import QPixmap , QImage
-
+from copy import deepcopy
 class Controller():
     def __init__(self , input_image_1 , input_image_2 , output_image , output_image_label):
         self.input_image_1 = input_image_1
@@ -35,8 +35,8 @@ class Controller():
         
         
     def reset_output_image_to_normal(self):
-        self.input_image_1.output_image = self.input_image_1.input_image
-        self.input_image_2.output_image = self.input_image_2.input_image
+        self.input_image_1.output_image = deepcopy(self.input_image_1.input_image)
+        self.input_image_2.output_image = deepcopy(self.input_image_2.input_image)
         self.set_output_image_source()
 
     def rgb2grey(self):
@@ -45,6 +45,14 @@ class Controller():
         if(self.input_image_2.input_image is not None ):
             self.input_image_2.output_image = self.input_image_2.convert_rgb_to_gray(self.input_image_2.input_image)
         self.set_output_image_source()
+    
+    def apply_time_domain_low_pass(self , filter_type):
+        if(self.input_image_1.input_image is not None):
+            self.input_image_1.apply_filter(filter_type)
+        if(self.input_image_2.input_image is not None ):
+            self.input_image_2.apply_filter(filter_type)
+        self.set_output_image_source()
+
     
     def numpy_to_qpixmap(self, image_array):
         """Convert NumPy array to QPixmap"""
