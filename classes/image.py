@@ -119,9 +119,12 @@ class Image():
         g = 0.587 * g
         b = 0.114 * b
         grey_image = r + g + b
+        grey_image = grey_image.astype(np.uint8)
         self.image_type = 'grey'
-        
-        return grey_image.astype(np.uint8)
+
+        grey_image_as_3_channels = cv2.merge((grey_image, grey_image, grey_image))   
+
+        return grey_image_as_3_channels
     
     def fourier_transform(self, image):
         '''
@@ -133,7 +136,11 @@ class Image():
 
         Note: to do the fourier transform, the image must be in grayscale. that's why we convert it to grayscale directly in the first step.
         '''
-        image = self.convert_rgb_to_gray(image)
+        image_as_3_channels = self.convert_rgb_to_gray(image)
+
+        channels = image_as_3_channels.split()
+
+        image = channels[0] # we only need one channel since the image is in grayscale
 
         # compute the discrete Fourier Transform of the image. cv2.dft returns the Fourier Transform as a NumPy array.
         frequency_domain_image = cv2.dft(np.float32(image), flags=cv2.DFT_COMPLEX_OUTPUT)
@@ -156,7 +163,8 @@ class Image():
         time_domain_image = cv2.idft(shifted_frequency_image)
         time_domain_image = cv2.magnitude(time_domain_image[:,:,0], time_domain_image[:,:,1])
         time_domain_image = cv2.normalize(time_domain_image, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8UC1)
-        return time_domain_image
+        time_domain_image = cv2.merge([time_domain_image, time_domain_image, time_domain_image])
+        return time_domain_image # Note: returns 3 channel image although it is grayscale 
     
     def apply_filter(self, filter_type, sigma = 1):
         ''' 
