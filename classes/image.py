@@ -270,11 +270,16 @@ class Image():
 
     def hybrid_image(self, image_1, image_2):
         '''
-        NOTE: YOU MUST PASS TWO IMAGES OF THE SAME SIZE
+        NOTE: YOU MUST PASS TWO IMAGES OF THE SAME DIMENSIONS
 
         First argument is the low frequency components image
         Second argument is the high frequency components image
         '''
+        # checking if the two images have the same dimensions
+        if image_1.shape != image_2.shape:
+            raise ValueError("Both images must have the same dimensions. "
+                            f"Got {image_1.shape} and {image_2.shape}.")
+
         shifted_fft_image_1, _ = self.fourier_transform(image_1)
         shifted_fft_image_2, _ = self.fourier_transform(image_2)
 
