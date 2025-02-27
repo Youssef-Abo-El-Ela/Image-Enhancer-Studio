@@ -1,11 +1,15 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow , QPushButton , QFrame , QLabel , QVBoxLayout , QCheckBox , QComboBox
+import numpy as np
+from PyQt5.QtWidgets import QApplication, QMainWindow , QPushButton , QFrame , QLabel , QVBoxLayout , QCheckBox , QComboBox , QLineEdit
 from PyQt5.uic import loadUi
 from PyQt5.QtGui import QIcon
 from helper_functions.compile_qrc import compile_qrc
 from classes.image import Image
 from classes.controller import Controller
 from classes.ImageEnum import ImageSource
+from classes.statisticsVisualization import HistogramCanvas , CDFCanvas
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
 
 compile_qrc()
 from icons_setup.icons import *
@@ -47,7 +51,17 @@ class MainWindow(QMainWindow):
         self.apply_noise_checkbox.stateChanged.connect(self.toggle_noise_checkboxes)
         self.uniform_noise_checkbox.stateChanged.connect(self.apply_uniform_noise)
         self.salt_noise_checkbox.stateChanged.connect(self.apply_salt_and_pepper_noise)
+        self.gaussian_noise_checkbox.stateChanged.connect(self.apply_gaussian_noise)
         
+        # Adding Gaussian mean and sigma
+        self.gaussian_mean_text = self.findChild(QLineEdit , "meanInput")
+        self.gaussian_mean_text.textChanged.connect(self.set_gaussian_mean)
+        
+        self.gaussian_mean = 0
+        self.gaussian_std = np.sqrt(0.1)
+        
+        self.gaussian_std_text = self.findChild(QLineEdit , "stdInput")
+        self.gaussian_std_text.textChanged.connect(self.set_gaussian_std)
         
         # Initializing Browse Input Images
         self.browse_image_input_1_button = self.findChild(QPushButton , "pushButton_2") 
@@ -72,8 +86,58 @@ class MainWindow(QMainWindow):
         self.reset_button = self.findChild(QPushButton , "reset")
         self.reset_button.clicked.connect(self.reset_output_to_input_state)
         
+        # Initialize rgb to grey button
+        self.rgb2grey_button = self.findChild(QPushButton , "toGreyScale")
+        self.rgb2grey_button.clicked.connect(self.to_grey_scale)
+        
+        # Initializing the low pass time domain filter combobox
+        self.low_pass_time_domain_filters_combobox = self.findChild(QComboBox , "lowPassCombobox")
+        self.low_pass_time_domain_filters_combobox.currentIndexChanged.connect(self.apply_low_pass_filter_time_domain)
+        
+        # Initialize gaussian filter sigma input
+        self.gaussian_filter_sigma = 1
+        self.gaussian_filter_sigma_input = self.findChild(QLineEdit,"lowPassGaussianInput")
+        self.gaussian_filter_sigma_input.textChanged.connect(self.set_gaussian_filter_sigma)
+        
+        # Histogram of Input Image 1
+        self.input_image_1_histogram_canvas = HistogramCanvas()
+        input_image_1_histogram_frame = self.findChild(QFrame , "input01HistogramFrame")
+        self.input_image_1_histogram_layout = QVBoxLayout(input_image_1_histogram_frame)
+        self.input_image_1_histogram_layout.addWidget(self.input_image_1_histogram_canvas)
+        
+        # CDF of Input Image 1
+        self.input_image_1_cdf_canvas = CDFCanvas()
+        input_image_1_cdf_frame = self.findChild(QFrame , "input01DistributionFrame")
+        self.input_image_1_cdf_layout = QVBoxLayout(input_image_1_cdf_frame)
+        self.input_image_1_cdf_layout.addWidget(self.input_image_1_cdf_canvas)
+        
+        # Histogram of Input Image 2
+        self.input_image_2_histogram_canvas = HistogramCanvas()
+        input_image_2_histogram_frame = self.findChild(QFrame , "input02HistogramFrame")
+        layout = QVBoxLayout(input_image_2_histogram_frame)
+        layout.addWidget(self.input_image_2_histogram_canvas)
+        
+        # CDF of Input Image 2
+        self.input_image_2_cdf_canvas = CDFCanvas()
+        input_image_2_cdf_frame = self.findChild(QFrame , "input02DistributionFrame")
+        layout = QVBoxLayout(input_image_2_cdf_frame)
+        layout.addWidget(self.input_image_2_cdf_canvas)
+        
+        # Histogram of Output Image
+        self.output_image_histogram_canvas = HistogramCanvas()
+        input_output_image_histogram_frame = self.findChild(QFrame , "outputHistogramFrame")
+        layout = QVBoxLayout(input_output_image_histogram_frame)
+        layout.addWidget(self.output_image_histogram_canvas)
+        
+        # CDF of Output  Image
+        self.output_image_cdf_canvas = CDFCanvas()
+        output_image_cdf_frame = self.findChild(QFrame , "outputDistributionFrame")
+        layout = QVBoxLayout(output_image_cdf_frame)
+        layout.addWidget(self.output_image_cdf_canvas)
+        
         # Initializing Controller
-        self.controller = Controller(self.input_image_1 , self.input_image_2 , self.output_image , self.output_image_label)
+        self.controller = Controller(self.input_image_1 , self.input_image_2 , self.output_image , self.output_image_label , self.input_image_1_histogram_canvas, self.input_image_1_cdf_canvas , 
+                                    self.input_image_2_histogram_canvas , self.input_image_2_cdf_canvas , self.output_image_histogram_canvas , self.output_image_cdf_canvas)
         
         
     def browse_image_input_1(self):
@@ -112,17 +176,52 @@ class MainWindow(QMainWindow):
     
     def apply_uniform_noise(self):
         if(self.uniform_noise_checkbox.isChecked()):
-            self.controller.apply_uniform_noise()
+            self.controller.apply_noise('uniform')
             
     def apply_salt_and_pepper_noise(self):
         if(self.salt_noise_checkbox.isChecked()):
-            self.controller.apply_salt_and_pepper_noise()
+            self.controller.apply_noise('salt_pepper')
+    
+    def apply_gaussian_noise(self):
+        if(self.gaussian_noise_checkbox.isChecked()):
+            self.controller.apply_noise('gaussian', self.gaussian_mean , self.gaussian_std)
+    
+    def set_gaussian_mean(self , text):
+        if (text == "" or text == " " or '-' in text ):
+            return
+        self.gaussian_mean = float(text)
+        self.apply_gaussian_noise()
+    
+    def set_gaussian_std(self , text):
+        if (text == "" or text == " " or '-' in text):
+            return
+        self.gaussian_std = float(text)
+        self.apply_gaussian_noise()
     
     def reset_output_to_input_state(self):
         self.controller.reset_output_image_to_normal()
         self.uniform_noise_checkbox.setChecked(False)        
         self.salt_noise_checkbox.setChecked(False)        
         self.gaussian_noise_checkbox.setChecked(False)        
+    
+    def to_grey_scale(self):
+        self.controller.rgb2grey()
+    
+    def set_gaussian_filter_sigma(self , text):
+        if (text == "" or text == " " or '-' in text):
+            return
+        self.gaussian_filter_sigma = float(text)
+        
+    def apply_low_pass_filter_time_domain(self ,index):
+        if(index == 0):
+            return
+        if (index == 1):
+            filter_type = "Average"
+        elif (index == 2):
+            filter_type = "Gaussian"
+        elif (index == 3):
+            filter_type = "Median"    
+        self.controller.apply_time_domain_low_pass(filter_type ,self.gaussian_filter_sigma)
             
 if __name__ == '__main__':
     app = QApplication(sys.argv)
