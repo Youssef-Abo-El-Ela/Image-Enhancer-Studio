@@ -7,7 +7,10 @@ from helper_functions.compile_qrc import compile_qrc
 from classes.image import Image
 from classes.controller import Controller
 from classes.ImageEnum import ImageSource
-from classes.statisticsVisualization import StatisticsVisualization
+from classes.statisticsVisualization import HistogramCanvas , CDFCanvas
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
+
 compile_qrc()
 from icons_setup.icons import *
 
@@ -96,8 +99,45 @@ class MainWindow(QMainWindow):
         self.gaussian_filter_sigma_input = self.findChild(QLineEdit,"lowPassGaussianInput")
         self.gaussian_filter_sigma_input.textChanged.connect(self.set_gaussian_filter_sigma)
         
+        # Histogram of Input Image 1
+        self.input_image_1_histogram_canvas = HistogramCanvas()
+        input_image_1_histogram_frame = self.findChild(QFrame , "input01HistogramFrame")
+        self.input_image_1_histogram_layout = QVBoxLayout(input_image_1_histogram_frame)
+        self.input_image_1_histogram_layout.addWidget(self.input_image_1_histogram_canvas)
+        
+        # CDF of Input Image 1
+        self.input_image_1_cdf_canvas = CDFCanvas()
+        input_image_1_cdf_frame = self.findChild(QFrame , "input01DistributionFrame")
+        self.input_image_1_cdf_layout = QVBoxLayout(input_image_1_cdf_frame)
+        self.input_image_1_cdf_layout.addWidget(self.input_image_1_cdf_canvas)
+        
+        # Histogram of Input Image 2
+        self.input_image_2_histogram_canvas = HistogramCanvas()
+        input_image_2_histogram_frame = self.findChild(QFrame , "input02HistogramFrame")
+        layout = QVBoxLayout(input_image_2_histogram_frame)
+        layout.addWidget(self.input_image_2_histogram_canvas)
+        
+        # CDF of Input Image 2
+        self.input_image_2_cdf_canvas = CDFCanvas()
+        input_image_2_cdf_frame = self.findChild(QFrame , "input02DistributionFrame")
+        layout = QVBoxLayout(input_image_2_cdf_frame)
+        layout.addWidget(self.input_image_2_cdf_canvas)
+        
+        # Histogram of Output Image
+        self.output_image_histogram_canvas = HistogramCanvas()
+        input_output_image_histogram_frame = self.findChild(QFrame , "outputHistogramFrame")
+        layout = QVBoxLayout(input_output_image_histogram_frame)
+        layout.addWidget(self.output_image_histogram_canvas)
+        
+        # CDF of Output  Image
+        self.output_image_cdf_canvas = CDFCanvas()
+        output_image_cdf_frame = self.findChild(QFrame , "outputDistributionFrame")
+        layout = QVBoxLayout(output_image_cdf_frame)
+        layout.addWidget(self.output_image_cdf_canvas)
+        
         # Initializing Controller
-        self.controller = Controller(self.input_image_1 , self.input_image_2 , self.output_image , self.output_image_label)
+        self.controller = Controller(self.input_image_1 , self.input_image_2 , self.output_image , self.output_image_label , self.input_image_1_histogram_canvas, self.input_image_1_cdf_canvas , 
+                                    self.input_image_2_histogram_canvas , self.input_image_2_cdf_canvas , self.output_image_histogram_canvas , self.output_image_cdf_canvas)
         
         
     def browse_image_input_1(self):

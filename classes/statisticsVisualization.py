@@ -1,30 +1,54 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from PyQt5.QtWidgets import QSizePolicy
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
-class StatisticsVisualization():
-    def __init__(self , input_image_1 , input_image_2 , output_image, labels):
-        self.input_image_1 = input_image_1
-        self.input_image_2 = input_image_2
-        self.output_image = output_image
-    
-    def plot_histogram_and_pdf(self, image, labels):
-        for label in labels:
-            histogram = np.zeros(256)
-            for pixel in image.ravel():  
-                histogram[pixel] += 1
+class HistogramCanvas(FigureCanvas):
+    def __init__(self):
+        self.fig, self.ax = plt.subplots(figsize=(5, 4) , facecolor='#1E293B')
+        super().__init__(self.fig)
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.updateGeometry()
+        self.ax.axes.set_axis_off()
 
-            pdf = histogram / histogram.sum()
-            plt.figure(figsize=(10, 4))
-            plt.subplot(1, 2, 1)
-            plt.bar(range(256), histogram, color='blue', width=5)
-            plt.title("Histogram")
-            plt.xlabel("Intensity")
-            plt.ylabel("Count")
+    def plot_histogram(self, image):
+        histogram = np.zeros(256)
+        for pixel in image.ravel():
+            histogram[pixel] += 1
 
-            plt.subplot(1, 2, 2)
-            plt.plot(pdf, color='blue')
-            plt.title("PDF")
-            plt.xlabel("Intensity")
-            plt.ylabel("Probability")
+        self.ax.clear()
+        self.ax.set_facecolor('#1E293B') 
+        self.fig.patch.set_facecolor('#1E293B')
+        self.ax.bar(range(256), histogram, color='white', width=5)
+        self.ax.tick_params(axis='both', colors="white") 
+        for spine in self.ax.spines.values():
+            spine.set_edgecolor('white')  
+            spine.set_linewidth(2) 
+        self.fig.subplots_adjust(left=0.15, right=0.95, top=0.9, bottom=0.15)
+        self.draw()
 
-            plt.show()
+class CDFCanvas(FigureCanvas):
+    def __init__(self):
+        self.fig, self.ax = plt.subplots(figsize=(5, 4) , facecolor='#1E293B')
+        super().__init__(self.fig)
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.updateGeometry()
+        self.ax.axes.set_axis_off()
+
+    def plot_cdf(self, image):
+        histogram = np.zeros(256)
+        for pixel in image.ravel():
+            histogram[pixel] += 1
+
+        pdf = histogram / histogram.sum()
+
+        self.ax.clear()
+        self.ax.set_facecolor('#1E293B')  
+        self.fig.patch.set_facecolor('#1E293B')
+        self.ax.plot(pdf, color='white')
+        self.ax.tick_params(axis='both', colors="white") 
+        for spine in self.ax.spines.values():
+            spine.set_edgecolor('white')  
+            spine.set_linewidth(2) 
+        self.fig.subplots_adjust(left=0.15, right=0.95, top=0.9, bottom=0.15)
+        self.draw()
