@@ -309,6 +309,79 @@ class Image():
         hybrid_image = time_domain_image_1 + time_domain_image_2
 
         return hybrid_image
+    
+    def global_threshold(self, threshold_value=127):
+        """
+        Apply global thresholding to the image
+        """
+        # Convert to grayscale if the image is in color
+        if self.image_type == 'color':
+            grayscale_image = self.convert_rgb_to_gray(self.output_image)
+            # Extract one channel since they're all the same in grayscale
+            gray = grayscale_image[:,:,0]
+        else:
+            # For grayscale images, just take one channel
+            gray = self.output_image[:,:,0]
+        
+        # Create a binary image
+        binary_image = np.zeros_like(gray)
+        
+        # Apply thresholding manually
+        height, width = gray.shape
+        for i in range(height):
+            for j in range(width):
+                if gray[i, j] > threshold_value:
+                    binary_image[i, j] = 255
+                else:
+                    binary_image[i, j] = 0
+        
+        # Convert back to 3-channel image
+        self.output_image = cv2.merge([binary_image, binary_image, binary_image])
+
+    def local_threshold(self, block_size=11, c=0):
+        """
+        Apply (local) thresholding to the image manually.
+        """
+        # Ensure block_size is odd
+        if block_size % 2 == 0:
+            block_size += 1
+        
+        # Convert to grayscale if the image is in color
+        if self.image_type == 'color':
+            grayscale_image = self.convert_rgb_to_gray(self.output_image)
+            # Extract one channel since they're all the same in grayscale
+            gray = grayscale_image[:,:,0]
+        else:
+            # For grayscale images, just take one channel
+            gray = self.output_image[:,:,0]
+        
+        # Create output binary image
+        height, width = gray.shape
+        binary_image = np.zeros_like(gray)
+        
+        # Calculate the offset 
+        offset = block_size // 2
+        
+        # Apply padding to handle border pixels
+        padded_image = np.pad(gray, ((offset, offset), (offset, offset)), mode='reflect')
+        
+        # Apply local thresholding 
+        for i in range(height):
+            for j in range(width):
+                # Extract neighborhood
+                neighborhood = padded_image[i:i+block_size, j:j+block_size]
+                
+                # Calculate local threshold (mean of neighborhood - c)
+                local_threshold = np.mean(neighborhood) - c
+                
+                # Apply threshold
+                if gray[i, j] > local_threshold:
+                    binary_image[i, j] = 255
+                else:
+                    binary_image[i, j] = 0
+        
+        # Convert back to 3-channel image for consistency
+        self.output_image = cv2.merge([binary_image, binary_image, binary_image])
         
     def convolve(self, image, kernel):
         '''
