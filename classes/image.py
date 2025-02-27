@@ -3,6 +3,7 @@ import numpy as np
 import random
 from PyQt5.QtWidgets import QFileDialog
 
+
 class Image():
     def __init__(self):
         self.input_image = None # kept untouched
@@ -163,6 +164,7 @@ class Image():
         apply low or high pass filter to image in the spatial domain
         we choose 3x3 kernel for each filter type
         '''
+        print(filter_type)
         if filter_type == 'Average':
             kernel = np.ones((3,3),np.float32)/9
             
@@ -179,18 +181,33 @@ class Image():
             return
         
         elif filter_type == 'Sobel':
-            pass
+            horizontal_gradient = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]])
+            vertical_gradient = np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]])
+            vertical_edges = self.convolve(self.output_image, horizontal_gradient)
+            horizontal_edges = self.convolve(self.output_image, vertical_gradient)
+            self.output_image = np.sqrt(vertical_edges**2 + horizontal_edges**2)
+            return
         
         elif filter_type == 'Roberts':
-            pass
+            vertical_gradient = np.array([[0, 0, 0], [0, 1, 0], [0, 0, -1]])
+            horizontal_gradient = np.array([[0, 0, 0], [0, 0, 1], [0, -1, 0]])
+            vertical_edges = self.convolve(self.output_image, horizontal_gradient)
+            horizontal_edges = self.convolve(self.output_image, vertical_gradient)
+            self.output_image = np.sqrt(vertical_edges**2 + horizontal_edges**2)
+            return
         
         elif filter_type == 'Prewitt':
-            pass
-        
+            vertical_gradient = np.array([[-1, -1, -1], [0, 0, 0], [1, 1, 1]])
+            horizontal_gradient = np.array([[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]])
+            vertical_edges = self.convolve(self.output_image, horizontal_gradient)
+            horizontal_edges = self.convolve(self.output_image, vertical_gradient)
+            self.output_image = np.sqrt(vertical_edges**2 + horizontal_edges**2)
+            return
         elif filter_type == 'Canny':
-            pass
+            self.output_image = cv2.Canny(self.output_image, 100, 200)
+            return
             
-        self.convolve(self.output_image, kernel)
+        self.output_image = self.convolve(self.output_image, kernel)
     
     def frequency_domain_low_pass_filter(shifted_fft_image):
         '''
@@ -230,4 +247,4 @@ class Image():
             for j in range(image.shape[1]):
                 image[i,j] = np.sum(padded_image[i:i + 3, j:j + 3] * kernel)
                 
-        self.output_image = image
+        return image

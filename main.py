@@ -7,7 +7,7 @@ from helper_functions.compile_qrc import compile_qrc
 from classes.image import Image
 from classes.controller import Controller
 from classes.ImageEnum import ImageSource
-
+from classes.statisticsVisualization import StatisticsVisualization
 compile_qrc()
 from icons_setup.icons import *
 
