@@ -200,35 +200,93 @@ class Image():
             pass
             
         self.convolve(self.output_image, kernel)
-    
-    def frequency_domain_low_pass_filter(shifted_fft_image):
+
+    def frequency_domain_square_filter(self, type, shifted_fft_image):
         '''
+        This filter uses a square mask to filter the image in the frequency domain
+        
         low pass filter blurrs the image
+        high pass filter acts like an edge detector
         '''
         rows, columns, dimensions = shifted_fft_image.shape
         print(shifted_fft_image.shape)
         center_row = rows // 2
         center_column = columns // 2
 
-        lpf_mask = np.zeros((rows, columns, 2), np.uint8)
-        lpf_mask[center_row - 70: center_row + 70, center_column - 70: center_column + 70] = 1
+        if type == 'low':
+            mask = np.zeros((rows, columns, 2), np.uint8)
+            mask[center_row - 70: center_row + 70, center_column - 70: center_column + 70] = 1
+        
+        elif type == 'high':
+            mask = np.ones((rows, columns, 2), np.uint8)
+            mask[center_row - 70: center_row + 70, center_column - 70: center_column + 70] = 0
 
-        filtered_fft_image = shifted_fft_image * lpf_mask
+        filtered_fft_image = shifted_fft_image * mask
         return filtered_fft_image
-
-    def frequency_domain_high_pass_filter(shifted_fft_image):
-        '''
-        high pass filter acts like an edge detector
-        '''
+    
+    def frequency_domain_butterworth_filter(self, type, shifted_fft_image):
         rows, columns, dimensions = shifted_fft_image.shape
-        center_row = rows // 2
-        center_column = columns // 2
+        H = np.zeros((rows, columns, 2), dtype=np.float32)
+        D0 = 10 # the cut-off frequency from the center
+        n = 1 # order of the filter which determines how sharp the cutoff is
 
-        lpf_mask = np.ones((rows, columns, 2), np.uint8)
-        lpf_mask[center_row - 70: center_row + 70, center_column - 70: center_column + 70] = 0
+        if type == 'low':
+            for u in range(rows):
+                for v in range(columns):
+                    D = np.sqrt((u - rows/2) ** 2 + (v - columns/2) ** 2) # D represents the (radius) distance from the center of the frequency domain
+                    H[u, v] = 1 / (1 + (D / D0) ** (2 * n)) # H is the filter kernel/mask
 
-        filtered_fft_image = shifted_fft_image * lpf_mask
+        elif type == 'high':
+            for u in range(rows):
+                for v in range(columns):
+                    D = np.sqrt((u - rows/2) ** 2 + (v - columns/2) ** 2) # D here represents same thing as other D
+                    H[u, v] = 1 / (1 + (D0 / D) ** (2 * n)) # H is the filter kernel/mask
+
+        filtered_image = shifted_fft_image * H 
+        return filtered_image
+
+    def frequency_domain_gaussian_filter(self, type, shifted_fft_image):
+        rows, columns, dimensions = shifted_fft_image.shape
+        H = np.zeros((rows, columns, 2), dtype=np.float32)
+        D0 = 10 # the cut-off frequency from the center
+
+        if type == 'low':
+            for u in range(rows):
+                for v in range(columns):
+                    D = np.sqrt((u - rows/2)**2 + (v - columns/2)**2) # D represents the (radius) distance from the center of the frequency domain
+                    H[u, v] = np.exp(-D**2 / (2 * D0 * D0)) # H is the filter kernel/mask
+        
+        elif type == 'high':
+            '''
+            the Gaussian high pass filter mask is simply 1 - the Gaussian low pass filter mask
+            '''
+            for u in range(rows):
+                for v in range(columns):
+                    D = np.sqrt((u - rows/2)**2 + (v - columns/2)**2)
+                    H[u, v] = 1 - np.exp(-D**2 / (2 * D0 * D0)) 
+        
+        filtered_fft_image = shifted_fft_image * H
         return filtered_fft_image
+
+    def hybrid_image(self, image_1, image_2):
+        '''
+        NOTE: YOU MUST PASS TWO IMAGES OF THE SAME SIZE
+
+        First argument is the low frequency components image
+        Second argument is the high frequency components image
+        '''
+        shifted_fft_image_1, _ = self.fourier_transform(image_1)
+        shifted_fft_image_2, _ = self.fourier_transform(image_2)
+
+        low_pass_filtered_image_1 = self.frequency_domain_gaussian_filter('low', shifted_fft_image_1)
+        high_pass_filtered_image_2 = self.frequency_domain_gaussian_filter('high', shifted_fft_image_2)
+
+        time_domain_image_1 = self.inverse_fourier_transform(low_pass_filtered_image_1)
+        time_domain_image_2 = self.inverse_fourier_transform(high_pass_filtered_image_2)
+
+        hybrid_image = time_domain_image_1 + time_domain_image_2
+
+        return hybrid_image
         
     def convolve(self, image, kernel):
         '''
