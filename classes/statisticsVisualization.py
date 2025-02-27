@@ -6,7 +6,7 @@ class StatisticsVisualization():
         self.input_image_1 = input_image_1
         self.input_image_2 = input_image_2
         self.output_image = output_image
-
+    
     def plot_histogram_and_pdf(self, image, labels):
         for label in labels:
             histogram = np.zeros(256)

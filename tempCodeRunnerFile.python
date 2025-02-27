@@ -1,0 +1,54 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Planck's constant
+h = 6.626e-34  # corrected value
+
+# Speed of light
+c = 3.0e8
+
+# Boltzmann's constant
+k = 1.38e-23
+
+# first radiation constant
+c1 = 2 * np.pi * h * c**2  # 3.74e-16 W·m²
+
+# second radiation constant
+c2 = h * c / k  # 1.44e-2 m·K
+
+temperature = 2000  # K
+
+# Planck's spectral energy distribution formula
+def planck(wavelength, temperature):
+    exponent = c2 / (wavelength * temperature)
+    if exponent > 700:  # Avoid overflow in np.exp
+        return 0
+    return c1 / (wavelength**5 * (np.exp(exponent) - 1))
+
+y_values = []
+
+for i in range(1, 5001):
+    wavelength = i * 1e-9  # Convert to meters
+    y_values.append(planck(wavelength, temperature))
+
+x_values = np.linspace(1, 5000, 5000)
+
+ir_total_power = 0
+
+for i in range(0, 5000, 100):  # Step through every 100 indices
+    if i + 100 < 5000:  # Ensure we don't go out of bounds
+        average = (y_values[i] + y_values[i + 100]) / 2
+        print(f'Average of y_values[{i}] and y_values[{i + 100}]: {average}')
+        if i >= 1100:
+            ir_total_power += 100*average
+print(f'Total IR power: {ir_total_power}')
+
+
+
+plt.plot(x_values, y_values)
+plt.title('Planck\'s spectral energy distribution')
+plt.xlabel('Wavelength (nm)')
+plt.ylabel('Spectral energy')
+plt.axvspan(400, 700, color='blue', alpha=0.2)
+plt.axvspan(1100, 5000, color='red', alpha=0.2)
+plt.show()

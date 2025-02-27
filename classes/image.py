@@ -22,7 +22,7 @@ class Image():
             self.input_image = cv2.imread(file_path, cv2.IMREAD_COLOR)
             self.output_image = self.input_image.copy() # a copy of the selected image is made so we can modify it without affecting the original image
             self.update_image_type(self.input_image) # update the selected image type
-    
+            
     def update_image_type(self, image):
         '''
         function that detects whether image is grey or color (rgb) and updates the image_type attribute
@@ -84,35 +84,36 @@ class Image():
         # note: salt & pepper type is found only in grayscale images, that's why we convert the image to grayscale first before adding the noise
         elif noise_type == 'salt_pepper':
             self.output_image = self.convert_rgb_to_gray(self.output_image)
-            
+            channels = 1 if len(self.output_image) == 2 else self.output_image.shape[2]
+
             # Getting the dimensions of the image 
-            row, col = self.output_image.shape 
+            row, col ,dimensions = self.output_image.shape 
             
             # randomly pick number of pixels (between 300 and 10000 pixls) in the image to be colored white 
             number_of_pixels = random.randint(300, 10000) 
-
-            # add the salt and pepper noise at random positions in the image
-            for i in range(number_of_pixels): 
-                
-                # a random y coordinate 
-                y_coord=random.randint(0, row - 1) 
-                
-                # a random x coordinate 
-                x_coord=random.randint(0, col - 1) 
-                
-                # color that pixel to white 
-                self.output_image[y_coord][x_coord] = 255
-                
-            # same as above but for black pixels
-            number_of_pixels = random.randint(300 , 10000) 
-            for i in range(number_of_pixels): 
-                
-                y_coord=random.randint(0, row - 1) 
-                
-                x_coord=random.randint(0, col - 1) 
-                
-                # color that pixel to black
-                self.output_image[y_coord][x_coord] = 0
+            for c in range(channels):
+                # add the salt and pepper noise at random positions in the image
+                for i in range(number_of_pixels): 
+                    
+                    # a random y coordinate 
+                    y_coord=random.randint(0, row - 1) 
+                    
+                    # a random x coordinate 
+                    x_coord=random.randint(0, col - 1) 
+                    
+                    # color that pixel to white 
+                    self.output_image[y_coord][x_coord][c] = 255
+                    
+                # same as above but for black pixels
+                number_of_pixels = random.randint(300 , 10000) 
+                for i in range(number_of_pixels): 
+                    
+                    y_coord=random.randint(0, row - 1) 
+                    
+                    x_coord=random.randint(0, col - 1) 
+                    
+                    # color that pixel to black
+                    self.output_image[y_coord][x_coord][c] = 0
     
     def convert_rgb_to_gray(self, image):
         r,g,b = cv2.split(image)
@@ -120,9 +121,12 @@ class Image():
         g = 0.587 * g
         b = 0.114 * b
         grey_image = r + g + b
+        grey_image = grey_image.astype(np.uint8)
         self.image_type = 'grey'
-        
-        return grey_image.astype(np.uint8)
+
+        grey_image_as_3_channels = cv2.merge((grey_image, grey_image, grey_image))   
+
+        return grey_image_as_3_channels
     
     def fourier_transform(self, image):
         '''
@@ -134,7 +138,11 @@ class Image():
 
         Note: to do the fourier transform, the image must be in grayscale. that's why we convert it to grayscale directly in the first step.
         '''
-        image = self.convert_rgb_to_gray(image)
+        image_as_3_channels = self.convert_rgb_to_gray(image)
+
+        channels = image_as_3_channels.split()
+
+        image = channels[0] # we only need one channel since the image is in grayscale
 
         # compute the discrete Fourier Transform of the image. cv2.dft returns the Fourier Transform as a NumPy array.
         frequency_domain_image = cv2.dft(np.float32(image), flags=cv2.DFT_COMPLEX_OUTPUT)
@@ -157,7 +165,8 @@ class Image():
         time_domain_image = cv2.idft(shifted_frequency_image)
         time_domain_image = cv2.magnitude(time_domain_image[:,:,0], time_domain_image[:,:,1])
         time_domain_image = cv2.normalize(time_domain_image, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8UC1)
-        return time_domain_image
+        time_domain_image = cv2.merge([time_domain_image, time_domain_image, time_domain_image])
+        return time_domain_image # Note: returns 3 channel image although it is grayscale 
     
     def apply_filter(self, filter_type, sigma = 1):
         ''' 
@@ -174,7 +183,7 @@ class Image():
             kernel = kernel / np.sum(kernel)    # normalization for the kernel
             
         elif filter_type == 'Median':
-            padded_image = np.round(np.pad(self.output_image, pad_width = 1, mode='constant', constant_values=0))   # pad the image with frame of zeros
+            padded_image = np.pad(self.output_image, pad_width=((1, 1), (1, 1), (0, 0)), mode='constant', constant_values=0)  # pad the image with frame of zeros
             for i in range(self.output_image.shape[0]):
                 for j in range(self.output_image.shape[1]):
                     self.output_image[i,j] = np.median(padded_image[i:i + 3, j:j + 3])
@@ -211,40 +220,111 @@ class Image():
     
     def frequency_domain_low_pass_filter(shifted_fft_image):
         '''
+        This filter uses a square mask to filter the image in the frequency domain
+        
         low pass filter blurrs the image
+        high pass filter acts like an edge detector
         '''
         rows, columns, dimensions = shifted_fft_image.shape
         print(shifted_fft_image.shape)
         center_row = rows // 2
         center_column = columns // 2
 
-        lpf_mask = np.zeros((rows, columns, 2), np.uint8)
-        lpf_mask[center_row - 70: center_row + 70, center_column - 70: center_column + 70] = 1
+        if type == 'low':
+            mask = np.zeros((rows, columns, 2), np.uint8)
+            mask[center_row - 70: center_row + 70, center_column - 70: center_column + 70] = 1
+        
+        elif type == 'high':
+            mask = np.ones((rows, columns, 2), np.uint8)
+            mask[center_row - 70: center_row + 70, center_column - 70: center_column + 70] = 0
 
-        filtered_fft_image = shifted_fft_image * lpf_mask
+        filtered_fft_image = shifted_fft_image * mask
         return filtered_fft_image
-
-    def frequency_domain_high_pass_filter(shifted_fft_image):
-        '''
-        high pass filter acts like an edge detector
-        '''
+    
+    def frequency_domain_butterworth_filter(self, type, shifted_fft_image):
         rows, columns, dimensions = shifted_fft_image.shape
-        center_row = rows // 2
-        center_column = columns // 2
+        H = np.zeros((rows, columns, 2), dtype=np.float32)
+        D0 = 10 # the cut-off frequency from the center
+        n = 1 # order of the filter which determines how sharp the cutoff is
 
-        lpf_mask = np.ones((rows, columns, 2), np.uint8)
-        lpf_mask[center_row - 70: center_row + 70, center_column - 70: center_column + 70] = 0
+        if type == 'low':
+            for u in range(rows):
+                for v in range(columns):
+                    D = np.sqrt((u - rows/2) ** 2 + (v - columns/2) ** 2) # D represents the (radius) distance from the center of the frequency domain
+                    H[u, v] = 1 / (1 + (D / D0) ** (2 * n)) # H is the filter kernel/mask
 
-        filtered_fft_image = shifted_fft_image * lpf_mask
+        elif type == 'high':
+            for u in range(rows):
+                for v in range(columns):
+                    D = np.sqrt((u - rows/2) ** 2 + (v - columns/2) ** 2) # D here represents same thing as other D
+                    H[u, v] = 1 / (1 + (D0 / D) ** (2 * n)) # H is the filter kernel/mask
+
+        filtered_image = shifted_fft_image * H 
+        return filtered_image
+
+    def frequency_domain_gaussian_filter(self, type, shifted_fft_image):
+        rows, columns, dimensions = shifted_fft_image.shape
+        H = np.zeros((rows, columns, 2), dtype=np.float32)
+        D0 = 10 # the cut-off frequency from the center
+
+        if type == 'low':
+            for u in range(rows):
+                for v in range(columns):
+                    D = np.sqrt((u - rows/2)**2 + (v - columns/2)**2) # D represents the (radius) distance from the center of the frequency domain
+                    H[u, v] = np.exp(-D**2 / (2 * D0 * D0)) # H is the filter kernel/mask
+        
+        elif type == 'high':
+            '''
+            the Gaussian high pass filter mask is simply 1 - the Gaussian low pass filter mask
+            '''
+            for u in range(rows):
+                for v in range(columns):
+                    D = np.sqrt((u - rows/2)**2 + (v - columns/2)**2)
+                    H[u, v] = 1 - np.exp(-D**2 / (2 * D0 * D0)) 
+        
+        filtered_fft_image = shifted_fft_image * H
         return filtered_fft_image
+
+    def hybrid_image(self, image_1, image_2):
+        '''
+        NOTE: YOU MUST PASS TWO IMAGES OF THE SAME DIMENSIONS
+
+        First argument is the low frequency components image
+        Second argument is the high frequency components image
+        '''
+        # checking if the two images have the same dimensions
+        if image_1.shape != image_2.shape:
+            raise ValueError("Both images must have the same dimensions. "
+                            f"Got {image_1.shape} and {image_2.shape}.")
+
+        shifted_fft_image_1, _ = self.fourier_transform(image_1)
+        shifted_fft_image_2, _ = self.fourier_transform(image_2)
+
+        low_pass_filtered_image_1 = self.frequency_domain_gaussian_filter('low', shifted_fft_image_1)
+        high_pass_filtered_image_2 = self.frequency_domain_gaussian_filter('high', shifted_fft_image_2)
+
+        time_domain_image_1 = self.inverse_fourier_transform(low_pass_filtered_image_1)
+        time_domain_image_2 = self.inverse_fourier_transform(high_pass_filtered_image_2)
+
+        hybrid_image = time_domain_image_1 + time_domain_image_2
+
+        return hybrid_image
         
     def convolve(self, image, kernel):
         '''
         implement convolution operation on the image 
         '''
-        padded_image = np.round(np.pad(image, pad_width = 1, mode='constant', constant_values=0)) # pad the image with frame of zeros
-        for i in range(image.shape[0]):
-            for j in range(image.shape[1]):
-                image[i,j] = np.sum(padded_image[i:i + 3, j:j + 3] * kernel)
-                
-        return image
+        image = image.astype(np.float32)
+        channels = 1 if len(image.shape) == 2 else image.shape[2]
+        padded_image = np.pad(image, pad_width=((1, 1), (1, 1), (0, 0)), mode='constant', constant_values=0) # pad the image with frame of zeros
+        
+        output_image = np.zeros_like(image, dtype=np.float32)
+        
+        for c in range(channels):
+            for i in range(image.shape[0]):
+                for j in range(image.shape[1]):
+                    region = padded_image[i:i+3, j:j+3, c]
+                    output_image[i, j, c] = np.sum(region * kernel)
+                    
+        output_image = np.clip(output_image, 0, 255).astype(np.uint8)
+        return output_image
