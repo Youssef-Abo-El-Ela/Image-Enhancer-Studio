@@ -799,13 +799,13 @@ font-size:18px;</string>
           <property name="minimumSize">
            <size>
             <width>400</width>
-            <height>150</height>
+            <height>170</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>500</width>
-            <height>150</height>
+            <height>170</height>
            </size>
           </property>
           <property name="styleSheet">
@@ -869,7 +869,105 @@ margin: 0;
 font-size:18px;</string>
                </property>
                <property name="text">
-                <string>Local Threshold:</string>
+                <string>Local</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_29">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_28">
+               <property name="styleSheet">
+                <string notr="true">border: none;
+margin: 0;
+font-size:16px;</string>
+               </property>
+               <property name="text">
+                <string>Th</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="localThresholdContsant">
+               <property name="maximumSize">
+                <size>
+                 <width>50</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_29">
+               <property name="styleSheet">
+                <string notr="true">border: none;
+margin: 0;
+font-size:16px;</string>
+               </property>
+               <property name="text">
+                <string>μC</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="localThresholdValue">
+               <property name="maximumSize">
+                <size>
+                 <width>50</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_30">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_4">
+               <property name="styleSheet">
+                <string notr="true">border: 1px solid white;
+font-size:15px;
+font-weight: bold;</string>
+               </property>
+               <property name="text">
+                <string>Apply</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_6">
+             <item>
+              <widget class="QLabel" name="label_18">
+               <property name="styleSheet">
+                <string notr="true">border: none;
+margin: 0;
+font-size:18px;</string>
+               </property>
+               <property name="text">
+                <string>Global</string>
                </property>
               </widget>
              </item>
@@ -887,28 +985,24 @@ font-size:18px;</string>
               </spacer>
              </item>
              <item>
-              <widget class="QLineEdit" name="localThreshold">
-               <property name="maximumSize">
-                <size>
-                 <width>100</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_6">
-             <item>
-              <widget class="QLabel" name="label_18">
+              <widget class="QLabel" name="label_27">
                <property name="styleSheet">
                 <string notr="true">border: none;
 margin: 0;
-font-size:18px;</string>
+font-size:16px;</string>
                </property>
                <property name="text">
-                <string>Global Threshold:</string>
+                <string>Th</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="globalThresholdValue">
+               <property name="maximumSize">
+                <size>
+                 <width>50</width>
+                 <height>16777215</height>
+                </size>
                </property>
               </widget>
              </item>
@@ -926,12 +1020,14 @@ font-size:18px;</string>
               </spacer>
              </item>
              <item>
-              <widget class="QLineEdit" name="globalThreshold">
-               <property name="maximumSize">
-                <size>
-                 <width>100</width>
-                 <height>16777215</height>
-                </size>
+              <widget class="QPushButton" name="pushButton">
+               <property name="styleSheet">
+                <string notr="true">border: 1px solid white;
+font-size:15px;
+font-weight: bold;</string>
+               </property>
+               <property name="text">
+                <string>Apply</string>
                </property>
               </widget>
              </item>
