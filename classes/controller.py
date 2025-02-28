@@ -84,6 +84,8 @@ class Controller():
             self.input_image_2.apply_filter(filter_type)
         self.set_output_image_source()
 
+    def apply_hybrid_image(self):
+        self.input_image_1
     
     def numpy_to_qpixmap(self, image_array):
         """Convert NumPy array to QPixmap"""

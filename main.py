@@ -139,6 +139,13 @@ class MainWindow(QMainWindow):
         self.edge_detectors_time_domain_filters_combobox = self.findChild(QComboBox , "edgeDetectorsCombobox")
         self.edge_detectors_time_domain_filters_combobox.currentIndexChanged.connect(self.apply_edge_detector_time_domain)
         
+        # Initializing Hybrid Image
+        self.input_image_1_hybrid_component_combobox = self.findChild(QComboBox , "input01HybridCombobox")
+        self.input_image_2_hybrid_component_combobox = self.findChild(QComboBox , "input02HybridCombobox")
+        self.hybrid_image_checkbox = self.findChild(QCheckBox , "hybridCheckbox")
+        
+        self.hybrid_image_checkbox.stateChanged.connect(self.apply_hybrid_image)
+        
         # Initializing Controller
         self.controller = Controller(self.input_image_1 , self.input_image_2 , self.output_image , self.output_image_label , self.input_image_1_histogram_canvas, self.input_image_1_cdf_canvas , 
                                     self.input_image_2_histogram_canvas , self.input_image_2_cdf_canvas , self.output_image_histogram_canvas , self.output_image_cdf_canvas)
@@ -239,6 +246,12 @@ class MainWindow(QMainWindow):
         elif (index == 4):
             edge_detector_filter_type = "Canny"
         self.controller.apply_edge_detector_time_domain(edge_detector_filter_type)
+    
+    def apply_hybrid_image(self):
+        if(self.hybrid_image_checkbox.isChecked()):
+            self.controller.apply_hybrid_image()
+        else:
+            self.controller.reset_output_image_to_normal()
             
 if __name__ == '__main__':
     app = QApplication(sys.argv)
