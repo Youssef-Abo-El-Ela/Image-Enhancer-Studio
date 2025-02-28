@@ -225,25 +225,34 @@ class Image():
         self.output_image = self.convolve(self.output_image, kernel)
         self.output_image = np.clip(self.output_image, 0, 255).astype(np.uint8)    
     
-    def frequency_domain_low_pass_filter(shifted_fft_image):
+    def frequency_domain_ideal_filter(type, shifted_fft_image):
         '''
-        This filter uses a square mask to filter the image in the frequency domain
-        
         low pass filter blurrs the image
+
         high pass filter acts like an edge detector
         '''
         rows, columns, dimensions = shifted_fft_image.shape
-        print(shifted_fft_image.shape)
-        center_row = rows // 2
-        center_column = columns // 2
+        radius = 70
 
         if type == 'low':
             mask = np.zeros((rows, columns, 2), np.uint8)
-            mask[center_row - 70: center_row + 70, center_column - 70: center_column + 70] = 1
+            for u in range(rows):
+                for v in range(columns):
+                    D = np.sqrt((u - rows/2) ** 2 + (v - columns/2) ** 2) # D represents the (radius) distance from the center of the frequency domain
+                    if D <= radius:
+                        mask[u, v] = 1
+                    else:
+                        mask[u, v] = 0
         
         elif type == 'high':
             mask = np.ones((rows, columns, 2), np.uint8)
-            mask[center_row - 70: center_row + 70, center_column - 70: center_column + 70] = 0
+            for u in range(rows):
+                for v in range(columns):
+                    D = np.sqrt((u - rows/2) ** 2 + (v - columns/2) ** 2) # D represents the (radius) distance from the center of the frequency domain
+                    if D >= radius:
+                        mask[u, v] = 1
+                    else:
+                        mask[u, v] = 0
 
         filtered_fft_image = shifted_fft_image * mask
         return filtered_fft_image
