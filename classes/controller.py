@@ -5,10 +5,12 @@ from PyQt5.QtGui import QPixmap , QImage
 from copy import deepcopy
 class Controller():
     def __init__(self , input_image_1 , input_image_2 , output_image , output_image_label , input_image_1_histogram_canvas, input_image_1_cdf_canvas , input_image_2_histogram_canvas ,
-                input_image_2_cdf_canvas , output_image_histogram_canvas , output_image_cdf_canvas):
+                input_image_2_cdf_canvas , output_image_histogram_canvas , output_image_cdf_canvas, hybrid_image,
+                low_freq_image , high_freq_image):
         self.input_image_1 = input_image_1
         self.input_image_2 = input_image_2
         self.output_image = output_image
+        self.hybrid_image = hybrid_image
         self.current_output_source_index = 0
         self.output_image_label = output_image_label
         self.input_image_1_histogram_canvas = input_image_1_histogram_canvas
@@ -17,12 +19,20 @@ class Controller():
         self.input_image_2_cdf_canvas = input_image_2_cdf_canvas
         self.output_image_histogram_canvas = output_image_histogram_canvas
         self.output_image_cdf_canvas = output_image_cdf_canvas
+        self.hybrid_image_mode = False
+        self.low_freq_image = low_freq_image
+        self.high_freq_image = high_freq_image
 
     def set_output_image_source(self):
-        if(self.current_output_source_index == 1 and len(self.input_image_1.output_image) != 0):
+        if(self.hybrid_image_mode):
+            self.output_image_pixmap = self.numpy_to_qpixmap(self.hybrid_image.output_image)
+            self.output_image_histogram_canvas.plot_histogram(self.hybrid_image.output_image)
+            self.output_image_cdf_canvas.plot_cdf(self.hybrid_image.output_image)
+            
+        elif(self.current_output_source_index == 1 and len(self.input_image_1.output_image) != 0):
             self.output_image_pixmap = self.numpy_to_qpixmap(self.input_image_1.output_image)
-            # self.output_image_histogram_canvas.plot_histogram(self.input_image_1.output_image)
-            # self.output_image_cdf_canvas.plot_cdf(self.input_image_1.output_image)
+            self.output_image_histogram_canvas.plot_histogram(self.input_image_1.output_image)
+            self.output_image_cdf_canvas.plot_cdf(self.input_image_1.output_image)
 
         elif(self.current_output_source_index == 2 and len(self.input_image_2.output_image) != 0):
             self.output_image_pixmap = self.numpy_to_qpixmap(self.input_image_2.output_image)
@@ -33,7 +43,7 @@ class Controller():
             self.input_image_1_histogram_canvas.plot_histogram(self.input_image_1.input_image)
             self.input_image_1_cdf_canvas.plot_cdf(self.input_image_1.input_image)
             
-        if (self.input_image_2.input_image is not None):
+        elif (self.input_image_2.input_image is not None):
             self.input_image_2_histogram_canvas.plot_histogram(self.input_image_2.input_image)
             self.input_image_2_cdf_canvas.plot_cdf(self.input_image_2.input_image)
         
@@ -84,9 +94,9 @@ class Controller():
             self.input_image_2.apply_filter(filter_type)
         self.set_output_image_source()
 
-    def apply_hybrid_image(self):
-        self.input_image_1
-    
+    def apply_hybrid_image(self , low_freq_image , high_freq_image):
+        self.hybrid_image.output_image = self.hybrid_image.apply_hybrid_image(low_freq_image , high_freq_image)
+        
     def numpy_to_qpixmap(self, image_array):
         """Convert NumPy array to QPixmap"""
         image_array = cv2.cvtColor(image_array, cv2.COLOR_BGR2RGB)

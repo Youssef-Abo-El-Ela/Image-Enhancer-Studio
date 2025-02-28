@@ -140,9 +140,7 @@ class Image():
         '''
         image_as_3_channels = self.convert_rgb_to_gray(image)
 
-        channels = image_as_3_channels.split()
-
-        image = channels[0] # we only need one channel since the image is in grayscale
+        image = image_as_3_channels[:,:,0] # we only need one channel since the image is in grayscale
 
         # compute the discrete Fourier Transform of the image. cv2.dft returns the Fourier Transform as a NumPy array.
         frequency_domain_image = cv2.dft(np.float32(image), flags=cv2.DFT_COMPLEX_OUTPUT)
@@ -157,7 +155,7 @@ class Image():
         scaled_magnitude_image = cv2.normalize(magnitude_of_frequency_domain_image, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8UC1)
         return shifted_frequency_domain_image, scaled_magnitude_image
     
-    def inverse_fourier_transform(frequency_domain_image):
+    def inverse_fourier_transform(self , frequency_domain_image):
         '''
         when going from frequency domain to time domain, we need to reverse the process we did when going from time domain to frequency domain.
         '''
@@ -301,7 +299,7 @@ class Image():
         filtered_fft_image = shifted_fft_image * H
         return filtered_fft_image
 
-    def hybrid_image(self, image_1, image_2):
+    def apply_hybrid_image(self, image_1, image_2):
         '''
         NOTE: YOU MUST PASS TWO IMAGES OF THE SAME DIMENSIONS
 

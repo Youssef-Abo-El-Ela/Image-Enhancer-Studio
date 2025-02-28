@@ -144,11 +144,23 @@ class MainWindow(QMainWindow):
         self.input_image_2_hybrid_component_combobox = self.findChild(QComboBox , "input02HybridCombobox")
         self.hybrid_image_checkbox = self.findChild(QCheckBox , "hybridCheckbox")
         
+        self.input_image_1_hybrid_component_combobox.setCurrentIndex(1)
+        self.input_image_1_hybrid_component_combobox.currentIndexChanged.connect(self.set_input_image_1_freq_component)
+        
+        
+        self.input_image_2_hybrid_component_combobox.setCurrentIndex(2)
+        self.input_image_2_hybrid_component_combobox.currentIndexChanged.connect(self.set_input_image_2_freq_component)
+        
         self.hybrid_image_checkbox.stateChanged.connect(self.apply_hybrid_image)
+        self.hybrid_image = Image()
+        
+        self.low_freq_image = self.input_image_1.input_image
+        self.high_freq_image = self.input_image_2.input_image
         
         # Initializing Controller
         self.controller = Controller(self.input_image_1 , self.input_image_2 , self.output_image , self.output_image_label , self.input_image_1_histogram_canvas, self.input_image_1_cdf_canvas , 
-                                    self.input_image_2_histogram_canvas , self.input_image_2_cdf_canvas , self.output_image_histogram_canvas , self.output_image_cdf_canvas)
+                                    self.input_image_2_histogram_canvas , self.input_image_2_cdf_canvas , self.output_image_histogram_canvas , self.output_image_cdf_canvas,
+                                    self.hybrid_image , self.low_freq_image , self.high_freq_image)
         
         
     def browse_image_input_1(self):
@@ -157,14 +169,24 @@ class MainWindow(QMainWindow):
             self.input_image_1_pixmap = self.controller.numpy_to_qpixmap(self.input_image_1.input_image)
             self.input_image_1_label.setPixmap(self.input_image_1_pixmap)
             self.input_image_1_label.setScaledContents(True)
-    
+            if(self.input_image_1_hybrid_component_combobox.currentIndex() == 1):
+                self.low_freq_image = self.input_image_1.input_image
+            elif (self.input_image_1_hybrid_component_combobox.currentIndex() == 2):
+                self.high_freq_image = self.input_image_1.input_image
+            self.apply_hybrid_image()
+                
     def browse_image_input_2(self):
         self.controller.browse_image_input_2()
         if (len(self.input_image_2.input_image)):
             self.input_image_2_pixmap = self.controller.numpy_to_qpixmap(self.input_image_2.input_image)
             self.input_image_2_label.setPixmap(self.input_image_2_pixmap)
             self.input_image_2_label.setScaledContents(True)
-    
+            if(self.input_image_2_hybrid_component_combobox.currentIndex() == 1):
+                self.low_freq_image = self.input_image_2.input_image
+            elif (self.input_image_2_hybrid_component_combobox.currentIndex() == 2):
+                self.high_freq_image = self.input_image_2.input_image
+            self.apply_hybrid_image()
+                
     def toggle_noise_checkboxes(self):
         if(self.apply_noise_checkbox.isChecked()):
             self.uniform_noise_checkbox.setDisabled(False)
@@ -247,10 +269,41 @@ class MainWindow(QMainWindow):
             edge_detector_filter_type = "Canny"
         self.controller.apply_edge_detector_time_domain(edge_detector_filter_type)
     
+    def set_input_image_1_freq_component(self , index):
+        if(index == 1):
+            self.input_image_2_hybrid_component_combobox.setCurrentIndex(2)
+            self.low_freq_image = self.input_image_1.input_image
+            self.high_freq_image = self.input_image_2.input_image
+            
+        elif(index == 2):
+            self.input_image_2_hybrid_component_combobox.setCurrentIndex(1)
+            self.low_freq_image = self.input_image_2.input_image
+            self.high_freq_image = self.input_image_1.input_image
+        self.apply_hybrid_image()
+        
+    def set_input_image_2_freq_component(self , index):
+        if(index == 1):
+            self.input_image_1_hybrid_component_combobox.setCurrentIndex(2)
+            self.low_freq_image = self.input_image_2.input_image
+            self.high_freq_image = self.input_image_1.input_image
+            
+        elif(index == 2):
+            self.input_image_1_hybrid_component_combobox.setCurrentIndex(1)
+            self.low_freq_image = self.input_image_1.input_image
+            self.high_freq_image = self.input_image_2.input_image
+        self.apply_hybrid_image()
+
     def apply_hybrid_image(self):
         if(self.hybrid_image_checkbox.isChecked()):
-            self.controller.apply_hybrid_image()
+            self.controller.hybrid_image_mode = True
+            self.controller.current_output_source_index = 0
+            self.controller.apply_hybrid_image(self.low_freq_image , self.high_freq_image)
+            self.output_image_selector_combobox.setCurrentIndex(1)
+            self.output_image_selector_combobox.setCurrentIndex(0)
         else:
+            self.controller.hybrid_image_mode = False
+            self.controller.current_output_source_index = 1
+            self.output_image_selector_combobox.setCurrentIndex(1)
             self.controller.reset_output_image_to_normal()
             
 if __name__ == '__main__':
