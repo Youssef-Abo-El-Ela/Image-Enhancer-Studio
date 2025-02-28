@@ -135,6 +135,10 @@ class MainWindow(QMainWindow):
         layout = QVBoxLayout(output_image_cdf_frame)
         layout.addWidget(self.output_image_cdf_canvas)
         
+        # Initializing Edge Detectors in time domain
+        self.edge_detectors_time_domain_filters_combobox = self.findChild(QComboBox , "edgeDetectorsCombobox")
+        self.edge_detectors_time_domain_filters_combobox.currentIndexChanged.connect(self.apply_edge_detector_time_domain)
+        
         # Initializing Controller
         self.controller = Controller(self.input_image_1 , self.input_image_2 , self.output_image , self.output_image_label , self.input_image_1_histogram_canvas, self.input_image_1_cdf_canvas , 
                                     self.input_image_2_histogram_canvas , self.input_image_2_cdf_canvas , self.output_image_histogram_canvas , self.output_image_cdf_canvas)
@@ -222,6 +226,19 @@ class MainWindow(QMainWindow):
         elif (index == 3):
             filter_type = "Median"    
         self.controller.apply_time_domain_low_pass(filter_type ,self.gaussian_filter_sigma)
+    
+    def apply_edge_detector_time_domain(self , index):
+        if(index == 0):
+            return
+        if (index == 1):
+            edge_detector_filter_type = "Sobel"
+        elif (index == 2):
+            edge_detector_filter_type = "Roberts"
+        elif (index == 3):
+            edge_detector_filter_type = "Prewitt"
+        elif (index == 4):
+            edge_detector_filter_type = "Canny"
+        self.controller.apply_edge_detector_time_domain(edge_detector_filter_type)
             
 if __name__ == '__main__':
     app = QApplication(sys.argv)

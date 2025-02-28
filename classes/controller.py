@@ -21,8 +21,8 @@ class Controller():
     def set_output_image_source(self):
         if(self.current_output_source_index == 1 and len(self.input_image_1.output_image) != 0):
             self.output_image_pixmap = self.numpy_to_qpixmap(self.input_image_1.output_image)
-            self.output_image_histogram_canvas.plot_histogram(self.input_image_1.output_image)
-            self.output_image_cdf_canvas.plot_cdf(self.input_image_1.output_image)
+            # self.output_image_histogram_canvas.plot_histogram(self.input_image_1.output_image)
+            # self.output_image_cdf_canvas.plot_cdf(self.input_image_1.output_image)
 
         elif(self.current_output_source_index == 2 and len(self.input_image_2.output_image) != 0):
             self.output_image_pixmap = self.numpy_to_qpixmap(self.input_image_2.output_image)
@@ -75,6 +75,13 @@ class Controller():
             self.input_image_1.apply_filter(filter_type , sigma)
         if(self.input_image_2.input_image is not None ):
             self.input_image_2.apply_filter(filter_type , sigma)
+        self.set_output_image_source()
+    
+    def apply_edge_detector_time_domain(self , filter_type):
+        if(self.input_image_1.input_image is not None):
+            self.input_image_1.apply_filter(filter_type)
+        if(self.input_image_2.input_image is not None ):
+            self.input_image_2.apply_filter(filter_type)
         self.set_output_image_source()
 
     

@@ -190,33 +190,40 @@ class Image():
             return
         
         elif filter_type == 'Sobel':
-            horizontal_gradient = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]])
-            vertical_gradient = np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]])
+            self.output_image = self.output_image.astype(np.float32)
+            horizontal_gradient = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]] , dtype=np.float32)
+            vertical_gradient = np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]] , dtype=np.float32)
             vertical_edges = self.convolve(self.output_image, horizontal_gradient)
             horizontal_edges = self.convolve(self.output_image, vertical_gradient)
             self.output_image = np.sqrt(vertical_edges**2 + horizontal_edges**2)
+            self.output_image = self.normalize_image(self.output_image)
             return
         
         elif filter_type == 'Roberts':
-            vertical_gradient = np.array([[0, 0, 0], [0, 1, 0], [0, 0, -1]])
-            horizontal_gradient = np.array([[0, 0, 0], [0, 0, 1], [0, -1, 0]])
+            self.output_image = self.output_image.astype(np.float32)
+            vertical_gradient = np.array([[0, 0, 0], [0, 1, 0], [0, 0, -1]] , dtype=np.float32)
+            horizontal_gradient = np.array([[0, 0, 0], [0, 0, 1], [0, -1, 0]] , dtype= np.float32)
             vertical_edges = self.convolve(self.output_image, horizontal_gradient)
             horizontal_edges = self.convolve(self.output_image, vertical_gradient)
             self.output_image = np.sqrt(vertical_edges**2 + horizontal_edges**2)
+            self.output_image = self.normalize_image(self.output_image)
             return
         
         elif filter_type == 'Prewitt':
+            self.output_image = self.output_image.astype(np.float32)
             vertical_gradient = np.array([[-1, -1, -1], [0, 0, 0], [1, 1, 1]])
             horizontal_gradient = np.array([[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]])
             vertical_edges = self.convolve(self.output_image, horizontal_gradient)
             horizontal_edges = self.convolve(self.output_image, vertical_gradient)
             self.output_image = np.sqrt(vertical_edges**2 + horizontal_edges**2)
+            self.output_image = self.normalize_image(self.output_image)
             return
         elif filter_type == 'Canny':
             self.output_image = cv2.Canny(self.output_image, 100, 200)
             return
-            
+        
         self.output_image = self.convolve(self.output_image, kernel)
+        self.output_image = np.clip(self.output_image, 0, 255).astype(np.uint8)    
     
     def frequency_domain_low_pass_filter(shifted_fft_image):
         '''
@@ -399,5 +406,17 @@ class Image():
                     region = padded_image[i:i+3, j:j+3, c]
                     output_image[i, j, c] = np.sum(region * kernel)
                     
-        output_image = np.clip(output_image, 0, 255).astype(np.uint8)
+        # output_image = np.clip(output_image, 0, 255).astype(np.uint8)
         return output_image
+    
+    def normalize_image(self , image, new_min=0, new_max=255):
+        
+        image = image.astype(np.float32) 
+
+        old_min = np.min(image, axis=(0, 1), keepdims=True)
+        old_max = np.max(image, axis=(0, 1), keepdims=True)
+
+        scale = (new_max - new_min) / (old_max - old_min + 1e-8)
+        normalized = (image - old_min) * scale + new_min
+
+        return np.clip(normalized, new_min, new_max).astype(np.uint8)
