@@ -897,12 +897,12 @@ margin: 0;
 font-size:16px;</string>
                </property>
                <property name="text">
-                <string>Th</string>
+                <string>Size</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="localThresholdContsant">
+              <widget class="QLineEdit" name="localThresholdSize">
                <property name="maximumSize">
                 <size>
                  <width>50</width>
@@ -924,7 +924,7 @@ font-size:16px;</string>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="localThresholdValue">
+              <widget class="QLineEdit" name="localThresholdContsant">
                <property name="maximumSize">
                 <size>
                  <width>50</width>
@@ -947,7 +947,7 @@ font-size:16px;</string>
               </spacer>
              </item>
              <item>
-              <widget class="QPushButton" name="pushButton_4">
+              <widget class="QPushButton" name="applyButtonLocal">
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
@@ -1030,7 +1030,7 @@ font-size:16px;</string>
               </spacer>
              </item>
              <item>
-              <widget class="QPushButton" name="pushButton">
+              <widget class="QPushButton" name="applyButtonGlobal">
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>

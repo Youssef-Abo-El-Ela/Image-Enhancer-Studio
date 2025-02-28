@@ -156,6 +156,23 @@ class MainWindow(QMainWindow):
         
         self.low_freq_image = self.input_image_1.input_image
         self.high_freq_image = self.input_image_2.input_image
+
+        # Initializing Local Thresholding
+        self.local_threshold_window_size = self.findChild(QLineEdit , "localThresholdSize")
+        self.local_threshold_window_size.textChanged.connect(self.set_local_threshold_window_size)
+
+        self.local_threshold_constant = self.findChild(QLineEdit , "localThresholdContsant")
+        self.local_threshold_constant.textChanged.connect(self.set_local_threshold_constant)
+
+        self.applyButtonLocal = self.findChild(QPushButton , "applyButtonLocal")
+        self.applyButtonLocal.clicked.connect(self.apply_local_thresholding)
+
+        # Initializing Global Thresholding
+        self.global_threshold_value = self.findChild(QLineEdit , "globalThresholdValue")
+        self.global_threshold_value.textChanged.connect(self.set_global_threshold_value)
+
+        self.applyButtonGlobal = self.findChild(QPushButton , "applyButtonGlobal")
+        self.applyButtonGlobal.clicked.connect(self.apply_global_thresholding)
         
         # Initializing Controller
         self.controller = Controller(self.input_image_1 , self.input_image_2 , self.output_image , self.output_image_label , self.input_image_1_histogram_canvas, self.input_image_1_cdf_canvas , 
@@ -305,6 +322,28 @@ class MainWindow(QMainWindow):
             self.controller.current_output_source_index = 1
             self.output_image_selector_combobox.setCurrentIndex(1)
             self.controller.reset_output_image_to_normal()
+
+    def set_local_threshold_window_size(self , text):
+        if (text == "" or text == " " or '-' in text or text.isalpha()):
+            return
+        self.local_threshold_window_size = float(text)
+
+    def set_local_threshold_constant(self , text):
+        if (text == "" or text == " " or '-' in text or text.isalpha()):
+            return
+        self.local_threshold_constant = float(text)
+
+    def apply_local_thresholding(self):
+        self.controller.apply_local_thresholding(self.local_threshold_window_size , self.local_threshold_constant)
+
+    def set_global_threshold_value(self , text):
+        if (text == "" or text == " " or '-' in text or text.isalpha()):
+            return
+        self.global_threshold_value = float(text)
+
+    def apply_global_thresholding(self):
+        self.controller.apply_global_thresholding(self.global_threshold_value)
+        
             
 if __name__ == '__main__':
     app = QApplication(sys.argv)

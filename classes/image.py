@@ -359,7 +359,7 @@ class Image():
         # Ensure block_size is odd
         if block_size % 2 == 0:
             block_size += 1
-        
+            
         # Convert to grayscale if the image is in color
         if self.image_type == 'color':
             grayscale_image = self.convert_rgb_to_gray(self.output_image)
@@ -368,22 +368,24 @@ class Image():
         else:
             # For grayscale images, just take one channel
             gray = self.output_image[:,:,0]
-        
+            
         # Create output binary image
         height, width = gray.shape
         binary_image = np.zeros_like(gray)
-        
+            
         # Calculate the offset 
-        offset = block_size // 2
-        
+        offset = int(block_size // 2)
+            
         # Apply padding to handle border pixels
         padded_image = np.pad(gray, ((offset, offset), (offset, offset)), mode='reflect')
-        
+            
         # Apply local thresholding 
         for i in range(height):
             for j in range(width):
-                # Extract neighborhood
-                neighborhood = padded_image[i:i+block_size, j:j+block_size]
+                # Extract neighborhood - including the offset to center it
+                i_padded = i + offset
+                j_padded = j + offset
+                neighborhood = padded_image[i_padded-offset:i_padded+offset+1, j_padded-offset:j_padded+offset+1]
                 
                 # Calculate local threshold (mean of neighborhood - c)
                 local_threshold = np.mean(neighborhood) - c
@@ -393,10 +395,10 @@ class Image():
                     binary_image[i, j] = 255
                 else:
                     binary_image[i, j] = 0
-        
+            
         # Convert back to 3-channel image for consistency
         self.output_image = cv2.merge([binary_image, binary_image, binary_image])
-        
+
     def convolve(self, image, kernel):
         '''
         implement convolution operation on the image 

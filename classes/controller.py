@@ -104,3 +104,18 @@ class Controller():
         bytes_per_line = channels * width
         qimage = QImage(image_array.data, width, height, bytes_per_line, QImage.Format_RGB888)
         return QPixmap.fromImage(qimage)
+    
+    def apply_local_thresholding(self , window_size , c):
+        if(self.input_image_1.input_image is not None):
+            self.input_image_1.local_threshold(window_size , c)
+        if(self.input_image_2.input_image is not None ):
+            self.input_image_2.local_threshold(window_size , c)
+        self.set_output_image_source()
+
+    def apply_global_thresholding(self , threshold):
+        if(self.input_image_1.input_image is not None):
+            self.input_image_1.global_threshold(threshold)
+        if(self.input_image_2.input_image is not None ):
+            self.input_image_2.global_threshold(threshold)
+        self.set_output_image_source()
+        
