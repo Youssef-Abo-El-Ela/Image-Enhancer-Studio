@@ -440,3 +440,6 @@ class Image():
         normalized = (image - old_min) * scale + new_min
 
         return np.clip(normalized, new_min, new_max).astype(np.uint8)
+    
+    def apply_histogram_equalization(self):
+        pass

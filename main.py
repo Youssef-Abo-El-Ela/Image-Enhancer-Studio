@@ -1,6 +1,6 @@
 import sys
 import numpy as np
-from PyQt5.QtWidgets import QApplication, QMainWindow , QPushButton , QFrame , QLabel , QVBoxLayout , QCheckBox , QComboBox , QLineEdit
+from PyQt5.QtWidgets import QApplication, QMainWindow , QPushButton , QStackedWidget ,QFrame , QLabel , QVBoxLayout , QCheckBox , QComboBox , QLineEdit
 from PyQt5.uic import loadUi
 from PyQt5.QtGui import QIcon
 from helper_functions.compile_qrc import compile_qrc
@@ -174,6 +174,20 @@ class MainWindow(QMainWindow):
         self.applyButtonGlobal = self.findChild(QPushButton , "applyButtonGlobal")
         self.applyButtonGlobal.clicked.connect(self.apply_global_thresholding)
         
+        # Initialize Frequency Domain Filters
+        self.frequency_domain_filters_combobox = self.findChild(QComboBox , "frequencyDomainCombobox")
+        self.frequency_domain_filters_combobox.currentIndexChanged.connect(self.change_shown_freq_filters_params)
+        
+        self.frequency_domain_filters_stacked_widget = self.findChild(QStackedWidget , "frequencyDomainFiltersStack")
+        
+        # Initialize Removable Frames
+        self.input_image_1_freq_comp_frame = self.findChild(QFrame , "input01HybridFrame")
+        self.input_image_2_freq_comp_frame = self.findChild(QFrame , "input02HybridFrame")
+        self.output_image_freq_comp_frame = self.findChild(QFrame , "outputHybridFrame")
+        self.input_image_1_freq_comp_frame.hide()
+        self.input_image_2_freq_comp_frame.hide()
+        self.output_image_freq_comp_frame.hide()
+        
         # Initializing Controller
         self.controller = Controller(self.input_image_1 , self.input_image_2 , self.output_image , self.output_image_label , self.input_image_1_histogram_canvas, self.input_image_1_cdf_canvas , 
                                     self.input_image_2_histogram_canvas , self.input_image_2_cdf_canvas , self.output_image_histogram_canvas , self.output_image_cdf_canvas,
@@ -237,13 +251,13 @@ class MainWindow(QMainWindow):
             self.controller.apply_noise('gaussian', self.gaussian_mean , self.gaussian_std)
     
     def set_gaussian_mean(self , text):
-        if (text == "" or text == " " or '-' in text ):
+        if (text == "" or text == " " or '-' in text  or text.isalpha()):
             return
         self.gaussian_mean = float(text)
         self.apply_gaussian_noise()
     
     def set_gaussian_std(self , text):
-        if (text == "" or text == " " or '-' in text):
+        if (text == "" or text == " " or '-' in text or text.isalpha()):
             return
         self.gaussian_std = float(text)
         self.apply_gaussian_noise()
@@ -258,7 +272,7 @@ class MainWindow(QMainWindow):
         self.controller.rgb2grey()
     
     def set_gaussian_filter_sigma(self , text):
-        if (text == "" or text == " " or '-' in text):
+        if (text == "" or text == " " or '-' in text or text.isalpha()):
             return
         self.gaussian_filter_sigma = float(text)
         
@@ -312,12 +326,22 @@ class MainWindow(QMainWindow):
 
     def apply_hybrid_image(self):
         if(self.hybrid_image_checkbox.isChecked()):
+            self.input_image_1_freq_comp_frame.show()
+            self.input_image_2_freq_comp_frame.show()
+            self.output_image_freq_comp_frame.show()
+            if(self.low_freq_image is None or self.high_freq_image is None):
+                return
             self.controller.hybrid_image_mode = True
             self.controller.current_output_source_index = 0
             self.controller.apply_hybrid_image(self.low_freq_image , self.high_freq_image)
             self.output_image_selector_combobox.setCurrentIndex(1)
             self.output_image_selector_combobox.setCurrentIndex(0)
         else:
+            self.input_image_1_freq_comp_frame.hide()
+            self.input_image_2_freq_comp_frame.hide()
+            self.output_image_freq_comp_frame.hide()
+            if(self.low_freq_image is None or self.high_freq_image is None):
+                return
             self.controller.hybrid_image_mode = False
             self.controller.current_output_source_index = 1
             self.output_image_selector_combobox.setCurrentIndex(1)
@@ -343,7 +367,12 @@ class MainWindow(QMainWindow):
 
     def apply_global_thresholding(self):
         self.controller.apply_global_thresholding(self.global_threshold_value)
+    
+    def change_shown_freq_filters_params(self , index):
+        self.frequency_domain_filters_stacked_widget.setCurrentIndex(index)
         
+    def apply_frequency_domain_filters(self):
+        pass
             
 if __name__ == '__main__':
     app = QApplication(sys.argv)
