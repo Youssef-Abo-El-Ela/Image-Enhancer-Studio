@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1355</width>
+    <width>1451</width>
     <height>1491</height>
    </rect>
   </property>
@@ -131,27 +131,6 @@ QSlider::add-page:horizontal {
       <property name="topMargin">
        <number>0</number>
       </property>
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">margin: 0 10;
-font-size: 30px;
-font-weight:bold;</string>
-        </property>
-        <property name="text">
-         <string>Image Studio</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
@@ -311,6 +290,30 @@ QComboBox QAbstractItemView {
          </layout>
         </item>
         <item>
+         <spacer name="horizontalSpacer_31">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="styleSheet">
+           <string notr="true">font-size: 30px;
+font-weight: bold;</string>
+          </property>
+          <property name="text">
+           <string>Image Studio</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <spacer name="horizontalSpacer">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -350,7 +353,7 @@ QComboBox QAbstractItemView {
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">font-size: 16px;
+             <string notr="true">font-size: 18px;
 font-weight:bold;</string>
             </property>
             <property name="text">
@@ -799,13 +802,13 @@ font-size:18px;</string>
           <property name="minimumSize">
            <size>
             <width>400</width>
-            <height>170</height>
+            <height>150</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>500</width>
-            <height>170</height>
+            <height>150</height>
            </size>
           </property>
           <property name="styleSheet">
@@ -945,10 +948,17 @@ font-size:16px;</string>
              </item>
              <item>
               <widget class="QPushButton" name="pushButton_4">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>40</height>
+                </size>
+               </property>
                <property name="styleSheet">
                 <string notr="true">border: 1px solid white;
 font-size:15px;
-font-weight: bold;</string>
+font-weight: bold;
+padding: 2px 5px</string>
                </property>
                <property name="text">
                 <string>Apply</string>
@@ -1021,10 +1031,17 @@ font-size:16px;</string>
              </item>
              <item>
               <widget class="QPushButton" name="pushButton">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>40</height>
+                </size>
+               </property>
                <property name="styleSheet">
                 <string notr="true">border: 1px solid white;
 font-size:15px;
-font-weight: bold;</string>
+font-weight: bold;
+padding: 2px 5px</string>
                </property>
                <property name="text">
                 <string>Apply</string>
@@ -1067,13 +1084,13 @@ font-weight: bold;</string>
           <property name="minimumSize">
            <size>
             <width>400</width>
-            <height>200</height>
+            <height>190</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>500</width>
-            <height>200</height>
+            <height>190</height>
            </size>
           </property>
           <property name="styleSheet">
@@ -1194,6 +1211,12 @@ QComboBox QAbstractItemView {
            </item>
            <item>
             <widget class="QFrame" name="lowPassGaussianFrame">
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>50</height>
+              </size>
+             </property>
              <property name="styleSheet">
               <string notr="true">border:none;
 
@@ -1235,7 +1258,7 @@ font-size:18px;</string>
                <widget class="QLineEdit" name="lowPassGaussianInput">
                 <property name="maximumSize">
                  <size>
-                  <width>200</width>
+                  <width>100</width>
                   <height>16777215</height>
                  </size>
                 </property>
@@ -1464,13 +1487,13 @@ QComboBox QAbstractItemView {
           <property name="minimumSize">
            <size>
             <width>400</width>
-            <height>100</height>
+            <height>190</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>500</width>
-            <height>100</height>
+            <height>190</height>
            </size>
           </property>
           <property name="styleSheet">
@@ -1557,19 +1580,364 @@ QComboBox QAbstractItemView {
              </item>
              <item>
               <property name="text">
-               <string>Filter 01</string>
+               <string>Ideal Filter (HP)</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>Filter 02</string>
+               <string>Ideal Filter (LP)</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>Filter 03</string>
+               <string>Butterworth (HP)</string>
               </property>
              </item>
+             <item>
+              <property name="text">
+               <string>Butterworth (LP)</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Gaussian (HP)</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Gaussian (LP)</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_21">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QStackedWidget" name="frequencyDomainFiltersStack">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>50</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>50</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">border:none</string>
+             </property>
+             <property name="currentIndex">
+              <number>0</number>
+             </property>
+             <widget class="QWidget" name="idealFilterPage">
+              <layout class="QGridLayout" name="gridLayout_17">
+               <item row="0" column="2">
+                <widget class="QLineEdit" name="idealFilterRadiusInput">
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QLineEdit {
+    background-color: #0f1729;   /* Updated dark background */
+    color: #ffffff;              /* Updated white text */
+    border: 1px solid #ffffff;   /* Updated blue border */
+	border-top:none;
+	border-right: none;
+	border-left: none;
+    padding: 4px 8px;
+    font-size: 14px;
+}
+
+QLineEdit:hover {
+    border: 1px solid #ffffff;   /* Updated lighter blue on hover */
+	border-top:none;
+	border-right: none;
+	border-left: none;
+}
+
+QLineEdit:focus {
+    border: 1px solid #ffffff;   /* Stronger blue when focused */
+	border-top:none;
+	border-right: none;
+	border-left: none;
+    background-color: #142A4A;   /* Slightly lighter background on focus */
+    color: #ffffff;              /* Text turns blue when focused */
+}
+
+QLineEdit::placeholder {
+    color: #39bef7;              /* Lighter blue for the placeholder */
+    font-style: italic;
+}
+
+QLineEdit:disabled {
+    background-color: #1B2C3E;   /* Darker background when disabled */
+    color: #888888;              /* Gray text when disabled */
+    border: 2px solid #666666;   /* Gray border when disabled */
+}</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_30">
+                 <property name="styleSheet">
+                  <string notr="true">border: none;
+margin: 0;
+font-size:18px;</string>
+                 </property>
+                 <property name="text">
+                  <string>Radius</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <spacer name="horizontalSpacer_32">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QWidget" name="butterworthPage">
+              <layout class="QGridLayout" name="gridLayout_18">
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_31">
+                 <property name="styleSheet">
+                  <string notr="true">border: none;
+margin: 0;
+font-size:18px;</string>
+                 </property>
+                 <property name="text">
+                  <string>fc</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="4">
+                <widget class="QLineEdit" name="butterworthOrderInput">
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QLineEdit {
+    background-color: #0f1729;   /* Updated dark background */
+    color: #ffffff;              /* Updated white text */
+    border: 1px solid #ffffff;   /* Updated blue border */
+	border-top:none;
+	border-right: none;
+	border-left: none;
+    padding: 4px 8px;
+    font-size: 14px;
+}
+
+QLineEdit:hover {
+    border: 1px solid #ffffff;   /* Updated lighter blue on hover */
+	border-top:none;
+	border-right: none;
+	border-left: none;
+}
+
+QLineEdit:focus {
+    border: 1px solid #ffffff;   /* Stronger blue when focused */
+	border-top:none;
+	border-right: none;
+	border-left: none;
+    background-color: #142A4A;   /* Slightly lighter background on focus */
+    color: #ffffff;              /* Text turns blue when focused */
+}
+
+QLineEdit::placeholder {
+    color: #39bef7;              /* Lighter blue for the placeholder */
+    font-style: italic;
+}
+
+QLineEdit:disabled {
+    background-color: #1B2C3E;   /* Darker background when disabled */
+    color: #888888;              /* Gray text when disabled */
+    border: 2px solid #666666;   /* Gray border when disabled */
+}</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="3">
+                <widget class="QLabel" name="label_32">
+                 <property name="styleSheet">
+                  <string notr="true">border: none;
+margin: 0;
+font-size:18px;</string>
+                 </property>
+                 <property name="text">
+                  <string>Filter Order</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLineEdit" name="butterworthCutoffFrequencyInput">
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QLineEdit {
+    background-color: #0f1729;   /* Updated dark background */
+    color: #ffffff;              /* Updated white text */
+    border: 1px solid #ffffff;   /* Updated blue border */
+	border-top:none;
+	border-right: none;
+	border-left: none;
+    padding: 4px 8px;
+    font-size: 14px;
+}
+
+QLineEdit:hover {
+    border: 1px solid #ffffff;   /* Updated lighter blue on hover */
+	border-top:none;
+	border-right: none;
+	border-left: none;
+}
+
+QLineEdit:focus {
+    border: 1px solid #ffffff;   /* Stronger blue when focused */
+	border-top:none;
+	border-right: none;
+	border-left: none;
+    background-color: #142A4A;   /* Slightly lighter background on focus */
+    color: #ffffff;              /* Text turns blue when focused */
+}
+
+QLineEdit::placeholder {
+    color: #39bef7;              /* Lighter blue for the placeholder */
+    font-style: italic;
+}
+
+QLineEdit:disabled {
+    background-color: #1B2C3E;   /* Darker background when disabled */
+    color: #888888;              /* Gray text when disabled */
+    border: 2px solid #666666;   /* Gray border when disabled */
+}</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="2">
+                <spacer name="horizontalSpacer_33">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QWidget" name="gaussianPage">
+              <layout class="QGridLayout" name="gridLayout_19">
+               <item row="0" column="2">
+                <widget class="QLineEdit" name="gaussianCutoffFrequencyInput">
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QLineEdit {
+    background-color: #0f1729;   /* Updated dark background */
+    color: #ffffff;              /* Updated white text */
+    border: 1px solid #ffffff;   /* Updated blue border */
+	border-top:none;
+	border-right: none;
+	border-left: none;
+    padding: 4px 8px;
+    font-size: 14px;
+}
+
+QLineEdit:hover {
+    border: 1px solid #ffffff;   /* Updated lighter blue on hover */
+	border-top:none;
+	border-right: none;
+	border-left: none;
+}
+
+QLineEdit:focus {
+    border: 1px solid #ffffff;   /* Stronger blue when focused */
+	border-top:none;
+	border-right: none;
+	border-left: none;
+    background-color: #142A4A;   /* Slightly lighter background on focus */
+    color: #ffffff;              /* Text turns blue when focused */
+}
+
+QLineEdit::placeholder {
+    color: #39bef7;              /* Lighter blue for the placeholder */
+    font-style: italic;
+}
+
+QLineEdit:disabled {
+    background-color: #1B2C3E;   /* Darker background when disabled */
+    color: #888888;              /* Gray text when disabled */
+    border: 2px solid #666666;   /* Gray border when disabled */
+}</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_33">
+                 <property name="styleSheet">
+                  <string notr="true">border: none;
+margin: 0;
+font-size:18px;</string>
+                 </property>
+                 <property name="text">
+                  <string>Fc</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <spacer name="horizontalSpacer_34">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </widget>
             </widget>
            </item>
            <item>
