@@ -353,7 +353,7 @@ font-weight: bold;</string>
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">font-size: 16px;
+             <string notr="true">font-size: 18px;
 font-weight:bold;</string>
             </property>
             <property name="text">
