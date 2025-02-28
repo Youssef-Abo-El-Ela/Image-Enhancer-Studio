@@ -174,6 +174,10 @@ class MainWindow(QMainWindow):
         self.applyButtonGlobal = self.findChild(QPushButton , "applyButtonGlobal")
         self.applyButtonGlobal.clicked.connect(self.apply_global_thresholding)
         
+        # Initialize Frequency Domain Filters
+        self.frequency_domain_filters_combobox = self.findChild(QComboBox , "frequencyDomainCombobox")
+        
+        
         # Initializing Controller
         self.controller = Controller(self.input_image_1 , self.input_image_2 , self.output_image , self.output_image_label , self.input_image_1_histogram_canvas, self.input_image_1_cdf_canvas , 
                                     self.input_image_2_histogram_canvas , self.input_image_2_cdf_canvas , self.output_image_histogram_canvas , self.output_image_cdf_canvas,
@@ -237,13 +241,13 @@ class MainWindow(QMainWindow):
             self.controller.apply_noise('gaussian', self.gaussian_mean , self.gaussian_std)
     
     def set_gaussian_mean(self , text):
-        if (text == "" or text == " " or '-' in text ):
+        if (text == "" or text == " " or '-' in text  or text.isalpha()):
             return
         self.gaussian_mean = float(text)
         self.apply_gaussian_noise()
     
     def set_gaussian_std(self , text):
-        if (text == "" or text == " " or '-' in text):
+        if (text == "" or text == " " or '-' in text or text.isalpha()):
             return
         self.gaussian_std = float(text)
         self.apply_gaussian_noise()
@@ -258,7 +262,7 @@ class MainWindow(QMainWindow):
         self.controller.rgb2grey()
     
     def set_gaussian_filter_sigma(self , text):
-        if (text == "" or text == " " or '-' in text):
+        if (text == "" or text == " " or '-' in text or text.isalpha()):
             return
         self.gaussian_filter_sigma = float(text)
         
@@ -344,6 +348,8 @@ class MainWindow(QMainWindow):
     def apply_global_thresholding(self):
         self.controller.apply_global_thresholding(self.global_threshold_value)
         
+    def apply_frequency_domain_filters(self):
+        pass
             
 if __name__ == '__main__':
     app = QApplication(sys.argv)
