@@ -27,25 +27,25 @@ class Controller():
         if(self.hybrid_image_mode):
             self.output_image_pixmap = self.numpy_to_qpixmap(self.hybrid_image.output_image)
             self.output_image_histogram_canvas.plot_histogram(self.hybrid_image.output_image)
-            self.output_image_cdf_canvas.plot_cdf(self.hybrid_image.output_image)
+            self.output_image_cdf_canvas.plot_distribution_curve(self.hybrid_image.output_image)
             
         elif(self.current_output_source_index == 1 and len(self.input_image_1.output_image) != 0):
             self.output_image_pixmap = self.numpy_to_qpixmap(self.input_image_1.output_image)
             self.output_image_histogram_canvas.plot_histogram(self.input_image_1.output_image)
-            self.output_image_cdf_canvas.plot_cdf(self.input_image_1.output_image)
+            self.output_image_cdf_canvas.plot_distribution_curve(self.input_image_1.output_image)
 
         elif(self.current_output_source_index == 2 and len(self.input_image_2.output_image) != 0):
             self.output_image_pixmap = self.numpy_to_qpixmap(self.input_image_2.output_image)
             self.output_image_histogram_canvas.plot_histogram(self.input_image_2.output_image)
-            self.output_image_cdf_canvas.plot_cdf(self.input_image_2.output_image)
+            self.output_image_cdf_canvas.plot_distribution_curve(self.input_image_2.output_image)
         
         if (self.input_image_1.input_image is not None):                
             self.input_image_1_histogram_canvas.plot_histogram(self.input_image_1.input_image)
-            self.input_image_1_cdf_canvas.plot_cdf(self.input_image_1.input_image)
+            self.input_image_1_cdf_canvas.plot_distribution_curve(self.input_image_1.input_image)
             
         elif (self.input_image_2.input_image is not None):
             self.input_image_2_histogram_canvas.plot_histogram(self.input_image_2.input_image)
-            self.input_image_2_cdf_canvas.plot_cdf(self.input_image_2.input_image)
+            self.input_image_2_cdf_canvas.plot_distribution_curve(self.input_image_2.input_image)
         
         self.output_image_label.setPixmap(self.output_image_pixmap)
         self.output_image_label.setScaledContents(True)
@@ -53,12 +53,11 @@ class Controller():
     def browse_image_input_1(self):
         self.input_image_1.select_image()
         self.input_image_1_histogram_canvas.plot_histogram(self.input_image_1.input_image)
-        self.input_image_1_cdf_canvas.plot_cdf(self.input_image_1.input_image)
-    
+        self.input_image_1_cdf_canvas.plot_distribution_curve(self.input_image_1.input_image)
     def browse_image_input_2(self):
         self.input_image_2.select_image()
         self.input_image_2_histogram_canvas.plot_histogram(self.input_image_2.input_image)
-        self.input_image_2_cdf_canvas.plot_cdf(self.input_image_2.input_image)
+        self.input_image_2_cdf_canvas.plot_distribution_curve(self.input_image_2.input_image)
 
     def apply_noise(self , noise_type, mean = 0, std = np.sqrt(0.1)):
         if(self.input_image_1.input_image is not None):

@@ -166,31 +166,34 @@ class Image():
         time_domain_image = cv2.merge([time_domain_image, time_domain_image, time_domain_image])
         return time_domain_image # Note: returns 3 channel image although it is grayscale 
     
-    def apply_filter(self, filter_type, sigma = 1):
+    def apply_filter(self, filter_type, filter_size, sigma = 1):
         ''' 
         apply low or high pass filter to image in the spatial domain
         we choose 3x3 kernel for each filter type
         '''
-        print(filter_type)
         if filter_type == 'Average':
-            kernel = np.ones((3,3),np.float32)/9
+            kernel = np.ones((filter_size,filter_size),np.float32)/9
             
         elif filter_type == 'Gaussian':
-            x, y = np.meshgrid(np.arange(-1,2), np.arange(-1,2))  
+            x, y = np.meshgrid(np.arange(-filter_size // 2,(filter_size // 2 )+1), np.arange(-filter_size // 2,(filter_size // 2 )+1))  
             kernel = np.exp(-(x**2 + y**2)/(2*sigma**2))/(2*np.pi*sigma**2) 
             kernel = kernel / np.sum(kernel)    # normalization for the kernel
             
         elif filter_type == 'Median':
-            padded_image = np.pad(self.output_image, pad_width=((1, 1), (1, 1), (0, 0)), mode='constant', constant_values=0)  # pad the image with frame of zeros
+            padded_image = np.pad(self.output_image, pad_width=((filter_size // 2, filter_size // 2) , (filter_size // 2, filter_size // 2), (0, 0)), mode='constant', constant_values=0)  # pad the image with frame of zeros
             for i in range(self.output_image.shape[0]):
                 for j in range(self.output_image.shape[1]):
-                    self.output_image[i,j] = np.median(padded_image[i:i + 3, j:j + 3])
+                    self.output_image[i,j] = np.median(padded_image[i:i + filter_size, j:j + filter_size])
             return
         
         elif filter_type == 'Sobel':
             self.output_image = self.output_image.astype(np.float32)
-            horizontal_gradient = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]] , dtype=np.float32)
-            vertical_gradient = np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]] , dtype=np.float32)
+            if filter_size == 3:
+                horizontal_gradient = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]] , dtype=np.float32)
+                vertical_gradient = np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]] , dtype=np.float32)
+            elif filter_size == 5:
+                horizontal_gradient = np.array([[2, 2, 4, 2, 2], [1, 1, 2, 1, 1], [0, 0, 0, 0, 0], [-1, -1, -2, -1, -1], [-2, -2, -4, -2, -2]] , dtype=np.float32)
+                vertical_gradient = np.array([[2, 1, 0, -1, -2], [2, 1, 0, -1, -2], [4, 2, 0, -2, -4], [2, 1, 0, -1, -2], [2, 1, 0, -1, -2]] , dtype=np.float32)
             vertical_edges = self.convolve(self.output_image, horizontal_gradient)
             horizontal_edges = self.convolve(self.output_image, vertical_gradient)
             self.output_image = np.sqrt(vertical_edges**2 + horizontal_edges**2)
@@ -199,8 +202,12 @@ class Image():
         
         elif filter_type == 'Roberts':
             self.output_image = self.output_image.astype(np.float32)
-            vertical_gradient = np.array([[0, 0, 0], [0, 1, 0], [0, 0, -1]] , dtype=np.float32)
-            horizontal_gradient = np.array([[0, 0, 0], [0, 0, 1], [0, -1, 0]] , dtype= np.float32)
+            if filter_size == 3:
+                vertical_gradient = np.array([[0, 0, 1], [0, -1, 0], [0, 0, 0]] , dtype=np.float32)
+                horizontal_gradient = np.array([[1, 0, 0], [0, -1, 0], [0, 0, 0]] , dtype= np.float32)
+            elif filter_size == 5:
+                vertical_gradient = np.array([[0, 0, 0, 0, 1], [0, 0, 0, 2, 0], [0, 0, 0, 0, 0], [0, -2, 0, 0, 0], [-1, 0, 0, 0, 0]] , dtype=np.float32)
+                horizontal_gradient = np.array([[1, 0, 0, 0, 0], [0, 2, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, -2, 0], [0, 0, 0, 0, -1]] , dtype= np.float32)
             vertical_edges = self.convolve(self.output_image, horizontal_gradient)
             horizontal_edges = self.convolve(self.output_image, vertical_gradient)
             self.output_image = np.sqrt(vertical_edges**2 + horizontal_edges**2)
@@ -209,8 +216,12 @@ class Image():
         
         elif filter_type == 'Prewitt':
             self.output_image = self.output_image.astype(np.float32)
-            vertical_gradient = np.array([[-1, -1, -1], [0, 0, 0], [1, 1, 1]])
-            horizontal_gradient = np.array([[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]])
+            if filter_size == 3:
+                vertical_gradient = np.array([[-1, -1, -1], [0, 0, 0], [1, 1, 1]])
+                horizontal_gradient = np.array([[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]])
+            elif filter_size == 5:
+                vertical_gradient = np.array([[-2, -2, -2, -2, -2], [-1, -1, -1, -1, -1], [0, 0, 0, 0, 0], [1, 1, 1, 1, 1], [2, 2, 2, 2, 2]])
+                horizontal_gradient = np.array([-2, -1, 0, 1, 2], [-2, -1, 0, 1, 2], [-2, -1, 0, 1, 2], [-2, -1, 0, 1, 2], [-2, -1, 0, 1, 2])
             vertical_edges = self.convolve(self.output_image, horizontal_gradient)
             horizontal_edges = self.convolve(self.output_image, vertical_gradient)
             self.output_image = np.sqrt(vertical_edges**2 + horizontal_edges**2)
@@ -405,7 +416,7 @@ class Image():
         '''
         image = image.astype(np.float32)
         channels = 1 if len(image.shape) == 2 else image.shape[2]
-        padded_image = np.pad(image, pad_width=((1, 1), (1, 1), (0, 0)), mode='constant', constant_values=0) # pad the image with frame of zeros
+        padded_image = np.pad(image, pad_width=((kernel.shape[0] // 2, kernel.shape[0] // 2) , (kernel.shape[0] // 2, kernel.shape[0] // 2), (0, 0)), mode='constant', constant_values=0) # pad the image with frame of zeros
         
         output_image = np.zeros_like(image, dtype=np.float32)
         
