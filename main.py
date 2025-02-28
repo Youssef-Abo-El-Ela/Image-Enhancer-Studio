@@ -1,6 +1,6 @@
 import sys
 import numpy as np
-from PyQt5.QtWidgets import QApplication, QMainWindow , QPushButton , QFrame , QLabel , QVBoxLayout , QCheckBox , QComboBox , QLineEdit
+from PyQt5.QtWidgets import QApplication, QMainWindow , QPushButton , QStackedWidget ,QFrame , QLabel , QVBoxLayout , QCheckBox , QComboBox , QLineEdit
 from PyQt5.uic import loadUi
 from PyQt5.QtGui import QIcon
 from helper_functions.compile_qrc import compile_qrc
@@ -176,7 +176,17 @@ class MainWindow(QMainWindow):
         
         # Initialize Frequency Domain Filters
         self.frequency_domain_filters_combobox = self.findChild(QComboBox , "frequencyDomainCombobox")
+        self.frequency_domain_filters_combobox.currentIndexChanged.connect(self.change_shown_freq_filters_params)
         
+        self.frequency_domain_filters_stacked_widget = self.findChild(QStackedWidget , "frequencyDomainFiltersStack")
+        
+        # Initialize Removable Frames
+        self.input_image_1_freq_comp_frame = self.findChild(QFrame , "input01HybridFrame")
+        self.input_image_2_freq_comp_frame = self.findChild(QFrame , "input02HybridFrame")
+        self.output_image_freq_comp_frame = self.findChild(QFrame , "outputHybridFrame")
+        self.input_image_1_freq_comp_frame.hide()
+        self.input_image_2_freq_comp_frame.hide()
+        self.output_image_freq_comp_frame.hide()
         
         # Initializing Controller
         self.controller = Controller(self.input_image_1 , self.input_image_2 , self.output_image , self.output_image_label , self.input_image_1_histogram_canvas, self.input_image_1_cdf_canvas , 
@@ -316,12 +326,22 @@ class MainWindow(QMainWindow):
 
     def apply_hybrid_image(self):
         if(self.hybrid_image_checkbox.isChecked()):
+            self.input_image_1_freq_comp_frame.show()
+            self.input_image_2_freq_comp_frame.show()
+            self.output_image_freq_comp_frame.show()
+            if(self.low_freq_image is None or self.high_freq_image is None):
+                return
             self.controller.hybrid_image_mode = True
             self.controller.current_output_source_index = 0
             self.controller.apply_hybrid_image(self.low_freq_image , self.high_freq_image)
             self.output_image_selector_combobox.setCurrentIndex(1)
             self.output_image_selector_combobox.setCurrentIndex(0)
         else:
+            self.input_image_1_freq_comp_frame.hide()
+            self.input_image_2_freq_comp_frame.hide()
+            self.output_image_freq_comp_frame.hide()
+            if(self.low_freq_image is None or self.high_freq_image is None):
+                return
             self.controller.hybrid_image_mode = False
             self.controller.current_output_source_index = 1
             self.output_image_selector_combobox.setCurrentIndex(1)
@@ -347,6 +367,9 @@ class MainWindow(QMainWindow):
 
     def apply_global_thresholding(self):
         self.controller.apply_global_thresholding(self.global_threshold_value)
+    
+    def change_shown_freq_filters_params(self , index):
+        self.frequency_domain_filters_stacked_widget.setCurrentIndex(index)
         
     def apply_frequency_domain_filters(self):
         pass
