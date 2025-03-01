@@ -1,12 +1,12 @@
 import sys
 import numpy as np
-from PyQt5.QtWidgets import QApplication, QMainWindow , QPushButton , QStackedWidget ,QFrame , QLabel , QVBoxLayout , QCheckBox , QComboBox , QLineEdit
+from PyQt5.QtWidgets import QApplication, QMainWindow , QPushButton , QStackedWidget ,QFrame , QLabel , QVBoxLayout, QHBoxLayout , QCheckBox , QComboBox , QLineEdit
 from PyQt5.uic import loadUi
 from PyQt5.QtGui import QIcon
 from helper_functions.compile_qrc import compile_qrc
 from classes.image import Image
 from classes.controller import Controller
-from classes.ImageEnum import ImageSource
+from classes.ImageEnum import ImageSource , Channel
 from classes.statisticsVisualization import HistogramCanvas , CDFCanvas
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
@@ -99,23 +99,75 @@ class MainWindow(QMainWindow):
         self.gaussian_filter_sigma_input = self.findChild(QLineEdit,"lowPassGaussianInput")
         self.gaussian_filter_sigma_input.textChanged.connect(self.set_gaussian_filter_sigma)
         
-        # Histogram of Input Image 1
-        self.input_image_1_histogram_canvas = HistogramCanvas()
-        input_image_1_histogram_frame = self.findChild(QFrame , "input01HistogramFrame")
-        self.input_image_1_histogram_layout = QVBoxLayout(input_image_1_histogram_frame)
-        self.input_image_1_histogram_layout.addWidget(self.input_image_1_histogram_canvas)
+        # Histogram Stack of Input Image 1
+        self.input_image_1_histogram_stack = self.findChild(QStackedWidget , "histogramInput01Stack")
         
-        # CDF of Input Image 1
+        # Histogram of Input Image 1
+        self.input_image_1_red_histogram_canvas = HistogramCanvas()
+        self.input_image_1_green_histogram_canvas = HistogramCanvas()
+        self.input_image_1_blue_histogram_canvas = HistogramCanvas()
+        
+        self.input_image_1_histogram_frame_red = self.findChild(QFrame , "rInput01HistogramFrame")
+        self.input_image_1_histogram_frame_green = self.findChild(QFrame , "gInput01HistogramFrame")
+        self.input_image_1_histogram_frame_blue = self.findChild(QFrame , "bInput01HistogramFrame")
+        
+        self.input_image_1_histogram_layout_red = QVBoxLayout(self.input_image_1_histogram_frame_red)
+        self.input_image_1_histogram_layout_red.addWidget(self.input_image_1_red_histogram_canvas)
+        
+        self.input_image_1_histogram_layout_green = QVBoxLayout(self.input_image_1_histogram_frame_green)
+        self.input_image_1_histogram_layout_green.addWidget(self.input_image_1_green_histogram_canvas)
+        
+        self.input_image_1_histogram_layout_blue = QVBoxLayout(self.input_image_1_histogram_frame_blue)
+        self.input_image_1_histogram_layout_blue.addWidget(self.input_image_1_blue_histogram_canvas)
+        
+        self.input_image_1_histogram_red_button = self.findChild(QPushButton , "rButtonInput01")
+        self.input_image_1_histogram_green_button = self.findChild(QPushButton , "gButtonInput01")
+        self.input_image_1_histogram_blue_button = self.findChild(QPushButton , "bButtonInput01")
+        
+        self.input_image_1_histogram_red_button.pressed.connect(self.change_histogram1_to_red_color_channel)
+        self.input_image_1_histogram_green_button.pressed.connect(self.change_histogram1_to_green_color_channel)
+        self.input_image_1_histogram_blue_button.pressed.connect(self.change_histogram1_to_blue_color_channel)
+        
+        # PDF , CDF of Input Image 1
         self.input_image_1_cdf_canvas = CDFCanvas()
-        input_image_1_cdf_frame = self.findChild(QFrame , "input01DistributionFrame")
+        self.input_image_1_pdf_canvas = CDFCanvas()
+        
+        input_image_1_cdf_frame = self.findChild(QFrame , "cdfInput01DistributionFrame")
         self.input_image_1_cdf_layout = QVBoxLayout(input_image_1_cdf_frame)
         self.input_image_1_cdf_layout.addWidget(self.input_image_1_cdf_canvas)
         
+        input_image_1_pdf_frame = self.findChild(QFrame , "pdfInput01DistributionFrame")
+        self.input_image_1_pdf_layout = QVBoxLayout(input_image_1_pdf_frame)
+        self.input_image_1_pdf_layout.addWidget(self.input_image_1_pdf_canvas)
+        
+        # Histogram stack of Input Image 2
+        self.input_image_2_histogram_stack = self.findChild(QStackedWidget , "histogramInput02Stack")
+        
         # Histogram of Input Image 2
-        self.input_image_2_histogram_canvas = HistogramCanvas()
-        input_image_2_histogram_frame = self.findChild(QFrame , "input02HistogramFrame")
-        layout = QVBoxLayout(input_image_2_histogram_frame)
-        layout.addWidget(self.input_image_2_histogram_canvas)
+        self.input_image_2_red_histogram_canvas = HistogramCanvas()
+        self.input_image_2_green_histogram_canvas = HistogramCanvas()
+        self.input_image_2_blue_histogram_canvas = HistogramCanvas()
+        
+        input_image_2_red_histogram_frame = self.findChild(QFrame , "rInput02HistogramFrame")
+        input_image_2_green_histogram_frame = self.findChild(QFrame , "gInput02HistogramFrame")
+        input_image_2_blue_histogram_frame = self.findChild(QFrame , "bInput02HistogramFrame")
+        
+        self.input_image_2_histogram_layout_red = QVBoxLayout(input_image_2_red_histogram_frame)
+        self.input_image_2_histogram_layout_red.addWidget(self.input_image_2_red_histogram_canvas)
+        
+        self.input_image_2_histogram_layout_green = QVBoxLayout(input_image_2_green_histogram_frame)
+        self.input_image_2_histogram_layout_green.addWidget(self.input_image_2_green_histogram_canvas)
+        
+        self.input_image_2_histogram_layout_blue = QVBoxLayout(input_image_2_blue_histogram_frame)
+        self.input_image_2_histogram_layout_blue.addWidget(self.input_image_2_blue_histogram_canvas)
+        
+        self.input_image_2_histogram_red_button = self.findChild(QPushButton , "rButtonInput02")
+        self.input_image_2_histogram_green_button = self.findChild(QPushButton , "gButtonInput02")
+        self.input_image_2_histogram_blue_button = self.findChild(QPushButton , "bButtonInput02")
+        
+        self.input_image_2_histogram_red_button.pressed.connect(self.change_histogram2_to_red_color_channel)
+        self.input_image_2_histogram_green_button.pressed.connect(self.change_histogram2_to_green_color_channel)
+        self.input_image_2_histogram_blue_button.pressed.connect(self.change_histogram2_to_blue_color_channel)
         
         # CDF of Input Image 2
         self.input_image_2_cdf_canvas = CDFCanvas()
@@ -123,11 +175,35 @@ class MainWindow(QMainWindow):
         layout = QVBoxLayout(input_image_2_cdf_frame)
         layout.addWidget(self.input_image_2_cdf_canvas)
         
+        # Histogram stack of Output Image
+        self.output_image_histogram_stack = self.findChild(QStackedWidget , "histogramOutputStack")
+        
         # Histogram of Output Image
-        self.output_image_histogram_canvas = HistogramCanvas()
-        input_output_image_histogram_frame = self.findChild(QFrame , "outputHistogramFrame")
-        layout = QVBoxLayout(input_output_image_histogram_frame)
-        layout.addWidget(self.output_image_histogram_canvas)
+        self.output_red_histogram_canvas = HistogramCanvas()
+        self.output_green_histogram_canvas = HistogramCanvas()
+        self.output_blue_histogram_canvas = HistogramCanvas()
+        
+        output_image_red_histogram_frame = self.findChild(QFrame , "rOutputHistogramFrame")
+        output_image_green_histogram_frame = self.findChild(QFrame , "gOutputHistogramFrame")
+        output_image_blue_histogram_frame = self.findChild(QFrame , "bOutputHistogramFrame")
+        
+        self.output_image_histogram_layout_red = QVBoxLayout(output_image_red_histogram_frame)
+        self.output_image_histogram_layout_red.addWidget(self.output_red_histogram_canvas)
+        
+        self.output_image_histogram_layout_green = QVBoxLayout(output_image_green_histogram_frame)
+        self.output_image_histogram_layout_green.addWidget(self.output_green_histogram_canvas)
+        
+        self.output_image_histogram_layout_blue = QVBoxLayout(output_image_blue_histogram_frame)
+        self.output_image_histogram_layout_blue.addWidget(self.output_blue_histogram_canvas)
+        
+        self.output_image_histogram_red_button = self.findChild(QPushButton , "rButtonOutput")
+        self.output_image_histogram_green_button = self.findChild(QPushButton , "gButtonOutput")
+        self.output_image_histogram_blue_button = self.findChild(QPushButton , "bButtonOutput")
+        
+        self.output_image_histogram_red_button.pressed.connect(self.change_histogram_output_to_red_color_channel)
+        self.output_image_histogram_green_button.pressed.connect(self.change_histogram_output_to_green_color_channel)
+        self.output_image_histogram_blue_button.pressed.connect(self.change_histogram_output_to_blue_color_channel)
+        
         
         # CDF of Output  Image
         self.output_image_cdf_canvas = CDFCanvas()
@@ -188,9 +264,16 @@ class MainWindow(QMainWindow):
         self.input_image_2_freq_comp_frame.hide()
         self.output_image_freq_comp_frame.hide()
         
+        
+        
         # Initializing Controller
-        self.controller = Controller(self.input_image_1 , self.input_image_2 , self.output_image , self.output_image_label , self.input_image_1_histogram_canvas, self.input_image_1_cdf_canvas , 
-                                    self.input_image_2_histogram_canvas , self.input_image_2_cdf_canvas , self.output_image_histogram_canvas , self.output_image_cdf_canvas,
+        self.controller = Controller(self.input_image_1 , self.input_image_2 , self.output_image , self.output_image_label ,
+                                    self.input_image_1_red_histogram_canvas,self.input_image_1_green_histogram_canvas,self.input_image_1_blue_histogram_canvas,
+                                    self.input_image_1_cdf_canvas , self.input_image_1_pdf_canvas ,
+                                    self.input_image_2_red_histogram_canvas ,self.input_image_2_green_histogram_canvas , self.input_image_2_blue_histogram_canvas,
+                                    self.input_image_2_cdf_canvas ,
+                                    self.output_red_histogram_canvas ,self.output_green_histogram_canvas,self.output_blue_histogram_canvas,
+                                    self.output_image_cdf_canvas,
                                     self.hybrid_image , self.low_freq_image , self.high_freq_image)
         
         
@@ -205,6 +288,7 @@ class MainWindow(QMainWindow):
             elif (self.input_image_1_hybrid_component_combobox.currentIndex() == 2):
                 self.high_freq_image = self.input_image_1.input_image
             self.apply_hybrid_image()
+            self.output_image_selector_combobox.setCurrentIndex(1)
                 
     def browse_image_input_2(self):
         self.controller.browse_image_input_2()
@@ -217,6 +301,7 @@ class MainWindow(QMainWindow):
             elif (self.input_image_2_hybrid_component_combobox.currentIndex() == 2):
                 self.high_freq_image = self.input_image_2.input_image
             self.apply_hybrid_image()
+            self.output_image_selector_combobox.setCurrentIndex(2)
                 
     def toggle_noise_checkboxes(self):
         if(self.apply_noise_checkbox.isChecked()):
@@ -369,10 +454,39 @@ class MainWindow(QMainWindow):
         self.controller.apply_global_thresholding(self.global_threshold_value)
     
     def change_shown_freq_filters_params(self , index):
+        if(index == 0):
+            return
         self.frequency_domain_filters_stacked_widget.setCurrentIndex(index)
         
     def apply_frequency_domain_filters(self):
         pass
+    
+    def change_histogram1_to_red_color_channel(self):
+        self.input_image_1_histogram_stack.setCurrentIndex(Channel.RED.value)
+    
+    def change_histogram1_to_green_color_channel(self):
+        self.input_image_1_histogram_stack.setCurrentIndex(Channel.GREEN.value)
+    
+    def change_histogram1_to_blue_color_channel(self):
+        self.input_image_1_histogram_stack.setCurrentIndex(Channel.BLUE.value)
+    
+    def change_histogram2_to_red_color_channel(self):
+        self.input_image_2_histogram_stack.setCurrentIndex(Channel.RED.value)
+    
+    def change_histogram2_to_green_color_channel(self):
+        self.input_image_2_histogram_stack.setCurrentIndex(Channel.GREEN.value)
+    
+    def change_histogram2_to_blue_color_channel(self):
+        self.input_image_2_histogram_stack.setCurrentIndex(Channel.BLUE.value)
+    
+    def change_histogram_output_to_red_color_channel(self):
+        self.output_image_histogram_stack.setCurrentIndex(Channel.RED.value)
+    
+    def change_histogram_output_to_green_color_channel(self):
+        self.output_image_histogram_stack.setCurrentIndex(Channel.GREEN.value)
+    
+    def change_histogram_output_to_blue_color_channel(self):
+        self.output_image_histogram_stack.setCurrentIndex(Channel.BLUE.value)
             
 if __name__ == '__main__':
     app = QApplication(sys.argv)

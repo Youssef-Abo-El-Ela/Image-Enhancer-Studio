@@ -1,50 +1,76 @@
-from classes.ImageEnum import ImageSource
+from classes.ImageEnum import Channel , DistributionCurve
 import cv2
 import numpy as np
 from PyQt5.QtGui import QPixmap , QImage
 from copy import deepcopy
 class Controller():
-    def __init__(self , input_image_1 , input_image_2 , output_image , output_image_label , input_image_1_histogram_canvas, input_image_1_cdf_canvas , input_image_2_histogram_canvas ,
-                input_image_2_cdf_canvas , output_image_histogram_canvas , output_image_cdf_canvas, hybrid_image,
+    def __init__(self , input_image_1 , input_image_2 , output_image , output_image_label ,
+                input_image_1_red_histogram_canvas,input_image_1_green_histogram_canvas,input_image_1_blue_histogram_canvas,
+                input_image_1_cdf_canvas ,input_image_1_pdf_canvas,
+                input_image_2_red_histogram_canvas ,input_image_2_green_histogram_canvas, input_image_2_blue_histogram_canvas,
+                input_image_2_cdf_canvas ,
+                output_image_red_histogram_canvas , output_image_green_histogram_canvas, output_image_blue_histogram_canvas,
+                output_image_cdf_canvas,
+                hybrid_image,
                 low_freq_image , high_freq_image):
+        
         self.input_image_1 = input_image_1
         self.input_image_2 = input_image_2
         self.output_image = output_image
         self.hybrid_image = hybrid_image
         self.current_output_source_index = 0
         self.output_image_label = output_image_label
-        self.input_image_1_histogram_canvas = input_image_1_histogram_canvas
+        self.input_image_1_red_histogram_canvas = input_image_1_red_histogram_canvas
+        self.input_image_1_green_histogram_canvas = input_image_1_green_histogram_canvas
+        self.input_image_1_blue_histogram_canvas = input_image_1_blue_histogram_canvas
         self.input_image_1_cdf_canvas = input_image_1_cdf_canvas
-        self.input_image_2_histogram_canvas = input_image_2_histogram_canvas
+        self.input_image_1_pdf_canvas = input_image_1_pdf_canvas
+        self.input_image_2_red_histogram_canvas = input_image_2_red_histogram_canvas
+        self.input_image_2_green_histogram_canvas = input_image_2_green_histogram_canvas
+        self.input_image_2_blue_histogram_canvas = input_image_2_blue_histogram_canvas
         self.input_image_2_cdf_canvas = input_image_2_cdf_canvas
-        self.output_image_histogram_canvas = output_image_histogram_canvas
+        self.output_image_red_histogram_canvas = output_image_red_histogram_canvas
+        self.output_image_green_histogram_canvas = output_image_green_histogram_canvas
+        self.output_image_blue_histogram_canvas = output_image_blue_histogram_canvas
         self.output_image_cdf_canvas = output_image_cdf_canvas
         self.hybrid_image_mode = False
         self.low_freq_image = low_freq_image
         self.high_freq_image = high_freq_image
+        self.current_graph_channel = Channel.RED
+        self.current_distribution_curve = DistributionCurve.CDF
 
     def set_output_image_source(self):
         if(self.hybrid_image_mode):
             self.output_image_pixmap = self.numpy_to_qpixmap(self.hybrid_image.output_image)
-            self.output_image_histogram_canvas.plot_histogram(self.hybrid_image.output_image)
+            self.output_image_red_histogram_canvas.plot_histogram(self.hybrid_image.output_image[:,:,Channel.RED.value])
+            self.output_image_green_histogram_canvas.plot_histogram(self.hybrid_image.output_image[:,:,Channel.GREEN.value])
+            self.output_image_blue_histogram_canvas.plot_histogram(self.hybrid_image.output_image[:,:,Channel.BLUE.value])
             self.output_image_cdf_canvas.plot_distribution_curve(self.hybrid_image.output_image)
             
         elif(self.current_output_source_index == 1 and len(self.input_image_1.output_image) != 0):
             self.output_image_pixmap = self.numpy_to_qpixmap(self.input_image_1.output_image)
-            self.output_image_histogram_canvas.plot_histogram(self.input_image_1.output_image)
+            self.output_image_red_histogram_canvas.plot_histogram(self.input_image_1.output_image[:,:,Channel.RED.value])
+            self.output_image_green_histogram_canvas.plot_histogram(self.input_image_1.output_image[:,:,Channel.GREEN.value])
+            self.output_image_blue_histogram_canvas.plot_histogram(self.input_image_1.output_image[:,:,Channel.BLUE.value])
             self.output_image_cdf_canvas.plot_distribution_curve(self.input_image_1.output_image)
 
         elif(self.current_output_source_index == 2 and len(self.input_image_2.output_image) != 0):
             self.output_image_pixmap = self.numpy_to_qpixmap(self.input_image_2.output_image)
-            self.output_image_histogram_canvas.plot_histogram(self.input_image_2.output_image)
+            self.output_image_red_histogram_canvas.plot_histogram(self.input_image_2.output_image[:,:,Channel.RED.value])
+            self.output_image_green_histogram_canvas.plot_histogram(self.input_image_2.output_image[:,:,Channel.GREEN.value])
+            self.output_image_blue_histogram_canvas.plot_histogram(self.input_image_2.output_image[:,:,Channel.BLUE.value])
             self.output_image_cdf_canvas.plot_distribution_curve(self.input_image_2.output_image)
         
         if (self.input_image_1.input_image is not None):                
-            self.input_image_1_histogram_canvas.plot_histogram(self.input_image_1.input_image)
+            self.input_image_1_red_histogram_canvas.plot_histogram(self.input_image_1.input_image[:,:,Channel.RED.value])
+            self.input_image_1_green_histogram_canvas.plot_histogram(self.input_image_1.input_image[:,:,Channel.GREEN.value])
+            self.input_image_1_blue_histogram_canvas.plot_histogram(self.input_image_1.input_image[:,:,Channel.BLUE.value])
             self.input_image_1_cdf_canvas.plot_distribution_curve(self.input_image_1.input_image)
             
-        elif (self.input_image_2.input_image is not None):
-            self.input_image_2_histogram_canvas.plot_histogram(self.input_image_2.input_image)
+        if (self.input_image_2.input_image is not None):
+            self.input_image_2_red_histogram_canvas.plot_histogram(self.input_image_2.input_image[:,:,Channel.RED.value])
+            self.input_image_2_blue_histogram_canvas.plot_histogram(self.input_image_2.input_image[:,:,Channel.BLUE.value])
+            self.input_image_2_green_histogram_canvas.plot_histogram(self.input_image_2.input_image[:,:,Channel.GREEN.value])
             self.input_image_2_cdf_canvas.plot_distribution_curve(self.input_image_2.input_image)
         
         self.output_image_label.setPixmap(self.output_image_pixmap)
@@ -52,11 +78,18 @@ class Controller():
         
     def browse_image_input_1(self):
         self.input_image_1.select_image()
-        self.input_image_1_histogram_canvas.plot_histogram(self.input_image_1.input_image)
+        self.current_output_source_index = 1
+        self.input_image_1_red_histogram_canvas.plot_histogram(self.input_image_1.input_image[:,:,Channel.RED.value])
+        self.input_image_1_green_histogram_canvas.plot_histogram(self.input_image_1.input_image[:,:,Channel.GREEN.value])
+        self.input_image_1_blue_histogram_canvas.plot_histogram(self.input_image_1.input_image[:,:,Channel.BLUE.value])
         self.input_image_1_cdf_canvas.plot_distribution_curve(self.input_image_1.input_image)
+    
     def browse_image_input_2(self):
         self.input_image_2.select_image()
-        self.input_image_2_histogram_canvas.plot_histogram(self.input_image_2.input_image)
+        self.current_output_source_index = 2
+        self.input_image_2_red_histogram_canvas.plot_histogram(self.input_image_2.input_image[:,:,Channel.RED.value])
+        self.input_image_2_blue_histogram_canvas.plot_histogram(self.input_image_2.input_image[:,:,Channel.BLUE.value])
+        self.input_image_2_green_histogram_canvas.plot_histogram(self.input_image_2.input_image[:,:,Channel.GREEN.value])
         self.input_image_2_cdf_canvas.plot_distribution_curve(self.input_image_2.input_image)
 
     def apply_noise(self , noise_type, mean = 0, std = np.sqrt(0.1)):
