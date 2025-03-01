@@ -221,7 +221,7 @@ class Image():
                 horizontal_gradient = np.array([[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]])
             elif filter_size == 5:
                 vertical_gradient = np.array([[-2, -2, -2, -2, -2], [-1, -1, -1, -1, -1], [0, 0, 0, 0, 0], [1, 1, 1, 1, 1], [2, 2, 2, 2, 2]])
-                horizontal_gradient = np.array([-2, -1, 0, 1, 2], [-2, -1, 0, 1, 2], [-2, -1, 0, 1, 2], [-2, -1, 0, 1, 2], [-2, -1, 0, 1, 2])
+                horizontal_gradient = np.array([[-2, -1, 0, 1, 2], [-2, -1, 0, 1, 2], [-2, -1, 0, 1, 2], [-2, -1, 0, 1, 2], [-2, -1, 0, 1, 2]])
             vertical_edges = self.convolve(self.output_image, horizontal_gradient)
             horizontal_edges = self.convolve(self.output_image, vertical_gradient)
             self.output_image = np.sqrt(vertical_edges**2 + horizontal_edges**2)
@@ -443,5 +443,27 @@ class Image():
 
         return np.clip(normalized, new_min, new_max).astype(np.uint8)
     
-    def apply_histogram_equalization(self):
-        pass
+    def histogram_equalization_channel(self, channel):
+        histogram = np.zeros(256)
+        for pixel in channel.ravel():
+            histogram[pixel] += 1
+
+        pdf = histogram / histogram.sum()
+        cdf = np.cumsum(pdf)
+
+        cdf_normalized = np.round(cdf * 255).astype(np.uint8)
+
+        equalized_channel = cdf_normalized[channel]
+
+        return equalized_channel
+
+    def histogram_equalization_color(self , image):
+        b, g, r = cv2.split(image)
+
+        b_eq = self.histogram_equalization_channel(b)
+        g_eq = self.histogram_equalization_channel(g)
+        r_eq = self.histogram_equalization_channel(r)
+
+        equalized_image = cv2.merge((b_eq, g_eq, r_eq))
+
+        self.output_image = equalized_image

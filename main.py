@@ -273,6 +273,10 @@ class MainWindow(QMainWindow):
         self.filter_type = None
         self.edge_detector_filter_type = None
         
+        # Initializing Histogram Equalization Button
+        self.histogram_equalization_button = self.findChild(QPushButton , "normalize")
+        self.histogram_equalization_button.pressed.connect(self.apply_histogram_equalization)
+        
         # Initializing Controller
         self.controller = Controller(self.input_image_1 , self.input_image_2 , self.output_image , self.output_image_label ,
                                     self.input_image_1_red_histogram_canvas,self.input_image_1_green_histogram_canvas,self.input_image_1_blue_histogram_canvas,
@@ -479,6 +483,9 @@ class MainWindow(QMainWindow):
         
     def apply_frequency_domain_filters(self):
         pass
+    
+    def apply_histogram_equalization(self):
+        self.controller.apply_histogram_equalization()
     
     def change_histogram1_to_red_color_channel(self):
         self.input_image_1_histogram_stack.setCurrentIndex(Channel.RED.value)

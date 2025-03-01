@@ -151,3 +151,11 @@ class Controller():
             self.input_image_2.global_threshold(threshold)
         self.set_output_image_source()
         
+    def apply_histogram_equalization(self):
+        if(self.current_output_source_index == 1 and len(self.input_image_1.output_image) != 0 ):
+            self.input_image_1.histogram_equalization_color(self.input_image_1.input_image)
+        
+        if(self.current_output_source_index == 2 and len(self.input_image_2.output_image) != 0 ):
+            self.input_image_2.histogram_equalization_color(self.input_image_2.input_image)
+        
+        self.set_output_image_source()
