@@ -2576,10 +2576,10 @@ border: 1px solid white;
                   <property name="currentIndex">
                    <number>0</number>
                   </property>
-                  <widget class="QWidget" name="pdfPageInput01">
+                  <widget class="QWidget" name="rPdfPageInput01">
                    <layout class="QGridLayout" name="gridLayout_11">
                     <item row="0" column="0">
-                     <widget class="QFrame" name="pdfInput01DistributionFrame">
+                     <widget class="QFrame" name="rPdfInput01DistributionFrame">
                       <property name="minimumSize">
                        <size>
                         <width>0</width>
@@ -2602,13 +2602,117 @@ border-radius: 10px
                     </item>
                    </layout>
                   </widget>
-                  <widget class="QWidget" name="cdfPageInput01">
+                  <widget class="QWidget" name="gPdfPageInput01">
+                   <layout class="QGridLayout" name="gridLayout_20">
+                    <item row="0" column="0">
+                     <widget class="QFrame" name="gPdfInput01DistributionFrame">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>150</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QFrame{
+background-color:#1E293B;
+border-radius: 10px
+}</string>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                  <widget class="QWidget" name="bPdfPageInput01">
+                   <layout class="QGridLayout" name="gridLayout_21">
+                    <item row="0" column="0">
+                     <widget class="QFrame" name="bPdfInput01DistributionFrame_2">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>150</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QFrame{
+background-color:#1E293B;
+border-radius: 10px
+}</string>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                  <widget class="QWidget" name="rCdfPageInput01">
                    <layout class="QGridLayout" name="gridLayout_12">
                     <item row="0" column="0">
-                     <widget class="QFrame" name="cdfInput01DistributionFrame">
+                     <widget class="QFrame" name="rCdfInput01DistributionFrame">
                       <property name="minimumSize">
                        <size>
                         <width>0</width>
+                        <height>150</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QFrame{
+background-color:#1E293B;
+border-radius: 10px
+}</string>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                  <widget class="QWidget" name="gCdfPageInput01">
+                   <layout class="QGridLayout" name="gridLayout_22">
+                    <item row="0" column="0">
+                     <widget class="QFrame" name="gCdfInput01DistributionFrame">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>150</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QFrame{
+background-color:#1E293B;
+border-radius: 10px
+}</string>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                  <widget class="QWidget" name="bCdfPageInput01">
+                   <layout class="QGridLayout" name="gridLayout_23">
+                    <item row="0" column="0">
+                     <widget class="QFrame" name="bCdfInput01DistributionFrame">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
                         <height>150</height>
                        </size>
                       </property>
@@ -3166,10 +3270,10 @@ border: 1px solid white;
                   <property name="currentIndex">
                    <number>0</number>
                   </property>
-                  <widget class="QWidget" name="pdfPageInput02">
+                  <widget class="QWidget" name="rPdfPageInput02">
                    <layout class="QGridLayout" name="gridLayout_13">
                     <item row="0" column="0">
-                     <widget class="QFrame" name="pdfInput02DistributionFrame">
+                     <widget class="QFrame" name="rPdfInput02DistributionFrame">
                       <property name="minimumSize">
                        <size>
                         <width>0</width>
@@ -3192,13 +3296,117 @@ border-radius: 10px
                     </item>
                    </layout>
                   </widget>
-                  <widget class="QWidget" name="cdfPageInput02">
+                  <widget class="QWidget" name="gPdfPageInput02">
+                   <layout class="QGridLayout" name="gridLayout_24">
+                    <item row="0" column="0">
+                     <widget class="QFrame" name="gPdfInput02DistributionFrame">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>150</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QFrame{
+background-color:#1E293B;
+border-radius: 10px
+}</string>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                  <widget class="QWidget" name="bPdfPageInput02">
+                   <layout class="QGridLayout" name="gridLayout_25">
+                    <item row="0" column="0">
+                     <widget class="QFrame" name="bPdfInput02DistributionFrame">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>150</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QFrame{
+background-color:#1E293B;
+border-radius: 10px
+}</string>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                  <widget class="QWidget" name="rCdfPageInput02">
                    <layout class="QGridLayout" name="gridLayout_14">
                     <item row="0" column="0">
-                     <widget class="QFrame" name="cdfInput02DistributionFrame">
+                     <widget class="QFrame" name="rCdfInput02DistributionFrame">
                       <property name="minimumSize">
                        <size>
                         <width>0</width>
+                        <height>150</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QFrame{
+background-color:#1E293B;
+border-radius: 10px
+}</string>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                  <widget class="QWidget" name="gCdfPageInput02">
+                   <layout class="QGridLayout" name="gridLayout_26">
+                    <item row="0" column="0">
+                     <widget class="QFrame" name="gCdfInput02DistributionFrame">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>150</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QFrame{
+background-color:#1E293B;
+border-radius: 10px
+}</string>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                  <widget class="QWidget" name="bCdfPageInput02">
+                   <layout class="QGridLayout" name="gridLayout_27">
+                    <item row="0" column="0">
+                     <widget class="QFrame" name="bCdfInput02DistributionFrame">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
                         <height>150</height>
                        </size>
                       </property>
@@ -3747,7 +3955,7 @@ border: 1px solid white;
                  </layout>
                 </item>
                 <item>
-                 <widget class="QStackedWidget" name="distributionOutputStack">
+                 <widget class="QStackedWidget" name="cdfOutputDistributionStack">
                   <property name="minimumSize">
                    <size>
                     <width>0</width>
@@ -3757,10 +3965,10 @@ border: 1px solid white;
                   <property name="currentIndex">
                    <number>0</number>
                   </property>
-                  <widget class="QWidget" name="pdfPageOutput">
+                  <widget class="QWidget" name="rPdfPageOutput">
                    <layout class="QGridLayout" name="gridLayout_15">
                     <item row="0" column="0">
-                     <widget class="QFrame" name="pdfOutputDistributionFrame">
+                     <widget class="QFrame" name="rPdfOutputDistributionFrame">
                       <property name="minimumSize">
                        <size>
                         <width>0</width>
@@ -3783,16 +3991,114 @@ border-radius: 10px
                     </item>
                    </layout>
                   </widget>
-                  <widget class="QWidget" name="cdfPageOutput">
+                  <widget class="QWidget" name="gPdfPageOutput">
+                   <layout class="QGridLayout" name="gridLayout_28">
+                    <item row="0" column="0">
+                     <widget class="QFrame" name="gPdfOutputDistributionFrame">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>150</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QFrame{
+background-color:#1E293B;
+border-radius: 10px
+}</string>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                  <widget class="QWidget" name="bPdfPageOutput">
+                   <layout class="QGridLayout" name="gridLayout_29">
+                    <item row="0" column="0">
+                     <widget class="QFrame" name="bPdfOutputDistributionFrame">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>150</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QFrame{
+background-color:#1E293B;
+border-radius: 10px
+}</string>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                  <widget class="QWidget" name="rCdfPageOutput">
                    <layout class="QGridLayout" name="gridLayout_16">
                     <item row="0" column="0">
-                     <widget class="QFrame" name="cdfOutputDistributionFrame">
+                     <widget class="QFrame" name="rCdfOutputDistributionFrame">
                       <property name="minimumSize">
                        <size>
                         <width>0</width>
                         <height>150</height>
                        </size>
                       </property>
+                      <property name="styleSheet">
+                       <string notr="true">QFrame{
+background-color:#1E293B;
+border-radius: 10px
+}</string>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                  <widget class="QWidget" name="gCdfPageOutput">
+                   <layout class="QGridLayout" name="gridLayout_30">
+                    <item row="0" column="0">
+                     <widget class="QFrame" name="gCdfOutputDistributionFrame">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>150</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QFrame{
+background-color:#1E293B;
+border-radius: 10px
+}</string>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                  <widget class="QWidget" name="bCdfPageOutput">
+                   <layout class="QGridLayout" name="gridLayout_31">
+                    <item row="0" column="0">
+                     <widget class="QFrame" name="bCdfOutputDistributionFrame">
                       <property name="styleSheet">
                        <string notr="true">QFrame{
 background-color:#1E293B;
