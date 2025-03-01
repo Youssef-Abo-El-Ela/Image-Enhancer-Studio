@@ -229,6 +229,7 @@ class Image():
             return
         elif filter_type == 'Canny':
             self.output_image = cv2.Canny(self.output_image, 100, 200)
+            self.output_image = cv2.cvtColor(self.output_image, cv2.COLOR_GRAY2RGB)
             return
         
         self.output_image = self.convolve(self.output_image, kernel)
@@ -414,6 +415,7 @@ class Image():
         '''
         implement convolution operation on the image 
         '''
+        taken_padded_region = kernel.shape[0]
         image = image.astype(np.float32)
         channels = 1 if len(image.shape) == 2 else image.shape[2]
         padded_image = np.pad(image, pad_width=((kernel.shape[0] // 2, kernel.shape[0] // 2) , (kernel.shape[0] // 2, kernel.shape[0] // 2), (0, 0)), mode='constant', constant_values=0) # pad the image with frame of zeros
@@ -423,7 +425,7 @@ class Image():
         for c in range(channels):
             for i in range(image.shape[0]):
                 for j in range(image.shape[1]):
-                    region = padded_image[i:i+3, j:j+3, c]
+                    region = padded_image[i:i+taken_padded_region, j:j+taken_padded_region, c]
                     output_image[i, j, c] = np.sum(region * kernel)
                     
         # output_image = np.clip(output_image, 0, 255).astype(np.uint8)

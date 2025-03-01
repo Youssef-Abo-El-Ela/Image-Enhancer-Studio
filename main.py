@@ -264,7 +264,14 @@ class MainWindow(QMainWindow):
         self.input_image_2_freq_comp_frame.hide()
         self.output_image_freq_comp_frame.hide()
         
+        # Initialize Kernel Size Choice
+        self.filter_size_combobox = self.findChild(QComboBox , "kernelSizeCombobox")
+        self.filter_size_combobox.setCurrentIndex(1)
+        self.filter_size_combobox.currentIndexChanged.connect(self.change_filter_size)
+        self.filter_size = 3
         
+        self.filter_type = None
+        self.edge_detector_filter_type = None
         
         # Initializing Controller
         self.controller = Controller(self.input_image_1 , self.input_image_2 , self.output_image , self.output_image_label ,
@@ -365,25 +372,25 @@ class MainWindow(QMainWindow):
         if(index == 0):
             return
         if (index == 1):
-            filter_type = "Average"
+            self.filter_type = "Average"
         elif (index == 2):
-            filter_type = "Gaussian"
+            self.filter_type = "Gaussian"
         elif (index == 3):
-            filter_type = "Median"    
-        self.controller.apply_time_domain_low_pass(filter_type ,self.gaussian_filter_sigma)
+            self.filter_type = "Median"    
+        self.controller.apply_time_domain_low_pass(self.filter_type ,self.filter_size,self.gaussian_filter_sigma)
     
     def apply_edge_detector_time_domain(self , index):
         if(index == 0):
             return
         if (index == 1):
-            edge_detector_filter_type = "Sobel"
+            self.edge_detector_filter_type = "Sobel"
         elif (index == 2):
-            edge_detector_filter_type = "Roberts"
+            self.edge_detector_filter_type = "Roberts"
         elif (index == 3):
-            edge_detector_filter_type = "Prewitt"
+            self.edge_detector_filter_type = "Prewitt"
         elif (index == 4):
-            edge_detector_filter_type = "Canny"
-        self.controller.apply_edge_detector_time_domain(edge_detector_filter_type)
+            self.edge_detector_filter_type = "Canny"
+        self.controller.apply_edge_detector_time_domain(self.edge_detector_filter_type , self.filter_size)
     
     def set_input_image_1_freq_component(self , index):
         if(index == 1):
@@ -457,6 +464,18 @@ class MainWindow(QMainWindow):
         if(index == 0):
             return
         self.frequency_domain_filters_stacked_widget.setCurrentIndex(index)
+    
+    def change_filter_size(self , index):
+        if(index == 0):
+            return
+        elif(index == 1):
+            self.filter_size = 3
+        elif (index == 2):
+            self.filter_size = 5
+        if(self.filter_type != None):
+            self.controller.apply_time_domain_low_pass(self.filter_type , self.filter_size ,self.gaussian_filter_sigma)
+        if(self.edge_detector_filter_type != None):
+            self.controller.apply_edge_detector_time_domain(self.edge_detector_filter_type , self.filter_size)
         
     def apply_frequency_domain_filters(self):
         pass

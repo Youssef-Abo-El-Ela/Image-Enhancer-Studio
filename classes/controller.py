@@ -112,18 +112,18 @@ class Controller():
             self.input_image_2.output_image = self.input_image_2.convert_rgb_to_gray(self.input_image_2.input_image)
         self.set_output_image_source()
     
-    def apply_time_domain_low_pass(self , filter_type , sigma = 1):
+    def apply_time_domain_low_pass(self , filter_type ,filter_size, sigma = 1):
         if(self.input_image_1.input_image is not None):
-            self.input_image_1.apply_filter(filter_type , sigma)
+            self.input_image_1.apply_filter(filter_type ,filter_size, sigma)
         if(self.input_image_2.input_image is not None ):
-            self.input_image_2.apply_filter(filter_type , sigma)
+            self.input_image_2.apply_filter(filter_type ,filter_size, sigma)
         self.set_output_image_source()
     
-    def apply_edge_detector_time_domain(self , filter_type):
+    def apply_edge_detector_time_domain(self , filter_type,filter_size):
         if(self.input_image_1.input_image is not None):
-            self.input_image_1.apply_filter(filter_type)
+            self.input_image_1.apply_filter(filter_type,filter_size)
         if(self.input_image_2.input_image is not None ):
-            self.input_image_2.apply_filter(filter_type)
+            self.input_image_2.apply_filter(filter_type,filter_size)
         self.set_output_image_source()
 
     def apply_hybrid_image(self , low_freq_image , high_freq_image):
