@@ -256,6 +256,33 @@ class MainWindow(QMainWindow):
         
         self.frequency_domain_filters_stacked_widget = self.findChild(QStackedWidget , "frequencyDomainFiltersStack")
         
+        # Ideal Freq Filter
+        self.ideal_filter_radius_line_edit = self.findChild(QLineEdit , "idealFilterRadiusInput")
+        self.ideal_filter_radius_line_edit.textChanged.connect(self.set_ideal_filter_radius)
+        self.ideal_filter_radius = 70
+        self.ideal_filter_type = None
+        self.apply_ideal_frequency_domain_filters_button = self.findChild(QPushButton , "idealFilterButton")
+        self.apply_ideal_frequency_domain_filters_button.pressed.connect(self.apply_ideal_frequency_domain_filters)
+        
+        # ButterWorth Freq filter
+        self.butter_order_line_edit = self.findChild(QLineEdit , "butterworthOrderInput")
+        self.butter_order_line_edit.textChanged.connect(self.set_butter_filter_order)
+        self.butter_cutoff_line_edit = self.findChild(QLineEdit , "butterworthCutoffFrequencyInput")
+        self.butter_cutoff_line_edit.textChanged.connect(self.set_butter_filter_cutoff)
+        self.butter_filter_type = None
+        self.butter_filter_cutoff = 10
+        self.butter_filter_order = 1
+        self.apply_butter_frequency_domain_filters_button = self.findChild(QPushButton , "butterworthButton")
+        self.apply_butter_frequency_domain_filters_button.pressed.connect(self.apply_butter_frequency_domain_filters)
+        
+        # Gaussian Freq filter
+        self.gaussian_cutoff_line_edit = self.findChild(QLineEdit , "gaussianCutoffFrequencyInput")
+        self.gaussian_cutoff_line_edit.textChanged.connect(self.set_gaussian_filter_cutoff)
+        self.gaussian_filter_type = None
+        self.gaussian_filter_cutoff = 10
+        self.apply_gaussian_frequency_domain_filters_button = self.findChild(QPushButton , "gaussianFrequencyButton")
+        self.apply_gaussian_frequency_domain_filters_button.pressed.connect(self.apply_gaussian_frequency_domain_filters)
+        
         # Initialize Removable Frames
         self.input_image_1_freq_comp_frame = self.findChild(QFrame , "input01HybridFrame")
         self.input_image_2_freq_comp_frame = self.findChild(QFrame , "input02HybridFrame")
@@ -467,8 +494,25 @@ class MainWindow(QMainWindow):
     def change_shown_freq_filters_params(self , index):
         if(index == 0):
             return
-        self.frequency_domain_filters_stacked_widget.setCurrentIndex(index)
-    
+        if(index == 1):
+            self.frequency_domain_filters_stacked_widget.setCurrentIndex(0)
+            self.ideal_filter_type = 'high'
+        if(index == 2):
+            self.frequency_domain_filters_stacked_widget.setCurrentIndex(0)
+            self.ideal_filter_type = 'low'
+        if(index == 3):
+            self.frequency_domain_filters_stacked_widget.setCurrentIndex(1)
+            self.butter_filter_type = 'high'
+        if(index == 4):
+            self.frequency_domain_filters_stacked_widget.setCurrentIndex(1)
+            self.butter_filter_type = 'low'
+        if(index == 5):
+            self.frequency_domain_filters_stacked_widget.setCurrentIndex(2)
+            self.gaussian_filter_type = 'high'
+        if(index == 6):
+            self.frequency_domain_filters_stacked_widget.setCurrentIndex(2)
+            self.gaussian_filter_type = 'low'
+            
     def change_filter_size(self , index):
         if(index == 0):
             return
@@ -480,9 +524,36 @@ class MainWindow(QMainWindow):
             self.controller.apply_time_domain_low_pass(self.filter_type , self.filter_size ,self.gaussian_filter_sigma)
         if(self.edge_detector_filter_type != None):
             self.controller.apply_edge_detector_time_domain(self.edge_detector_filter_type , self.filter_size)
+    
+    def set_ideal_filter_radius(self , text):
+        if (text == "" or text == " " or '-' in text or text.isalpha()):
+            return
+        self.ideal_filter_radius = float(text)
+    
+    
+    def set_butter_filter_cutoff(self , text):
+        if (text == "" or text == " " or '-' in text or text.isalpha()):
+            return
+        self.butter_filter_cutoff = float(text)
+    
+    def set_butter_filter_order(self , text):
+        if (text == "" or text == " " or '-' in text or text.isalpha()):
+            return
+        self.butter_filter_order = int(text)
+    
+    def set_gaussian_filter_cutoff(self , text):
+        if (text == "" or text == " " or '-' in text or text.isalpha()):
+            return
+        self.gaussian_filter_cutoff = float(text)
         
-    def apply_frequency_domain_filters(self):
-        pass
+    def apply_ideal_frequency_domain_filters(self):
+        self.controller.apply_ideal_freq_filters(self.ideal_filter_type , self.ideal_filter_radius)
+    
+    def apply_butter_frequency_domain_filters(self):
+        self.controller.apply_butter_freq_filters(self.butter_filter_type , self.butter_filter_cutoff , self.butter_filter_order)
+    
+    def apply_gaussian_frequency_domain_filters(self):
+        self.controller.apply_gaussian_freq_filters(self.gaussian_filter_type , self.gaussian_filter_cutoff)
     
     def apply_histogram_equalization(self):
         self.controller.apply_histogram_equalization()

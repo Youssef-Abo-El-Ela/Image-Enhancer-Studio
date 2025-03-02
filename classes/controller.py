@@ -159,3 +159,30 @@ class Controller():
             self.input_image_2.histogram_equalization_color(self.input_image_2.input_image)
         
         self.set_output_image_source()
+
+    def apply_ideal_freq_filters(self , type ,radius):
+        if(self.current_output_source_index == 1 and len(self.input_image_1.output_image) != 0 ):
+            output_image1_fft = self.input_image_1.frequency_domain_ideal_filter(type , self.input_image_1.input_image_fft , radius)
+            self.input_image_1.output_image = self.input_image_1.inverse_fourier_transform(output_image1_fft)
+        if(self.current_output_source_index == 2 and len(self.input_image_2.output_image) != 0 ):
+            output_image2_fft = self.input_image_2.frequency_domain_ideal_filter(type , self.input_image_2.input_image_fft , radius)
+            self.input_image_2.output_image = self.input_image_2.inverse_fourier_transform(output_image2_fft)
+        self.set_output_image_source()
+    
+    def apply_butter_freq_filters(self , type , cutoff , order):
+        if(self.current_output_source_index == 1 and len(self.input_image_1.output_image) != 0 ):
+            output_image1_fft = self.input_image_1.frequency_domain_butterworth_filter(type , self.input_image_1.input_image_fft , cutoff , order)
+            self.input_image_1.output_image = self.input_image_1.inverse_fourier_transform(output_image1_fft)
+        if(self.current_output_source_index == 2 and len(self.input_image_2.output_image) != 0 ):
+            output_image2_fft = self.input_image_2.frequency_domain_butterworth_filter(type , self.input_image_2.input_image_fft , cutoff , order)
+            self.input_image_2.output_image = self.input_image_2.inverse_fourier_transform(output_image2_fft)
+        self.set_output_image_source()
+    
+    def apply_gaussian_freq_filters(self , type , cutoff ):
+        if(self.current_output_source_index == 1 and len(self.input_image_1.output_image) != 0 ):
+            output_image1_fft = self.input_image_1.frequency_domain_gaussian_filter(type , self.input_image_1.input_image_fft , cutoff)
+            self.input_image_1.output_image = self.input_image_1.inverse_fourier_transform(output_image1_fft)
+        if(self.current_output_source_index == 2 and len(self.input_image_2.output_image) != 0 ):
+            output_image2_fft = self.input_image_2.frequency_domain_gaussian_filter(type , self.input_image_2.input_image_fft , cutoff)
+            self.input_image_2.output_image = self.input_image_2.inverse_fourier_transform(output_image2_fft)
+        self.set_output_image_source()

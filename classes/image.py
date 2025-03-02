@@ -22,7 +22,7 @@ class Image():
             self.input_image = cv2.imread(file_path, cv2.IMREAD_COLOR)
             self.output_image = self.input_image.copy() # a copy of the selected image is made so we can modify it without affecting the original image
             self.update_image_type(self.input_image) # update the selected image type
-            
+            self.input_image_fft , _ = self.fourier_transform(self.input_image)
     def update_image_type(self, image):
         '''
         function that detects whether image is grey or color (rgb) and updates the image_type attribute
@@ -235,14 +235,13 @@ class Image():
         self.output_image = self.convolve(self.output_image, kernel)
         self.output_image = np.clip(self.output_image, 0, 255).astype(np.uint8)    
     
-    def frequency_domain_ideal_filter(type, shifted_fft_image):
+    def frequency_domain_ideal_filter(self , type, shifted_fft_image, radius):
         '''
         low pass filter blurrs the image
 
         high pass filter acts like an edge detector
         '''
         rows, columns, dimensions = shifted_fft_image.shape
-        radius = 70
 
         if type == 'low':
             mask = np.zeros((rows, columns, 2), np.uint8)
@@ -267,12 +266,10 @@ class Image():
         filtered_fft_image = shifted_fft_image * mask
         return filtered_fft_image
     
-    def frequency_domain_butterworth_filter(self, type, shifted_fft_image):
+    def frequency_domain_butterworth_filter(self, type, shifted_fft_image , D0 , n):
         rows, columns, dimensions = shifted_fft_image.shape
         H = np.zeros((rows, columns, 2), dtype=np.float32)
-        D0 = 10 # the cut-off frequency from the center
-        n = 1 # order of the filter which determines how sharp the cutoff is
-
+        
         if type == 'low':
             for u in range(rows):
                 for v in range(columns):
@@ -288,10 +285,9 @@ class Image():
         filtered_image = shifted_fft_image * H 
         return filtered_image
 
-    def frequency_domain_gaussian_filter(self, type, shifted_fft_image):
+    def frequency_domain_gaussian_filter(self, type, shifted_fft_image , D0):
         rows, columns, dimensions = shifted_fft_image.shape
         H = np.zeros((rows, columns, 2), dtype=np.float32)
-        D0 = 10 # the cut-off frequency from the center
 
         if type == 'low':
             for u in range(rows):
