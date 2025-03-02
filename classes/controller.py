@@ -12,7 +12,8 @@ class Controller():
                 input_image_2_red_cdf_canvas , input_image_2_green_cdf_canvas , input_image_2_blue_cdf_canvas,
                 input_image_2_red_pdf_canvas,input_image_2_green_pdf_canvas,input_image_2_blue_pdf_canvas,
                 output_image_red_histogram_canvas , output_image_green_histogram_canvas, output_image_blue_histogram_canvas,
-                output_image_cdf_canvas,
+                output_image_red_cdf_canvas, output_image_green_cdf_canvas , output_image_blue_cdf_canvas,
+                output_image_red_pdf_canvas , output_image_green_pdf_canvas, output_image_blue_pdf_canvas,
                 hybrid_image,
                 low_freq_image , high_freq_image):
         
@@ -43,7 +44,12 @@ class Controller():
         self.output_image_red_histogram_canvas = output_image_red_histogram_canvas
         self.output_image_green_histogram_canvas = output_image_green_histogram_canvas
         self.output_image_blue_histogram_canvas = output_image_blue_histogram_canvas
-        self.output_image_cdf_canvas = output_image_cdf_canvas
+        self.output_image_red_cdf_canvas = output_image_red_cdf_canvas
+        self.output_image_green_cdf_canvas = output_image_green_cdf_canvas
+        self.output_image_blue_cdf_canvas = output_image_blue_cdf_canvas
+        self.output_image_red_pdf_canvas = output_image_red_pdf_canvas
+        self.output_image_green_pdf_canvas = output_image_green_pdf_canvas
+        self.output_image_blue_pdf_canvas = output_image_blue_pdf_canvas
         self.hybrid_image_mode = False
         self.low_freq_image = low_freq_image
         self.high_freq_image = high_freq_image
@@ -56,22 +62,37 @@ class Controller():
             self.output_image_red_histogram_canvas.plot_histogram(self.hybrid_image.output_image[:,:,Channel.RED.value])
             self.output_image_green_histogram_canvas.plot_histogram(self.hybrid_image.output_image[:,:,Channel.GREEN.value])
             self.output_image_blue_histogram_canvas.plot_histogram(self.hybrid_image.output_image[:,:,Channel.BLUE.value])
-            self.output_image_cdf_canvas.plot_distribution_curve(self.hybrid_image.output_image)
+            self.output_image_blue_histogram_canvas.plot_histogram(self.hybrid_image.output_image[:,:,Channel.BLUE.value])
+            self.output_image_red_cdf_canvas.plot_distribution_curve(self.hybrid_image.output_image[:,:,Channel.RED.value] , "CDF")
+            self.output_image_green_cdf_canvas.plot_distribution_curve(self.hybrid_image.output_image[:,:,Channel.GREEN.value] , "CDF")
+            self.output_image_blue_cdf_canvas.plot_distribution_curve(self.hybrid_image.output_image[:,:,Channel.BLUE.value] , "CDF")            
+            self.output_image_red_pdf_canvas.plot_distribution_curve(self.hybrid_image.output_image[:,:,Channel.RED.value] , "PDF")
+            self.output_image_green_pdf_canvas.plot_distribution_curve(self.hybrid_image.output_image[:,:,Channel.GREEN.value] , "PDF")
+            self.output_image_blue_pdf_canvas.plot_distribution_curve(self.hybrid_image.output_image[:,:,Channel.BLUE.value] , "PDF")
             
         elif(self.current_output_source_index == 1 and len(self.input_image_1.output_image) != 0):
             self.output_image_pixmap = self.numpy_to_qpixmap(self.input_image_1.output_image)
             self.output_image_red_histogram_canvas.plot_histogram(self.input_image_1.output_image[:,:,Channel.RED.value])
             self.output_image_green_histogram_canvas.plot_histogram(self.input_image_1.output_image[:,:,Channel.GREEN.value])
             self.output_image_blue_histogram_canvas.plot_histogram(self.input_image_1.output_image[:,:,Channel.BLUE.value])
-            self.output_image_cdf_canvas.plot_distribution_curve(self.input_image_1.output_image)
-
+            self.output_image_red_cdf_canvas.plot_distribution_curve(self.input_image_1.output_image[:,:,Channel.RED.value] , "CDF")
+            self.output_image_green_cdf_canvas.plot_distribution_curve(self.input_image_1.output_image[:,:,Channel.GREEN.value] , "CDF")
+            self.output_image_blue_cdf_canvas.plot_distribution_curve(self.input_image_1.output_image[:,:,Channel.BLUE.value] , "CDF")            
+            self.output_image_red_pdf_canvas.plot_distribution_curve(self.input_image_1.output_image[:,:,Channel.RED.value] , "PDF")
+            self.output_image_green_pdf_canvas.plot_distribution_curve(self.input_image_1.output_image[:,:,Channel.GREEN.value] , "PDF")
+            self.output_image_blue_pdf_canvas.plot_distribution_curve(self.input_image_1.output_image[:,:,Channel.BLUE.value] , "PDF")
+        
         elif(self.current_output_source_index == 2 and len(self.input_image_2.output_image) != 0):
             self.output_image_pixmap = self.numpy_to_qpixmap(self.input_image_2.output_image)
             self.output_image_red_histogram_canvas.plot_histogram(self.input_image_2.output_image[:,:,Channel.RED.value])
             self.output_image_green_histogram_canvas.plot_histogram(self.input_image_2.output_image[:,:,Channel.GREEN.value])
             self.output_image_blue_histogram_canvas.plot_histogram(self.input_image_2.output_image[:,:,Channel.BLUE.value])
-            self.output_image_cdf_canvas.plot_distribution_curve(self.input_image_2.output_image)
-        
+            self.output_image_red_cdf_canvas.plot_distribution_curve(self.input_image_2.output_image[:,:,Channel.RED.value] , "CDF")
+            self.output_image_green_cdf_canvas.plot_distribution_curve(self.input_image_2.output_image[:,:,Channel.GREEN.value] , "CDF")
+            self.output_image_blue_cdf_canvas.plot_distribution_curve(self.input_image_2.output_image[:,:,Channel.BLUE.value] , "CDF")            
+            self.output_image_red_pdf_canvas.plot_distribution_curve(self.input_image_2.output_image[:,:,Channel.RED.value] , "PDF")
+            self.output_image_green_pdf_canvas.plot_distribution_curve(self.input_image_2.output_image[:,:,Channel.GREEN.value] , "PDF")
+            self.output_image_blue_pdf_canvas.plot_distribution_curve(self.input_image_2.output_image[:,:,Channel.BLUE.value] , "PDF")        
         if (self.input_image_1.input_image is not None):                
             self.input_image_1_red_histogram_canvas.plot_histogram(self.input_image_1.input_image[:,:,Channel.RED.value])
             self.input_image_1_green_histogram_canvas.plot_histogram(self.input_image_1.input_image[:,:,Channel.GREEN.value])
