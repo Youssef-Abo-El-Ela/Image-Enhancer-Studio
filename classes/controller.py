@@ -6,9 +6,11 @@ from copy import deepcopy
 class Controller():
     def __init__(self , input_image_1 , input_image_2 , output_image , output_image_label ,
                 input_image_1_red_histogram_canvas,input_image_1_green_histogram_canvas,input_image_1_blue_histogram_canvas,
-                input_image_1_cdf_canvas ,input_image_1_pdf_canvas,
+                input_image_1_red_cdf_canvas , input_image_1_green_cdf_canvas , input_image_1_blue_cdf_canvas,
+                input_image_1_red_pdf_canvas,input_image_1_green_pdf_canvas,input_image_1_blue_pdf_canvas,
                 input_image_2_red_histogram_canvas ,input_image_2_green_histogram_canvas, input_image_2_blue_histogram_canvas,
-                input_image_2_cdf_canvas ,
+                input_image_2_red_cdf_canvas , input_image_2_green_cdf_canvas , input_image_2_blue_cdf_canvas,
+                input_image_2_red_pdf_canvas,input_image_2_green_pdf_canvas,input_image_2_blue_pdf_canvas,
                 output_image_red_histogram_canvas , output_image_green_histogram_canvas, output_image_blue_histogram_canvas,
                 output_image_cdf_canvas,
                 hybrid_image,
@@ -23,12 +25,21 @@ class Controller():
         self.input_image_1_red_histogram_canvas = input_image_1_red_histogram_canvas
         self.input_image_1_green_histogram_canvas = input_image_1_green_histogram_canvas
         self.input_image_1_blue_histogram_canvas = input_image_1_blue_histogram_canvas
-        self.input_image_1_cdf_canvas = input_image_1_cdf_canvas
-        self.input_image_1_pdf_canvas = input_image_1_pdf_canvas
+        self.input_image_1_red_cdf_canvas = input_image_1_red_cdf_canvas
+        self.input_image_1_green_cdf_canvas = input_image_1_green_cdf_canvas
+        self.input_image_1_blue_cdf_canvas = input_image_1_blue_cdf_canvas
+        self.input_image_1_red_pdf_canvas = input_image_1_red_pdf_canvas
+        self.input_image_1_green_pdf_canvas = input_image_1_green_pdf_canvas
+        self.input_image_1_blue_pdf_canvas = input_image_1_blue_pdf_canvas
         self.input_image_2_red_histogram_canvas = input_image_2_red_histogram_canvas
         self.input_image_2_green_histogram_canvas = input_image_2_green_histogram_canvas
         self.input_image_2_blue_histogram_canvas = input_image_2_blue_histogram_canvas
-        self.input_image_2_cdf_canvas = input_image_2_cdf_canvas
+        self.input_image_2_red_cdf_canvas = input_image_2_red_cdf_canvas
+        self.input_image_2_green_cdf_canvas = input_image_2_green_cdf_canvas
+        self.input_image_2_blue_cdf_canvas = input_image_2_blue_cdf_canvas
+        self.input_image_2_red_pdf_canvas = input_image_2_red_pdf_canvas
+        self.input_image_2_green_pdf_canvas = input_image_2_green_pdf_canvas
+        self.input_image_2_blue_pdf_canvas = input_image_2_blue_pdf_canvas
         self.output_image_red_histogram_canvas = output_image_red_histogram_canvas
         self.output_image_green_histogram_canvas = output_image_green_histogram_canvas
         self.output_image_blue_histogram_canvas = output_image_blue_histogram_canvas
@@ -65,13 +76,23 @@ class Controller():
             self.input_image_1_red_histogram_canvas.plot_histogram(self.input_image_1.input_image[:,:,Channel.RED.value])
             self.input_image_1_green_histogram_canvas.plot_histogram(self.input_image_1.input_image[:,:,Channel.GREEN.value])
             self.input_image_1_blue_histogram_canvas.plot_histogram(self.input_image_1.input_image[:,:,Channel.BLUE.value])
-            self.input_image_1_cdf_canvas.plot_distribution_curve(self.input_image_1.input_image)
+            self.input_image_1_red_cdf_canvas.plot_distribution_curve(self.input_image_1.input_image[:,:,Channel.RED.value] , "CDF")
+            self.input_image_1_green_cdf_canvas.plot_distribution_curve(self.input_image_1.input_image[:,:,Channel.GREEN.value] , "CDF")
+            self.input_image_1_blue_cdf_canvas.plot_distribution_curve(self.input_image_1.input_image[:,:,Channel.BLUE.value] , "CDF")            
+            self.input_image_1_red_pdf_canvas.plot_distribution_curve(self.input_image_1.input_image[:,:,Channel.RED.value] , "PDF")
+            self.input_image_1_green_pdf_canvas.plot_distribution_curve(self.input_image_1.input_image[:,:,Channel.GREEN.value] , "PDF")
+            self.input_image_1_blue_pdf_canvas.plot_distribution_curve(self.input_image_1.input_image[:,:,Channel.BLUE.value] , "PDF")
             
         if (self.input_image_2.input_image is not None):
             self.input_image_2_red_histogram_canvas.plot_histogram(self.input_image_2.input_image[:,:,Channel.RED.value])
             self.input_image_2_blue_histogram_canvas.plot_histogram(self.input_image_2.input_image[:,:,Channel.BLUE.value])
             self.input_image_2_green_histogram_canvas.plot_histogram(self.input_image_2.input_image[:,:,Channel.GREEN.value])
-            self.input_image_2_cdf_canvas.plot_distribution_curve(self.input_image_2.input_image)
+            self.input_image_2_red_cdf_canvas.plot_distribution_curve(self.input_image_2.input_image[:,:,Channel.RED.value] , "CDF")
+            self.input_image_2_green_cdf_canvas.plot_distribution_curve(self.input_image_2.input_image[:,:,Channel.GREEN.value] , "CDF")
+            self.input_image_2_blue_cdf_canvas.plot_distribution_curve(self.input_image_2.input_image[:,:,Channel.BLUE.value] , "CDF")            
+            self.input_image_2_red_pdf_canvas.plot_distribution_curve(self.input_image_2.input_image[:,:,Channel.RED.value] , "PDF")
+            self.input_image_2_green_pdf_canvas.plot_distribution_curve(self.input_image_2.input_image[:,:,Channel.GREEN.value] , "PDF")
+            self.input_image_2_blue_pdf_canvas.plot_distribution_curve(self.input_image_2.input_image[:,:,Channel.BLUE.value] , "PDF")        
         
         self.output_image_label.setPixmap(self.output_image_pixmap)
         self.output_image_label.setScaledContents(True)
@@ -82,7 +103,12 @@ class Controller():
         self.input_image_1_red_histogram_canvas.plot_histogram(self.input_image_1.input_image[:,:,Channel.RED.value])
         self.input_image_1_green_histogram_canvas.plot_histogram(self.input_image_1.input_image[:,:,Channel.GREEN.value])
         self.input_image_1_blue_histogram_canvas.plot_histogram(self.input_image_1.input_image[:,:,Channel.BLUE.value])
-        self.input_image_1_cdf_canvas.plot_distribution_curve(self.input_image_1.input_image)
+        self.input_image_1_red_cdf_canvas.plot_distribution_curve(self.input_image_1.input_image[:,:,Channel.RED.value] , "CDF")
+        self.input_image_1_green_cdf_canvas.plot_distribution_curve(self.input_image_1.input_image[:,:,Channel.GREEN.value] , "CDF")
+        self.input_image_1_blue_cdf_canvas.plot_distribution_curve(self.input_image_1.input_image[:,:,Channel.BLUE.value] , "CDF")
+        self.input_image_1_red_pdf_canvas.plot_distribution_curve(self.input_image_1.input_image[:,:,Channel.RED.value] , "PDF")
+        self.input_image_1_green_pdf_canvas.plot_distribution_curve(self.input_image_1.input_image[:,:,Channel.GREEN.value] , "PDF")
+        self.input_image_1_blue_pdf_canvas.plot_distribution_curve(self.input_image_1.input_image[:,:,Channel.BLUE.value] , "PDF")
     
     def browse_image_input_2(self):
         self.input_image_2.select_image()
@@ -90,7 +116,12 @@ class Controller():
         self.input_image_2_red_histogram_canvas.plot_histogram(self.input_image_2.input_image[:,:,Channel.RED.value])
         self.input_image_2_blue_histogram_canvas.plot_histogram(self.input_image_2.input_image[:,:,Channel.BLUE.value])
         self.input_image_2_green_histogram_canvas.plot_histogram(self.input_image_2.input_image[:,:,Channel.GREEN.value])
-        self.input_image_2_cdf_canvas.plot_distribution_curve(self.input_image_2.input_image)
+        self.input_image_2_red_cdf_canvas.plot_distribution_curve(self.input_image_2.input_image[:,:,Channel.RED.value] , "CDF")
+        self.input_image_2_green_cdf_canvas.plot_distribution_curve(self.input_image_2.input_image[:,:,Channel.GREEN.value] , "CDF")
+        self.input_image_2_blue_cdf_canvas.plot_distribution_curve(self.input_image_2.input_image[:,:,Channel.BLUE.value] , "CDF")            
+        self.input_image_2_red_pdf_canvas.plot_distribution_curve(self.input_image_2.input_image[:,:,Channel.RED.value] , "PDF")
+        self.input_image_2_green_pdf_canvas.plot_distribution_curve(self.input_image_2.input_image[:,:,Channel.GREEN.value] , "PDF")
+        self.input_image_2_blue_pdf_canvas.plot_distribution_curve(self.input_image_2.input_image[:,:,Channel.BLUE.value] , "PDF")
 
     def apply_noise(self , noise_type, mean = 0, std = np.sqrt(0.1)):
         if(self.input_image_1.input_image is not None):

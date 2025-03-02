@@ -6,7 +6,7 @@ from PyQt5.QtGui import QIcon
 from helper_functions.compile_qrc import compile_qrc
 from classes.image import Image
 from classes.controller import Controller
-from classes.ImageEnum import ImageSource , Channel
+from classes.ImageEnum import ImageSource , Channel , DistributionCurve
 from classes.statisticsVisualization import HistogramCanvas , CDFCanvas
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
@@ -129,16 +129,49 @@ class MainWindow(QMainWindow):
         self.input_image_1_histogram_blue_button.pressed.connect(self.change_histogram1_to_blue_color_channel)
         
         # PDF , CDF of Input Image 1
-        self.input_image_1_cdf_canvas = CDFCanvas()
-        self.input_image_1_pdf_canvas = CDFCanvas()
+        self.image_1_histo_mode = Channel.RED
+        self.image_1_dist_mode = DistributionCurve.PDF
         
-        input_image_1_cdf_frame = self.findChild(QFrame , "cdfInput01DistributionFrame")
-        self.input_image_1_cdf_layout = QVBoxLayout(input_image_1_cdf_frame)
-        self.input_image_1_cdf_layout.addWidget(self.input_image_1_cdf_canvas)
+        self.input_image_1_dist_curve_stack = self.findChild(QStackedWidget , "distributionInput01Stack")
+
         
-        input_image_1_pdf_frame = self.findChild(QFrame , "pdfInput01DistributionFrame")
-        self.input_image_1_pdf_layout = QVBoxLayout(input_image_1_pdf_frame)
-        self.input_image_1_pdf_layout.addWidget(self.input_image_1_pdf_canvas)
+        self.input_image_1_red_cdf_canvas = CDFCanvas()
+        self.input_image_1_green_cdf_canvas = CDFCanvas()
+        self.input_image_1_blue_cdf_canvas = CDFCanvas()
+        
+        input_image_1_red_cdf_frame = self.findChild(QFrame , "rCdfInput01DistributionFrame")
+        self.input_image_1_red_cdf_layout = QVBoxLayout(input_image_1_red_cdf_frame)
+        self.input_image_1_red_cdf_layout.addWidget(self.input_image_1_red_cdf_canvas)
+        
+        input_image_1_green_cdf_frame = self.findChild(QFrame , "gCdfInput01DistributionFrame")
+        self.input_image_1_green_cdf_layout = QVBoxLayout(input_image_1_green_cdf_frame)
+        self.input_image_1_green_cdf_layout.addWidget(self.input_image_1_green_cdf_canvas)
+        
+        input_image_1_blue_cdf_frame = self.findChild(QFrame , "bCdfInput01DistributionFrame")
+        self.input_image_1_blue_cdf_layout = QVBoxLayout(input_image_1_blue_cdf_frame)
+        self.input_image_1_blue_cdf_layout.addWidget(self.input_image_1_blue_cdf_canvas)
+        
+        self.change_dist_curve_image1_to_cdf_button = self.findChild(QPushButton , "cdfButtonInput01")
+        self.change_dist_curve_image1_to_cdf_button.pressed.connect(self.change_dist_curve_image1_to_cdf)
+        
+        self.input_image_1_red_pdf_canvas = CDFCanvas()
+        self.input_image_1_green_pdf_canvas = CDFCanvas()
+        self.input_image_1_blue_pdf_canvas = CDFCanvas()
+        
+        input_image_1_red_pdf_frame = self.findChild(QFrame , "rPdfInput01DistributionFrame")
+        self.input_image_1_red_pdf_layout = QVBoxLayout(input_image_1_red_pdf_frame)
+        self.input_image_1_red_pdf_layout.addWidget(self.input_image_1_red_pdf_canvas)
+        
+        input_image_1_green_pdf_frame = self.findChild(QFrame , "gPdfInput01DistributionFrame")
+        self.input_image_1_green_pdf_layout = QVBoxLayout(input_image_1_green_pdf_frame)
+        self.input_image_1_green_pdf_layout.addWidget(self.input_image_1_green_pdf_canvas)
+        
+        input_image_1_blue_pdf_frame = self.findChild(QFrame , "bPdfInput01DistributionFrame_2")
+        self.input_image_1_blue_pdf_layout = QVBoxLayout(input_image_1_blue_pdf_frame)
+        self.input_image_1_blue_pdf_layout.addWidget(self.input_image_1_blue_pdf_canvas)
+        
+        self.change_dist_curve_image1_to_pdf_button = self.findChild(QPushButton , "pdfButtonInput01")
+        self.change_dist_curve_image1_to_pdf_button.pressed.connect(self.change_dist_curve_image1_to_pdf)
         
         # Histogram stack of Input Image 2
         self.input_image_2_histogram_stack = self.findChild(QStackedWidget , "histogramInput02Stack")
@@ -169,11 +202,50 @@ class MainWindow(QMainWindow):
         self.input_image_2_histogram_green_button.pressed.connect(self.change_histogram2_to_green_color_channel)
         self.input_image_2_histogram_blue_button.pressed.connect(self.change_histogram2_to_blue_color_channel)
         
-        # CDF of Input Image 2
-        self.input_image_2_cdf_canvas = CDFCanvas()
-        input_image_2_cdf_frame = self.findChild(QFrame , "input02DistributionFrame")
-        layout = QVBoxLayout(input_image_2_cdf_frame)
-        layout.addWidget(self.input_image_2_cdf_canvas)
+        # PDF , CDF of Input Image 2
+        self.image_2_histo_mode = Channel.RED
+        self.image_2_dist_mode = DistributionCurve.PDF
+        
+        self.input_image_2_dist_curve_stack = self.findChild(QStackedWidget , "distributionInput02Stack")
+
+        
+        self.input_image_2_red_cdf_canvas = CDFCanvas()
+        self.input_image_2_green_cdf_canvas = CDFCanvas()
+        self.input_image_2_blue_cdf_canvas = CDFCanvas()
+        
+        input_image_2_red_cdf_frame = self.findChild(QFrame , "rCdfInput02DistributionFrame")
+        self.input_image_2_red_cdf_layout = QVBoxLayout(input_image_2_red_cdf_frame)
+        self.input_image_2_red_cdf_layout.addWidget(self.input_image_2_red_cdf_canvas)
+        
+        input_image_2_green_cdf_frame = self.findChild(QFrame , "gCdfInput02DistributionFrame")
+        self.input_image_2_green_cdf_layout = QVBoxLayout(input_image_2_green_cdf_frame)
+        self.input_image_2_green_cdf_layout.addWidget(self.input_image_2_green_cdf_canvas)
+        
+        input_image_2_blue_cdf_frame = self.findChild(QFrame , "bCdfInput02DistributionFrame")
+        self.input_image_2_blue_cdf_layout = QVBoxLayout(input_image_2_blue_cdf_frame)
+        self.input_image_2_blue_cdf_layout.addWidget(self.input_image_2_blue_cdf_canvas)
+        
+        self.change_dist_curve_image2_to_cdf_button = self.findChild(QPushButton , "cdfButtonInput02")
+        self.change_dist_curve_image2_to_cdf_button.pressed.connect(self.change_dist_curve_image2_to_cdf)
+        
+        self.input_image_2_red_pdf_canvas = CDFCanvas()
+        self.input_image_2_green_pdf_canvas = CDFCanvas()
+        self.input_image_2_blue_pdf_canvas = CDFCanvas()
+        
+        input_image_2_red_pdf_frame = self.findChild(QFrame , "rPdfInput02DistributionFrame")
+        self.input_image_2_red_pdf_layout = QVBoxLayout(input_image_2_red_pdf_frame)
+        self.input_image_2_red_pdf_layout.addWidget(self.input_image_2_red_pdf_canvas)
+        
+        input_image_2_green_pdf_frame = self.findChild(QFrame , "gPdfInput02DistributionFrame")
+        self.input_image_2_green_pdf_layout = QVBoxLayout(input_image_2_green_pdf_frame)
+        self.input_image_2_green_pdf_layout.addWidget(self.input_image_2_green_pdf_canvas)
+        
+        input_image_2_blue_pdf_frame = self.findChild(QFrame , "bPdfInput02DistributionFrame")
+        self.input_image_2_blue_pdf_layout = QVBoxLayout(input_image_2_blue_pdf_frame)
+        self.input_image_2_blue_pdf_layout.addWidget(self.input_image_2_blue_pdf_canvas)
+        
+        self.change_dist_curve_image2_to_pdf_button = self.findChild(QPushButton , "pdfButtonInput02")
+        self.change_dist_curve_image2_to_pdf_button.pressed.connect(self.change_dist_curve_image2_to_pdf)
         
         # Histogram stack of Output Image
         self.output_image_histogram_stack = self.findChild(QStackedWidget , "histogramOutputStack")
@@ -307,9 +379,11 @@ class MainWindow(QMainWindow):
         # Initializing Controller
         self.controller = Controller(self.input_image_1 , self.input_image_2 , self.output_image , self.output_image_label ,
                                     self.input_image_1_red_histogram_canvas,self.input_image_1_green_histogram_canvas,self.input_image_1_blue_histogram_canvas,
-                                    self.input_image_1_cdf_canvas , self.input_image_1_pdf_canvas ,
+                                    self.input_image_1_red_cdf_canvas , self.input_image_1_green_cdf_canvas , self.input_image_1_blue_cdf_canvas , 
+                                    self.input_image_1_red_pdf_canvas , self.input_image_1_green_pdf_canvas, self.input_image_1_blue_pdf_canvas,
                                     self.input_image_2_red_histogram_canvas ,self.input_image_2_green_histogram_canvas , self.input_image_2_blue_histogram_canvas,
-                                    self.input_image_2_cdf_canvas ,
+                                    self.input_image_2_red_cdf_canvas , self.input_image_2_green_cdf_canvas , self.input_image_2_blue_cdf_canvas,
+                                    self.input_image_2_red_pdf_canvas , self.input_image_2_green_pdf_canvas, self.input_image_2_blue_pdf_canvas,
                                     self.output_red_histogram_canvas ,self.output_green_histogram_canvas,self.output_blue_histogram_canvas,
                                     self.output_image_cdf_canvas,
                                     self.hybrid_image , self.low_freq_image , self.high_freq_image)
@@ -560,21 +634,51 @@ class MainWindow(QMainWindow):
     
     def change_histogram1_to_red_color_channel(self):
         self.input_image_1_histogram_stack.setCurrentIndex(Channel.RED.value)
-    
+        self.image_1_histo_mode = Channel.RED
+        if(self.image_1_dist_mode == DistributionCurve.CDF):
+            self.change_dist_curve_image1_to_cdf()
+        elif(self.image_1_dist_mode == DistributionCurve.PDF):
+            self.change_dist_curve_image1_to_pdf()
+        
     def change_histogram1_to_green_color_channel(self):
         self.input_image_1_histogram_stack.setCurrentIndex(Channel.GREEN.value)
+        self.image_1_histo_mode = Channel.GREEN
+        if(self.image_1_dist_mode == DistributionCurve.CDF):
+            self.change_dist_curve_image1_to_cdf()
+        elif(self.image_1_dist_mode == DistributionCurve.PDF):
+            self.change_dist_curve_image1_to_pdf()
     
     def change_histogram1_to_blue_color_channel(self):
         self.input_image_1_histogram_stack.setCurrentIndex(Channel.BLUE.value)
+        self.image_1_histo_mode = Channel.BLUE
+        if(self.image_1_dist_mode == DistributionCurve.CDF):
+            self.change_dist_curve_image1_to_cdf()
+        elif(self.image_1_dist_mode == DistributionCurve.PDF):
+            self.change_dist_curve_image1_to_pdf()
     
     def change_histogram2_to_red_color_channel(self):
         self.input_image_2_histogram_stack.setCurrentIndex(Channel.RED.value)
+        self.image_2_histo_mode = Channel.RED
+        if(self.image_2_dist_mode == DistributionCurve.CDF):
+            self.change_dist_curve_image2_to_cdf()
+        elif(self.image_2_dist_mode == DistributionCurve.PDF):
+            self.change_dist_curve_image2_to_pdf()
     
     def change_histogram2_to_green_color_channel(self):
         self.input_image_2_histogram_stack.setCurrentIndex(Channel.GREEN.value)
+        self.image_2_histo_mode = Channel.GREEN
+        if(self.image_2_dist_mode == DistributionCurve.CDF):
+            self.change_dist_curve_image2_to_cdf()
+        elif(self.image_2_dist_mode == DistributionCurve.PDF):
+            self.change_dist_curve_image2_to_pdf()
     
     def change_histogram2_to_blue_color_channel(self):
         self.input_image_2_histogram_stack.setCurrentIndex(Channel.BLUE.value)
+        self.image_2_histo_mode = Channel.BLUE
+        if(self.image_2_dist_mode == DistributionCurve.CDF):
+            self.change_dist_curve_image2_to_cdf()
+        elif(self.image_2_dist_mode == DistributionCurve.PDF):
+            self.change_dist_curve_image2_to_pdf()
     
     def change_histogram_output_to_red_color_channel(self):
         self.output_image_histogram_stack.setCurrentIndex(Channel.RED.value)
@@ -584,6 +688,42 @@ class MainWindow(QMainWindow):
     
     def change_histogram_output_to_blue_color_channel(self):
         self.output_image_histogram_stack.setCurrentIndex(Channel.BLUE.value)
+    
+    def change_dist_curve_image1_to_cdf(self):
+        self.image_1_dist_mode = DistributionCurve.CDF
+        if(self.image_1_histo_mode == Channel.RED):
+            self.input_image_1_dist_curve_stack.setCurrentIndex(3)
+        if(self.image_1_histo_mode == Channel.GREEN):
+            self.input_image_1_dist_curve_stack.setCurrentIndex(4)
+        if(self.image_1_histo_mode == Channel.BLUE):
+            self.input_image_1_dist_curve_stack.setCurrentIndex(5)
+    
+    def change_dist_curve_image1_to_pdf(self):
+        self.image_1_dist_mode = DistributionCurve.PDF
+        if(self.image_1_histo_mode == Channel.RED):
+            self.input_image_1_dist_curve_stack.setCurrentIndex(0)
+        if(self.image_1_histo_mode == Channel.GREEN):
+            self.input_image_1_dist_curve_stack.setCurrentIndex(1)
+        if(self.image_1_histo_mode == Channel.BLUE):
+            self.input_image_1_dist_curve_stack.setCurrentIndex(2)
+    
+    def change_dist_curve_image2_to_cdf(self):
+        self.image_2_dist_mode = DistributionCurve.CDF
+        if(self.image_2_histo_mode == Channel.RED):
+            self.input_image_2_dist_curve_stack.setCurrentIndex(3)
+        if(self.image_2_histo_mode == Channel.GREEN):
+            self.input_image_2_dist_curve_stack.setCurrentIndex(4)
+        if(self.image_2_histo_mode == Channel.BLUE):
+            self.input_image_2_dist_curve_stack.setCurrentIndex(5)
+    
+    def change_dist_curve_image2_to_pdf(self):
+        self.image_2_dist_mode = DistributionCurve.PDF
+        if(self.image_2_histo_mode == Channel.RED):
+            self.input_image_2_dist_curve_stack.setCurrentIndex(0)
+        if(self.image_2_histo_mode == Channel.GREEN):
+            self.input_image_2_dist_curve_stack.setCurrentIndex(1)
+        if(self.image_2_histo_mode == Channel.BLUE):
+            self.input_image_2_dist_curve_stack.setCurrentIndex(2)
             
 if __name__ == '__main__':
     app = QApplication(sys.argv)
