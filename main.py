@@ -98,6 +98,9 @@ class MainWindow(QMainWindow):
         self.gaussian_filter_sigma = 1
         self.gaussian_filter_sigma_input = self.findChild(QLineEdit,"lowPassGaussianInput")
         self.gaussian_filter_sigma_input.textChanged.connect(self.set_gaussian_filter_sigma)
+
+        self.low_pass_gaussian_filter_frame = self.findChild(QFrame , "lowPassGaussianFrame")
+        self.low_pass_gaussian_filter_frame.hide()
         
         # Histogram Stack of Input Image 1
         self.input_image_1_histogram_stack = self.findChild(QStackedWidget , "histogramInput01Stack")
@@ -366,6 +369,7 @@ class MainWindow(QMainWindow):
         self.frequency_domain_filters_combobox.currentIndexChanged.connect(self.change_shown_freq_filters_params)
         
         self.frequency_domain_filters_stacked_widget = self.findChild(QStackedWidget , "frequencyDomainFiltersStack")
+        self.frequency_domain_filters_stacked_widget.hide()
         
         # Ideal Freq Filter
         self.ideal_filter_radius_line_edit = self.findChild(QLineEdit , "idealFilterRadiusInput")
@@ -518,10 +522,13 @@ class MainWindow(QMainWindow):
             return
         if (index == 1):
             self.filter_type = "Average"
+            self.low_pass_gaussian_filter_frame.hide()
         elif (index == 2):
             self.filter_type = "Gaussian"
+            self.low_pass_gaussian_filter_frame.show()
         elif (index == 3):
-            self.filter_type = "Median"    
+            self.filter_type = "Median"   
+            self.low_pass_gaussian_filter_frame.hide() 
         self.controller.apply_time_domain_low_pass(self.filter_type ,self.filter_size,self.gaussian_filter_sigma)
     
     def apply_edge_detector_time_domain(self , index):
@@ -608,6 +615,7 @@ class MainWindow(QMainWindow):
     def change_shown_freq_filters_params(self , index):
         if(index == 0):
             return
+        self.frequency_domain_filters_stacked_widget.show()
         if(index == 1):
             self.frequency_domain_filters_stacked_widget.setCurrentIndex(0)
             self.ideal_filter_type = 'high'

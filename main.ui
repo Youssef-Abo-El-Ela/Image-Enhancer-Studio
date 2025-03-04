@@ -375,7 +375,7 @@ font-weight:bold;</string>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_6">
         <property name="spacing">
-         <number>15</number>
+         <number>10</number>
         </property>
         <property name="topMargin">
          <number>20</number>
@@ -1084,7 +1084,7 @@ padding: 2px 5px</string>
           <property name="minimumSize">
            <size>
             <width>400</width>
-            <height>190</height>
+            <height>0</height>
            </size>
           </property>
           <property name="maximumSize">
@@ -1487,7 +1487,7 @@ QComboBox QAbstractItemView {
           <property name="minimumSize">
            <size>
             <width>400</width>
-            <height>190</height>
+            <height>0</height>
            </size>
           </property>
           <property name="maximumSize">
@@ -2361,6 +2361,12 @@ border: 1px solid white;
                    <number>0</number>
                   </property>
                   <widget class="QWidget" name="rPageInput01">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>150</height>
+                    </size>
+                   </property>
                    <layout class="QGridLayout" name="gridLayout_2">
                     <item row="0" column="0">
                      <widget class="QFrame" name="rInput01HistogramFrame">
@@ -2387,6 +2393,12 @@ border-radius: 10px
                    </layout>
                   </widget>
                   <widget class="QWidget" name="gPageInput01">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>150</height>
+                    </size>
+                   </property>
                    <layout class="QGridLayout" name="gridLayout_3">
                     <item row="0" column="0">
                      <widget class="QFrame" name="gInput01HistogramFrame">
@@ -2419,6 +2431,12 @@ border-radius: 10px
                    </layout>
                   </widget>
                   <widget class="QWidget" name="bPageInput01">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>150</height>
+                    </size>
+                   </property>
                    <layout class="QGridLayout" name="gridLayout_4">
                     <item row="0" column="0">
                      <widget class="QFrame" name="bInput01HistogramFrame">
@@ -2577,6 +2595,12 @@ border: 1px solid white;
                    <number>0</number>
                   </property>
                   <widget class="QWidget" name="rPdfPageInput01">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>150</height>
+                    </size>
+                   </property>
                    <layout class="QGridLayout" name="gridLayout_11">
                     <item row="0" column="0">
                      <widget class="QFrame" name="rPdfInput01DistributionFrame">
@@ -2603,13 +2627,25 @@ border-radius: 10px
                    </layout>
                   </widget>
                   <widget class="QWidget" name="gPdfPageInput01">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>150</height>
+                    </size>
+                   </property>
                    <layout class="QGridLayout" name="gridLayout_20">
                     <item row="0" column="0">
                      <widget class="QFrame" name="gPdfInput01DistributionFrame">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>150</height>
+                       </size>
+                      </property>
                       <property name="maximumSize">
                        <size>
                         <width>16777215</width>
-                        <height>150</height>
+                        <height>5555555</height>
                        </size>
                       </property>
                       <property name="styleSheet">
@@ -2629,13 +2665,25 @@ border-radius: 10px
                    </layout>
                   </widget>
                   <widget class="QWidget" name="bPdfPageInput01">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>150</height>
+                    </size>
+                   </property>
                    <layout class="QGridLayout" name="gridLayout_21">
                     <item row="0" column="0">
                      <widget class="QFrame" name="bPdfInput01DistributionFrame_2">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>150</height>
+                       </size>
+                      </property>
                       <property name="maximumSize">
                        <size>
                         <width>16777215</width>
-                        <height>150</height>
+                        <height>5555555</height>
                        </size>
                       </property>
                       <property name="styleSheet">
@@ -2655,6 +2703,12 @@ border-radius: 10px
                    </layout>
                   </widget>
                   <widget class="QWidget" name="rCdfPageInput01">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>150</height>
+                    </size>
+                   </property>
                    <layout class="QGridLayout" name="gridLayout_12">
                     <item row="0" column="0">
                      <widget class="QFrame" name="rCdfInput01DistributionFrame">
@@ -2681,13 +2735,25 @@ border-radius: 10px
                    </layout>
                   </widget>
                   <widget class="QWidget" name="gCdfPageInput01">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>150</height>
+                    </size>
+                   </property>
                    <layout class="QGridLayout" name="gridLayout_22">
                     <item row="0" column="0">
                      <widget class="QFrame" name="gCdfInput01DistributionFrame">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>150</height>
+                       </size>
+                      </property>
                       <property name="maximumSize">
                        <size>
                         <width>16777215</width>
-                        <height>150</height>
+                        <height>555555</height>
                        </size>
                       </property>
                       <property name="styleSheet">
@@ -2707,13 +2773,25 @@ border-radius: 10px
                    </layout>
                   </widget>
                   <widget class="QWidget" name="bCdfPageInput01">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>150</height>
+                    </size>
+                   </property>
                    <layout class="QGridLayout" name="gridLayout_23">
                     <item row="0" column="0">
                      <widget class="QFrame" name="bCdfInput01DistributionFrame">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>150</height>
+                       </size>
+                      </property>
                       <property name="maximumSize">
                        <size>
                         <width>16777215</width>
-                        <height>150</height>
+                        <height>16777215</height>
                        </size>
                       </property>
                       <property name="styleSheet">
@@ -3061,6 +3139,12 @@ border: 1px solid white;
                    <number>0</number>
                   </property>
                   <widget class="QWidget" name="rPageInput02">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>150</height>
+                    </size>
+                   </property>
                    <layout class="QGridLayout" name="gridLayout_5">
                     <item row="0" column="0">
                      <widget class="QFrame" name="rInput02HistogramFrame">
@@ -3087,6 +3171,12 @@ border-radius: 10px
                    </layout>
                   </widget>
                   <widget class="QWidget" name="gPageInput02">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>150</height>
+                    </size>
+                   </property>
                    <layout class="QGridLayout" name="gridLayout_6">
                     <item row="0" column="0">
                      <widget class="QFrame" name="gInput02HistogramFrame">
@@ -3113,6 +3203,12 @@ border-radius: 10px
                    </layout>
                   </widget>
                   <widget class="QWidget" name="bPageInput02">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>150</height>
+                    </size>
+                   </property>
                    <layout class="QGridLayout" name="gridLayout_7">
                     <item row="0" column="0">
                      <widget class="QFrame" name="bInput02HistogramFrame">
@@ -3271,6 +3367,12 @@ border: 1px solid white;
                    <number>0</number>
                   </property>
                   <widget class="QWidget" name="rPdfPageInput02">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>150</height>
+                    </size>
+                   </property>
                    <layout class="QGridLayout" name="gridLayout_13">
                     <item row="0" column="0">
                      <widget class="QFrame" name="rPdfInput02DistributionFrame">
@@ -3297,13 +3399,25 @@ border-radius: 10px
                    </layout>
                   </widget>
                   <widget class="QWidget" name="gPdfPageInput02">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>150</height>
+                    </size>
+                   </property>
                    <layout class="QGridLayout" name="gridLayout_24">
                     <item row="0" column="0">
                      <widget class="QFrame" name="gPdfInput02DistributionFrame">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>150</height>
+                       </size>
+                      </property>
                       <property name="maximumSize">
                        <size>
                         <width>16777215</width>
-                        <height>150</height>
+                        <height>16777215</height>
                        </size>
                       </property>
                       <property name="styleSheet">
@@ -3323,13 +3437,25 @@ border-radius: 10px
                    </layout>
                   </widget>
                   <widget class="QWidget" name="bPdfPageInput02">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>150</height>
+                    </size>
+                   </property>
                    <layout class="QGridLayout" name="gridLayout_25">
                     <item row="0" column="0">
                      <widget class="QFrame" name="bPdfInput02DistributionFrame">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>150</height>
+                       </size>
+                      </property>
                       <property name="maximumSize">
                        <size>
                         <width>16777215</width>
-                        <height>150</height>
+                        <height>16777215</height>
                        </size>
                       </property>
                       <property name="styleSheet">
@@ -3349,6 +3475,12 @@ border-radius: 10px
                    </layout>
                   </widget>
                   <widget class="QWidget" name="rCdfPageInput02">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>150</height>
+                    </size>
+                   </property>
                    <layout class="QGridLayout" name="gridLayout_14">
                     <item row="0" column="0">
                      <widget class="QFrame" name="rCdfInput02DistributionFrame">
@@ -3375,13 +3507,25 @@ border-radius: 10px
                    </layout>
                   </widget>
                   <widget class="QWidget" name="gCdfPageInput02">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>150</height>
+                    </size>
+                   </property>
                    <layout class="QGridLayout" name="gridLayout_26">
                     <item row="0" column="0">
                      <widget class="QFrame" name="gCdfInput02DistributionFrame">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>150</height>
+                       </size>
+                      </property>
                       <property name="maximumSize">
                        <size>
                         <width>16777215</width>
-                        <height>150</height>
+                        <height>16777215</height>
                        </size>
                       </property>
                       <property name="styleSheet">
@@ -3401,13 +3545,25 @@ border-radius: 10px
                    </layout>
                   </widget>
                   <widget class="QWidget" name="bCdfPageInput02">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>150</height>
+                    </size>
+                   </property>
                    <layout class="QGridLayout" name="gridLayout_27">
                     <item row="0" column="0">
                      <widget class="QFrame" name="bCdfInput02DistributionFrame">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>150</height>
+                       </size>
+                      </property>
                       <property name="maximumSize">
                        <size>
                         <width>16777215</width>
-                        <height>150</height>
+                        <height>16777215</height>
                        </size>
                       </property>
                       <property name="styleSheet">
@@ -3756,6 +3912,12 @@ border: 1px solid white;
                    <number>0</number>
                   </property>
                   <widget class="QWidget" name="rPageHistogramOutput">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>150</height>
+                    </size>
+                   </property>
                    <layout class="QGridLayout" name="gridLayout_8">
                     <item row="0" column="0">
                      <widget class="QFrame" name="rOutputHistogramFrame">
@@ -3782,6 +3944,12 @@ border-radius: 10px
                    </layout>
                   </widget>
                   <widget class="QWidget" name="gPageHistogramOutput">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>150</height>
+                    </size>
+                   </property>
                    <layout class="QGridLayout" name="gridLayout_9">
                     <item row="0" column="0">
                      <widget class="QFrame" name="gOutputHistogramFrame">
@@ -3808,6 +3976,12 @@ border-radius: 10px
                    </layout>
                   </widget>
                   <widget class="QWidget" name="bPageHistogramOutput">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>150</height>
+                    </size>
+                   </property>
                    <layout class="QGridLayout" name="gridLayout_10">
                     <item row="0" column="0">
                      <widget class="QFrame" name="bOutputHistogramFrame">
@@ -3966,6 +4140,12 @@ border: 1px solid white;
                    <number>0</number>
                   </property>
                   <widget class="QWidget" name="rPdfPageOutput">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>150</height>
+                    </size>
+                   </property>
                    <layout class="QGridLayout" name="gridLayout_15">
                     <item row="0" column="0">
                      <widget class="QFrame" name="rPdfOutputDistributionFrame">
@@ -3992,13 +4172,25 @@ border-radius: 10px
                    </layout>
                   </widget>
                   <widget class="QWidget" name="gPdfPageOutput">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>150</height>
+                    </size>
+                   </property>
                    <layout class="QGridLayout" name="gridLayout_28">
                     <item row="0" column="0">
                      <widget class="QFrame" name="gPdfOutputDistributionFrame">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>150</height>
+                       </size>
+                      </property>
                       <property name="maximumSize">
                        <size>
                         <width>16777215</width>
-                        <height>150</height>
+                        <height>4444444</height>
                        </size>
                       </property>
                       <property name="styleSheet">
@@ -4018,13 +4210,25 @@ border-radius: 10px
                    </layout>
                   </widget>
                   <widget class="QWidget" name="bPdfPageOutput">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>150</height>
+                    </size>
+                   </property>
                    <layout class="QGridLayout" name="gridLayout_29">
                     <item row="0" column="0">
                      <widget class="QFrame" name="bPdfOutputDistributionFrame">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>150</height>
+                       </size>
+                      </property>
                       <property name="maximumSize">
                        <size>
                         <width>16777215</width>
-                        <height>150</height>
+                        <height>5555555</height>
                        </size>
                       </property>
                       <property name="styleSheet">
@@ -4044,6 +4248,12 @@ border-radius: 10px
                    </layout>
                   </widget>
                   <widget class="QWidget" name="rCdfPageOutput">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>150</height>
+                    </size>
+                   </property>
                    <layout class="QGridLayout" name="gridLayout_16">
                     <item row="0" column="0">
                      <widget class="QFrame" name="rCdfOutputDistributionFrame">
@@ -4070,9 +4280,21 @@ border-radius: 10px
                    </layout>
                   </widget>
                   <widget class="QWidget" name="gCdfPageOutput">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>150</height>
+                    </size>
+                   </property>
                    <layout class="QGridLayout" name="gridLayout_30">
                     <item row="0" column="0">
                      <widget class="QFrame" name="gCdfOutputDistributionFrame">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>150</height>
+                       </size>
+                      </property>
                       <property name="maximumSize">
                        <size>
                         <width>16777215</width>
@@ -4096,9 +4318,21 @@ border-radius: 10px
                    </layout>
                   </widget>
                   <widget class="QWidget" name="bCdfPageOutput">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>150</height>
+                    </size>
+                   </property>
                    <layout class="QGridLayout" name="gridLayout_31">
                     <item row="0" column="0">
                      <widget class="QFrame" name="bCdfOutputDistributionFrame">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>150</height>
+                       </size>
+                      </property>
                       <property name="styleSheet">
                        <string notr="true">QFrame{
 background-color:#1E293B;
