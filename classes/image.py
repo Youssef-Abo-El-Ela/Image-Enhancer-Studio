@@ -325,10 +325,13 @@ class Image():
         low_pass_filtered_image_1 = self.frequency_domain_gaussian_filter('low', shifted_fft_image_1 , 10)
         high_pass_filtered_image_2 = self.frequency_domain_gaussian_filter('high', shifted_fft_image_2 , 10)
 
-        time_domain_image_1 = self.inverse_fourier_transform(low_pass_filtered_image_1)
-        time_domain_image_2 = self.inverse_fourier_transform(high_pass_filtered_image_2)
+        hybrid_image_fft = low_pass_filtered_image_1 + high_pass_filtered_image_2
+        hybrid_image = self.inverse_fourier_transform(hybrid_image_fft)
 
-        hybrid_image = time_domain_image_1 + time_domain_image_2
+        # time_domain_image_1 = self.inverse_fourier_transform(low_pass_filtered_image_1)
+        # time_domain_image_2 = self.inverse_fourier_transform(high_pass_filtered_image_2)
+
+        # hybrid_image = time_domain_image_1 + time_domain_image_2
 
         return hybrid_image
     
