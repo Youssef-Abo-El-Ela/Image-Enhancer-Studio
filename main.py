@@ -52,7 +52,8 @@ class MainWindow(QMainWindow):
         self.uniform_noise_checkbox.stateChanged.connect(self.apply_uniform_noise)
         self.salt_noise_checkbox.stateChanged.connect(self.apply_salt_and_pepper_noise)
         self.gaussian_noise_checkbox.stateChanged.connect(self.apply_gaussian_noise)
-        
+        self.gaussain_apply = self.findChild(QPushButton , "pushButton")
+        self.gaussain_apply.pressed.connect(self.apply_gaussian_low_pass)
         # Adding Gaussian mean and sigma
         self.gaussian_mean_text = self.findChild(QLineEdit , "meanInput")
         self.gaussian_mean_text.textChanged.connect(self.set_gaussian_mean)
@@ -524,13 +525,18 @@ class MainWindow(QMainWindow):
             self.filter_type = "Average"
             self.low_pass_gaussian_filter_frame.hide()
         elif (index == 2):
-            self.filter_type = "Gaussian"
             self.low_pass_gaussian_filter_frame.show()
+            return
+            # self.filter_type = "Gaussian"
         elif (index == 3):
             self.filter_type = "Median"   
             self.low_pass_gaussian_filter_frame.hide() 
         self.controller.apply_time_domain_low_pass(self.filter_type ,self.filter_size,self.gaussian_filter_sigma)
     
+    def apply_gaussian_low_pass(self):
+        self.low_pass_gaussian_filter_frame.show()
+        self.controller.apply_time_domain_low_pass("Gaussian" ,self.filter_size,self.gaussian_filter_sigma)
+
     def apply_edge_detector_time_domain(self , index):
         if(index == 0):
             return
