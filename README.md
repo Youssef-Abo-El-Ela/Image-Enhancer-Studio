@@ -1,2 +1,3 @@
 # Image-Studio
- ![](./assets/GUI screenshot2.png)
+## **Preview**
+![Image Description 1](assets/GUI screenshot2.png)
