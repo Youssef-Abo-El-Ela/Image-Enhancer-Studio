@@ -1,1 +1,2 @@
-# Image-Studio-CV-Task-01
+# Image-Studio
+ ![](./assets/GUI screenshot2.png)
