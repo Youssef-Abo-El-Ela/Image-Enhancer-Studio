@@ -1,3 +1,3 @@
 # Image-Studio
 ## **Preview**
-![Image Description 1](assets/GUI screenshot2.png)
+![GUI Screenshot 1](https://github.com/karreemm/Image-Studio-CV-Task-01/blob/main/assets/GUI%20screenshot2.png)
