@@ -26,8 +26,7 @@ A comprehensive toolkit for image processing and enhancement that supports both 
 - **Real-time Updates**: Dynamic histogram updates as images are processed
 
 ### 5. Histogram Equalization
-- **Single Channel Equalization**: Enhance contrast for grayscale images
-- **Color Image Equalization**: Apply histogram equalization to RGB color images while preserving color balance
+- Enhance contrast for grayscale images
 
 ### 6. Image Normalization
 - **Intensity Normalization**: Normalize pixel intensities to specified ranges (default 0-255)
@@ -97,7 +96,6 @@ Processed images and their corresponding histograms are displayed in real-time w
 - Side-by-side comparison of original and processed images
 - Interactive histogram displays for all color channels
 - PDF and CDF curve visualizations
-- Export capabilities for saving processed results
 
 ## Sample Images
 
@@ -120,7 +118,3 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
-## License
-
-This project is open source and available under the [MIT License](LICENSE).
