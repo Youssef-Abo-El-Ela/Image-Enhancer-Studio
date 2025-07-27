@@ -63,11 +63,6 @@ A comprehensive toolkit for image processing and enhancement that supports both 
    pip install PyQt5 opencv-python numpy matplotlib
    ```
 
-   Or if you have a requirements file:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
 ## Usage
 
 1. **Start the application:**
@@ -108,6 +103,36 @@ The `data/` directory contains various test images including:
 
 ![GUI Screenshot 1](assets/GUI%20screenshot2.png)
 ![GUI Screenshot 2](assets/GUI%20screenshot1.png)
+
+## Contributors <a name = "Contributors"></a>
+<table>
+  <tr>
+    <td align="center">
+    <a href="https://github.com/Youssef-Abo-El-Ela" target="_black">
+    <img src="https://avatars.githubusercontent.com/u/125592387?v=4" width="150px;" alt="Youssef Aboelela"/>
+    <br />
+    <sub><b>Youssef Aboelela</b></sub></a>
+    </td>
+    <td align="center">
+    <a href="https://github.com/karreemm" target="_black">
+    <img src="https://avatars.githubusercontent.com/u/116344832?v=4" width="150px;" alt="Kareem Abdel Nabi"/>
+    <br />
+    <sub><b>Kareem Abdel nabi</b></sub></a>
+    </td>
+    <td align="center">
+    <a href="https://github.com/aliyounis33" target="_black">
+    <img src="https://avatars.githubusercontent.com/u/125222093?v=4" width="150px;" alt="Ali Younis"/>
+    <br />
+    <sub><b>Ali Younis</b></sub></a>
+    </td>
+    <td align="center">
+    <a href="https://github.com/louai111" target="_black">
+    <img src="https://avatars.githubusercontent.com/u/79408256?v=4" width="150px;" alt="Louai Khaled"/>
+    <br />
+    <sub><b>Louai Khaled</b></sub></a>
+    </td>
+      </tr>
+</table>
 
 ## Contributing
 
